@@ -39,7 +39,7 @@ const App = {
         this.initModules();
         this.bindEvents();
         this.generateTechniqueCards();
-        BackgroundManager.setAnimation('particles');
+        BackgroundManager.setAnimation('combined');
     },
 
     /**
@@ -64,7 +64,6 @@ const App = {
             carouselNext: document.getElementById('carouselNext'),
             carouselDots: document.getElementById('carouselDots'),
             startFromCarousel: document.getElementById('startFromCarousel'),
-            bgAnimationSelect: document.getElementById('bgAnimation'),
             
             // Detail screen
             detailIcon: document.getElementById('detailIcon'),
@@ -115,11 +114,6 @@ const App = {
         // Language selector
         this.elements.langSelector.addEventListener('change', (e) => {
             I18n.setLanguage(e.target.value);
-        });
-
-        // Background animation selector
-        this.elements.bgAnimationSelect.addEventListener('change', (e) => {
-            BackgroundManager.setAnimation(e.target.value);
         });
 
         // Sound toggle
