@@ -1,0 +1,144 @@
+{
+  "app": {
+    "title": "Respira",
+    "subtitle": "Desliza o usa las flechas para elegir una técnica",
+    "beginPractice": "Comenzar Práctica",
+    "backgroundAnimation": "Animación de Fondo"
+  },
+  "backgrounds": {
+    "particles": "Partículas Flotantes",
+    "waves": "Olas del Océano",
+    "gradient": "Gradiente Cambiante",
+    "combined": "Combinado (Todos los Efectos)",
+    "none": "Ninguno (Mínimo)"
+  },
+  "detail": {
+    "science": "Respaldo Científico",
+    "mechanism": "Cómo Funciona",
+    "steps": "Pasos",
+    "cycles": "Número de Ciclos",
+    "cyclesUnit": "ciclos",
+    "pattern": "patrón",
+    "perCycle": "por ciclo"
+  },
+  "breathing": {
+    "getReady": "Prepárate...",
+    "cycle": "Ciclo",
+    "of": "de",
+    "pause": "Pausar",
+    "resume": "Continuar",
+    "stop": "Detener"
+  },
+  "animations": {
+    "belly": "Abdomen",
+    "flow": "Flujo",
+    "power": "Poder",
+    "control": "Control"
+  },
+  "phases": {
+    "inhale": "Inhala",
+    "exhale": "Exhala",
+    "hold": "Mantén",
+    "power": "Respiraciones Potentes",
+    "retention": "Retención",
+    "recovery": "Respiración de Recuperación",
+    "shallow": "Respiración Superficial",
+    "lightInhale": "Inhala Suave",
+    "lightExhale": "Exhala Suave",
+    "controlPause": "Pausa de Control"
+  },
+  "congrats": {
+    "title": "¡Bien Hecho!",
+    "message": "Has completado tu ejercicio de respiración.<br>Tómate un momento para notar cómo te sientes.",
+    "technique": "Técnica",
+    "completedCycles": "Ciclos Completados",
+    "totalTime": "Tiempo Total",
+    "minutes": "minutos",
+    "practiceAgain": "Practicar de Nuevo",
+    "mainMenu": "Menú Principal"
+  },
+  "techniques": {
+    "box": {
+      "name": "Respiración Cuadrada",
+      "tagline": "Respiración de Caja - Usada por Navy SEALs",
+      "science": "Utilizada por los Navy SEALs para el \"control de la activación\". Un estudio de 2023 indicó que equilibra eficazmente el Sistema Nervioso Autónomo (SNA) y mejora el rendimiento bajo estrés.",
+      "mechanism": "La forma simétrica de \"caja\" crea un ritmo constante que evita que el corazón se acelere durante transiciones de alta presión. Las fases de igual duración ayudan a sincronizar la respiración con la variabilidad del ritmo cardíaco.",
+      "steps": [
+        "Inhala por la nariz durante 4 segundos",
+        "Mantén el aire durante 4 segundos",
+        "Exhala por la boca durante 4 segundos",
+        "Mantén con los pulmones vacíos durante 4 segundos",
+        "Repite de 4 a 10 ciclos"
+      ]
+    },
+    "fourSevenEight": {
+      "name": "Técnica 4-7-8",
+      "tagline": "El \"Reinicio del Sistema Nervioso\"",
+      "science": "Un estudio de 2022 en Physiological Reports sugiere que la proporción 4-7-8 aumenta específicamente la Potencia de Alta Frecuencia en la Variabilidad del Ritmo Cardíaco (VRC), indicando un aumento agudo en la actividad parasimpática (descanso y digestión).",
+      "mechanism": "La retención de 7 segundos permite un aumento temporal de CO₂ en la sangre, lo que dilata los vasos sanguíneos y reduce la presión arterial. La exhalación de 8 segundos estimula el nervio Vago para reducir el ritmo cardíaco.",
+      "steps": [
+        "Coloca la punta de la lengua contra el paladar detrás de los dientes frontales",
+        "Inhala silenciosamente por la nariz durante 4 segundos",
+        "Mantén la respiración durante 7 segundos",
+        "Exhala con fuerza por la boca (haz un sonido \"whoosh\") durante 8 segundos",
+        "Repite 4 respiraciones inicialmente; nunca excedas 8 ciclos por sesión"
+      ]
+    },
+    "diaphragmatic": {
+      "name": "Respiración Diafragmática",
+      "tagline": "Respiración Abdominal - Reduce Estrés y Cortisol",
+      "science": "Investigaciones publicadas por la Clínica Cleveland y Johns Hopkins confirman que esta técnica reduce los niveles de cortisol y mejora la estabilidad del core. Los estudios muestran que activa eficazmente el sistema nervioso parasimpático.",
+      "mechanism": "Al usar el diafragma en lugar del pecho, optimizas el intercambio de oxígeno y reduces el \"trabajo de respirar\", señalando al cerebro que el cuerpo está seguro. Esto activa la respuesta de relajación.",
+      "steps": [
+        "Acuéstate boca arriba o siéntate con la espalda recta",
+        "Coloca una mano en el pecho y la otra en el abdomen",
+        "Inhala por la nariz, haciendo que el abdomen suba mientras el pecho permanece quieto",
+        "Exhala con los labios fruncidos como si soplaras por una pajita",
+        "Siente cómo el abdomen baja al exhalar completamente",
+        "Practica de 5 a 10 minutos (6-12 ciclos)"
+      ]
+    },
+    "resonance": {
+      "name": "Frecuencia de Resonancia",
+      "tagline": "Respiración Coherente - Maximiza la VRC",
+      "science": "Revisiones sistemáticas en Scientific Reports muestran que esta es la tasa óptima para maximizar la Variabilidad del Ritmo Cardíaco (VRC) y sincronizar el corazón y los pulmones para un equilibrio autonómico óptimo.",
+      "mechanism": "La mayoría de los adultos tienen una \"frecuencia de resonancia\" de aproximadamente 5.5 a 6 respiraciones por minuto. Este ritmo maximiza la eficiencia del barorreflejo (el sistema de control de presión arterial del cuerpo), creando coherencia entre los ritmos cardiovascular y respiratorio.",
+      "steps": [
+        "Siéntate o acuéstate en una posición cómoda",
+        "Inhala suavemente por la nariz durante 5.5 segundos",
+        "Exhala suavemente por la nariz o boca durante 5.5 segundos",
+        "Mantén un flujo continuo sin pausas arriba o abajo",
+        "Mantén la respiración suave y sin esfuerzo",
+        "Practica de 10 a 20 minutos para beneficios óptimos de VRC"
+      ]
+    },
+    "wimHof": {
+      "name": "Método Wim Hof",
+      "tagline": "Hiperventilación Cíclica - Fortalece la Inmunidad",
+      "science": "Una revisión sistemática de 2024 en PLOS ONE confirmó que este método aumenta significativamente la epinefrina (adrenalina) e Interleucina-10 (una citocina antiinflamatoria), mientras reduce los marcadores proinflamatorios.",
+      "mechanism": "La hiperventilación controlada seguida de una retención crea una respuesta de estrés \"hormético\" (beneficioso) que \"entrena\" el sistema inmunológico. Esto activa el sistema nervioso simpático y libera opioides endógenos.",
+      "steps": [
+        "Toma 30 respiraciones profundas y rítmicas (inhala completamente, exhala naturalmente)",
+        "Después de la última exhalación, mantén la respiración lo más que puedas cómodamente",
+        "Cuando sientas la necesidad de respirar, toma una inhalación profunda",
+        "Mantén esa respiración de recuperación durante 15 segundos",
+        "Esto completa una ronda - repite 3 rondas",
+        "⚠️ ¡Nunca practiques en el agua o mientras conduces!"
+      ]
+    },
+    "buteyko": {
+      "name": "Pausa de Control Buteyko",
+      "tagline": "Tolerancia al CO₂ - Eficiencia Respiratoria",
+      "science": "Ampliamente estudiada para el asma y la eficiencia respiratoria. Los ensayos clínicos muestran que reduce la dependencia de inhaladores de rescate y mejora la tolerancia al CO₂, con mejoras significativas en la calidad de vida para condiciones respiratorias.",
+      "mechanism": "Aumenta la \"Pausa de Control\" (PC)—el tiempo que puedes mantener cómodamente la respiración—que refleja la sensibilidad de tu cuerpo al CO₂. Al practicar respiración nasal ligera, reentrenar tu patrón respiratorio para ser más eficiente.",
+      "steps": [
+        "Toma una respiración pequeña y suave por la nariz",
+        "Suelta una respiración pequeña y suave",
+        "Tapa tu nariz y mantén hasta sentir la primera necesidad de respirar",
+        "Esto mide tu Pausa de Control (PC) base",
+        "Luego respira ligeramente por la nariz con una \"ligera hambre de aire\"",
+        "Mantén la respiración superficial durante 30 segundos para aumentar la tolerancia al CO₂"
+      ]
+    }
+  }
+}

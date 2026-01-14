@@ -33,8 +33,9 @@ const App = {
     /**
      * Initialize the application
      */
-    init() {
+    async init() {
         this.cacheElements();
+        await I18n.init(); // Initialize translations first
         this.initModules();
         this.bindEvents();
         this.generateTechniqueCards();
@@ -55,6 +56,7 @@ const App = {
             // Navigation
             backBtn: document.getElementById('backBtn'),
             soundToggle: document.getElementById('soundToggle'),
+            langSelector: document.getElementById('langSelector'),
             
             // Carousel
             carouselTrack: document.getElementById('carouselTrack'),
@@ -110,6 +112,11 @@ const App = {
      * Bind event listeners
      */
     bindEvents() {
+        // Language selector
+        this.elements.langSelector.addEventListener('change', (e) => {
+            I18n.setLanguage(e.target.value);
+        });
+
         // Background animation selector
         this.elements.bgAnimationSelect.addEventListener('change', (e) => {
             BackgroundManager.setAnimation(e.target.value);
@@ -185,11 +192,17 @@ const App = {
             const totalTime = tech.phases.reduce((sum, p) => sum + p.duration, 0);
             const timingText = tech.phases.map(p => p.duration).join('-');
             
+            // Get translated content
+            const name = I18n.getTechnique(tech.id, 'name');
+            const tagline = I18n.getTechnique(tech.id, 'tagline');
+            const perCycle = I18n.t('detail.perCycle') || 'per cycle';
+            const pattern = I18n.t('detail.pattern') || 'pattern';
+            
             card.innerHTML = `
                 <div class="icon">${tech.icon}</div>
-                <div class="name">${tech.name}</div>
-                <div class="tagline">${tech.tagline}</div>
-                <div class="timing">${timingText} pattern • ${Math.round(totalTime)}s per cycle</div>
+                <div class="name">${name}</div>
+                <div class="tagline">${tagline}</div>
+                <div class="timing">${timingText} ${pattern} • ${Math.round(totalTime)}s ${perCycle}</div>
             `;
             
             this.elements.carouselTrack.appendChild(card);
@@ -336,15 +349,22 @@ const App = {
         
         this.state.selectedTechnique = tech;
         
+        // Get translated content
+        const name = I18n.getTechnique(techId, 'name');
+        const tagline = I18n.getTechnique(techId, 'tagline');
+        const science = I18n.getTechnique(techId, 'science');
+        const mechanism = I18n.getTechnique(techId, 'mechanism');
+        const steps = I18n.getTechnique(techId, 'steps');
+        
         this.elements.detailIcon.textContent = tech.icon;
-        this.elements.detailName.textContent = tech.name;
-        this.elements.detailTagline.textContent = tech.tagline;
-        this.elements.detailScience.textContent = tech.science;
-        this.elements.detailMechanism.textContent = tech.mechanism;
+        this.elements.detailName.textContent = name;
+        this.elements.detailTagline.textContent = tagline;
+        this.elements.detailScience.textContent = science;
+        this.elements.detailMechanism.textContent = mechanism;
         
         // Generate steps list
         this.elements.detailSteps.innerHTML = '';
-        tech.steps.forEach((step, index) => {
+        (Array.isArray(steps) ? steps : tech.steps).forEach((step, index) => {
             const li = document.createElement('li');
             li.dataset.step = `${index + 1}.`;
             li.textContent = step;
@@ -377,11 +397,11 @@ const App = {
         this.state.totalPausedTime = 0;
         this.state.phaseElapsed = 0;
         
-        // Setup UI
-        this.elements.breathingTitle.textContent = tech.name;
+        // Setup UI with translated name
+        this.elements.breathingTitle.textContent = I18n.getTechnique(tech.id, 'name');
         this.elements.totalCyclesEl.textContent = this.state.totalCycles;
         this.elements.currentCycleEl.textContent = this.state.currentCycle;
-        this.elements.pauseBtn.textContent = 'Pause';
+        this.elements.pauseBtn.textContent = I18n.t('breathing.pause');
         
         // Setup animation
         this.setupAnimation(tech.animation);
@@ -392,7 +412,7 @@ const App = {
         this.showScreen('breathing-screen');
         
         // Countdown
-        this.elements.instruction.textContent = 'Get Ready...';
+        this.elements.instruction.textContent = I18n.t('breathing.getReady');
         this.getActiveAnimation().updateTimer('3');
         
         let countdown = 3;
@@ -475,7 +495,8 @@ const App = {
         const tech = this.state.selectedTechnique;
         const phase = tech.phases[this.state.currentPhase];
         
-        this.elements.instruction.textContent = phase.name;
+        // Use translated phase name
+        this.elements.instruction.textContent = I18n.getPhase(phase.type);
         this.state.timeRemaining = phase.duration;
         this.state.phaseElapsed = 0;
         
@@ -586,7 +607,7 @@ const App = {
      */
     togglePause() {
         this.state.isPaused = !this.state.isPaused;
-        this.elements.pauseBtn.textContent = this.state.isPaused ? 'Resume' : 'Pause';
+        this.elements.pauseBtn.textContent = this.state.isPaused ? I18n.t('breathing.resume') : I18n.t('breathing.pause');
         
         if (this.state.isPaused) {
             this.state.pauseStartTime = performance.now();
@@ -624,7 +645,8 @@ const App = {
         const minutes = Math.floor(totalTime / 60);
         const seconds = totalTime % 60;
         
-        this.elements.statTechnique.textContent = this.state.selectedTechnique.name;
+        // Use translated technique name
+        this.elements.statTechnique.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
         this.elements.statCycles.textContent = this.state.totalCycles;
         this.elements.statTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         

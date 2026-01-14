@@ -1,0 +1,144 @@
+{
+  "app": {
+    "title": "Breathe",
+    "subtitle": "Swipe or use arrows to choose a technique",
+    "beginPractice": "Begin Practice",
+    "backgroundAnimation": "Background Animation"
+  },
+  "backgrounds": {
+    "particles": "Floating Particles",
+    "waves": "Ocean Waves",
+    "gradient": "Shifting Gradient",
+    "combined": "Combined (All Effects)",
+    "none": "None (Minimal)"
+  },
+  "detail": {
+    "science": "Scientific Support",
+    "mechanism": "How It Works",
+    "steps": "Steps",
+    "cycles": "Number of Cycles",
+    "cyclesUnit": "cycles",
+    "pattern": "pattern",
+    "perCycle": "per cycle"
+  },
+  "breathing": {
+    "getReady": "Get Ready...",
+    "cycle": "Cycle",
+    "of": "of",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop"
+  },
+  "animations": {
+    "belly": "Belly",
+    "flow": "Flow",
+    "power": "Power",
+    "control": "Control"
+  },
+  "phases": {
+    "inhale": "Inhale",
+    "exhale": "Exhale",
+    "hold": "Hold",
+    "power": "Power Breaths",
+    "retention": "Retention Hold",
+    "recovery": "Recovery Breath",
+    "shallow": "Shallow Breathing",
+    "lightInhale": "Light Inhale",
+    "lightExhale": "Light Exhale",
+    "controlPause": "Control Pause"
+  },
+  "congrats": {
+    "title": "Well Done!",
+    "message": "You've completed your breathing exercise.<br>Take a moment to notice how you feel.",
+    "technique": "Technique",
+    "completedCycles": "Cycles Completed",
+    "totalTime": "Total Time",
+    "minutes": "minutes",
+    "practiceAgain": "Practice Again",
+    "mainMenu": "Main Menu"
+  },
+  "techniques": {
+    "box": {
+      "name": "Box Breathing",
+      "tagline": "Square Breathing - Used by Navy SEALs",
+      "science": "Utilized by Navy SEALs for \"arousal control.\" A 2023 study indicated it effectively balances the Autonomic Nervous System (ANS) and improves performance under stress.",
+      "mechanism": "The symmetrical \"box\" shape creates a steady rhythm that prevents the heart from spiking during high-pressure transitions. The equal duration phases help synchronize breath with heart rate variability.",
+      "steps": [
+        "Inhale through the nose for 4 seconds",
+        "Hold the air in for 4 seconds",
+        "Exhale through the mouth for 4 seconds",
+        "Hold with empty lungs for 4 seconds",
+        "Repeat for 4 to 10 cycles"
+      ]
+    },
+    "fourSevenEight": {
+      "name": "4-7-8 Technique",
+      "tagline": "The \"Nervous System Reset\"",
+      "science": "A 2022 study in Physiological Reports suggests that the 4-7-8 ratio specifically increases High-Frequency Power in Heart Rate Variability (HRV), indicating a sharp rise in parasympathetic (rest-and-digest) activity.",
+      "mechanism": "The 7-second hold allows for a temporary increase in CO₂ in the blood, which dilates the blood vessels and lowers blood pressure. The 8-second exhale stimulates the Vagus nerve to slow the heart rate.",
+      "steps": [
+        "Place tongue tip against ridge behind upper front teeth",
+        "Inhale quietly through the nose for 4 seconds",
+        "Hold breath for 7 seconds",
+        "Exhale forcefully through mouth (make a \"whoosh\" sound) for 8 seconds",
+        "Repeat for 4 breaths initially; never exceed 8 cycles per session"
+      ]
+    },
+    "diaphragmatic": {
+      "name": "Diaphragmatic Breathing",
+      "tagline": "Belly Breathing - Reduce Stress & Cortisol",
+      "science": "Research published by The Cleveland Clinic and Johns Hopkins confirms this technique reduces cortisol levels and improves core stability. Studies show it activates the parasympathetic nervous system effectively.",
+      "mechanism": "By engaging the diaphragm rather than the chest, you optimize oxygen exchange and reduce the \"work of breathing,\" signaling to the brain that the body is safe. This triggers the relaxation response.",
+      "steps": [
+        "Lie on your back or sit with a straight spine",
+        "Place one hand on your chest and the other on your belly",
+        "Inhale through the nose, making your belly rise while chest stays still",
+        "Exhale through pursed lips as if blowing through a straw",
+        "Feel the belly sink as you exhale completely",
+        "Practice for 5-10 minutes (6-12 cycles)"
+      ]
+    },
+    "resonance": {
+      "name": "Resonance Frequency",
+      "tagline": "Coherent Breathing - Maximize HRV",
+      "science": "Systematic reviews in Scientific Reports show this is the optimal rate to maximize Heart Rate Variability (HRV) and synchronize the heart and lungs for peak autonomic balance.",
+      "mechanism": "Most adults have a \"resonant frequency\" at approximately 5.5 to 6 breaths per minute. This timing maximizes the efficiency of the baroreflex (the body's blood pressure control system), creating coherence between cardiovascular and respiratory rhythms.",
+      "steps": [
+        "Sit or lie in a comfortable position",
+        "Inhale smoothly through the nose for 5.5 seconds",
+        "Exhale smoothly through the nose or mouth for 5.5 seconds",
+        "Maintain a continuous flow with no pauses at top or bottom",
+        "Keep the breath gentle and effortless",
+        "Practice for 10-20 minutes for optimal HRV benefits"
+      ]
+    },
+    "wimHof": {
+      "name": "Wim Hof Method",
+      "tagline": "Cyclic Hyperventilation - Boost Immunity",
+      "science": "A 2024 systematic review in PLOS ONE confirmed that this method significantly increases epinephrine (adrenaline) and Interleukin-10 (an anti-inflammatory cytokine), while reducing pro-inflammatory markers.",
+      "mechanism": "Controlled hyperventilation followed by a hold creates a \"hormetic\" (beneficial) stress response that \"trains\" the immune system. This activates the sympathetic nervous system and releases endogenous opioids.",
+      "steps": [
+        "Take 30 deep, rhythmic breaths (fully in, naturally out)",
+        "After the last exhale, hold your breath as long as comfortable",
+        "When you feel the urge to breathe, take a deep inhale",
+        "Hold that recovery breath for 15 seconds",
+        "This completes one round - repeat for 3 rounds",
+        "⚠️ Never practice in water or while driving!"
+      ]
+    },
+    "buteyko": {
+      "name": "Buteyko Control Pause",
+      "tagline": "CO₂ Tolerance - Respiratory Efficiency",
+      "science": "Extensively studied for asthma and respiratory efficiency. Clinical trials show it reduces reliance on rescue inhalers and improves CO₂ tolerance, with significant improvements in quality of life for respiratory conditions.",
+      "mechanism": "Increases the \"Control Pause\" (CP)—the time you can comfortably hold your breath—which reflects your body's sensitivity to CO₂. By practicing light, nasal breathing, you retrain your breathing pattern to be more efficient.",
+      "steps": [
+        "Take a small, gentle breath in through your nose",
+        "Release a small, gentle breath out",
+        "Pinch your nose and hold until you feel the first urge to breathe",
+        "This measures your Control Pause (CP) baseline",
+        "Then breathe lightly through the nose with a \"slight air hunger\"",
+        "Maintain shallow breathing for 30 seconds to build CO₂ tolerance"
+      ]
+    }
+  }
+}
