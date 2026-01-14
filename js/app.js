@@ -33,9 +33,9 @@ const App = {
     /**
      * Initialize the application
      */
-    async init() {
+    init() {
         this.cacheElements();
-        await I18n.init(); // Initialize translations first
+        I18n.init(); // Initialize translations first
         this.initModules();
         this.bindEvents();
         this.generateTechniqueCards();
