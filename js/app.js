@@ -112,16 +112,46 @@ const App = {
             effect: 'coverflow',
             grabCursor: true,
             centeredSlides: true,
-            slidesPerView: 'auto',
+            slidesPerView: 3,
             initialSlide: 0,
             loop: true,
             speed: 600,
             coverflowEffect: {
-                rotate: 0,
+                rotate: 15,
                 stretch: 0,
-                depth: 200,
-                modifier: 1.5,
-                slideShadows: false
+                depth: 150,
+                modifier: 1,
+                slideShadows: false,
+                scale: 0.85
+            },
+            breakpoints: {
+                // On screens smaller than 480px, show 1.5 slides
+                0: {
+                    slidesPerView: 1.4,
+                    coverflowEffect: {
+                        rotate: 10,
+                        depth: 100,
+                        scale: 0.9
+                    }
+                },
+                // On tablets, show 2.5 slides
+                480: {
+                    slidesPerView: 2.2,
+                    coverflowEffect: {
+                        rotate: 12,
+                        depth: 120,
+                        scale: 0.88
+                    }
+                },
+                // On larger screens, show 3 slides
+                768: {
+                    slidesPerView: 3,
+                    coverflowEffect: {
+                        rotate: 15,
+                        depth: 150,
+                        scale: 0.85
+                    }
+                }
             },
             pagination: {
                 el: '#swiperPagination',
