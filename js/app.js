@@ -1,6 +1,7 @@
 /**
  * Main Application Module
  * Coordinates all components and manages the breathing exercise flow
+ * Uses Swiper for 3D carousel and GSAP for smooth animations
  */
 
 const App = {
@@ -19,13 +20,11 @@ const App = {
         lastTimestamp: null,
         startTime: null,
         pauseStartTime: null,
-        totalPausedTime: 0,
-        // Carousel state
-        carouselIndex: 0,
-        carouselDragging: false,
-        carouselStartX: 0,
-        carouselCurrentX: 0
+        totalPausedTime: 0
     },
+
+    // Swiper instance
+    swiper: null,
 
     // DOM element references
     elements: {},
@@ -37,8 +36,9 @@ const App = {
         this.cacheElements();
         I18n.init(); // Initialize translations first
         this.initModules();
-        this.bindEvents();
         this.generateTechniqueCards();
+        this.initSwiper();
+        this.bindEvents();
         BackgroundManager.setAnimation('combined');
     },
 
@@ -58,11 +58,8 @@ const App = {
             soundToggle: document.getElementById('soundToggle'),
             langSelector: document.getElementById('langSelector'),
             
-            // Carousel
-            carouselTrack: document.getElementById('carouselTrack'),
-            carouselPrev: document.getElementById('carouselPrev'),
-            carouselNext: document.getElementById('carouselNext'),
-            carouselDots: document.getElementById('carouselDots'),
+            // Swiper Carousel
+            swiperWrapper: document.getElementById('swiperWrapper'),
             startFromCarousel: document.getElementById('startFromCarousel'),
             
             // Detail screen
@@ -108,6 +105,49 @@ const App = {
     },
 
     /**
+     * Initialize Swiper 3D Coverflow Carousel
+     */
+    initSwiper() {
+        this.swiper = new Swiper('#techniqueSwiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            initialSlide: 0,
+            loop: true,
+            speed: 600,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 200,
+                modifier: 1.5,
+                slideShadows: false
+            },
+            pagination: {
+                el: '#swiperPagination',
+                clickable: true
+            },
+            keyboard: {
+                enabled: true
+            },
+            on: {
+                slideChange: () => {
+                    // Add subtle animation on slide change
+                    if (this.swiper) {
+                        const activeSlide = this.swiper.slides[this.swiper.activeIndex];
+                        if (activeSlide) {
+                            gsap.fromTo(activeSlide, 
+                                { scale: 0.95, opacity: 0.8 },
+                                { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out' }
+                            );
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    /**
      * Bind event listeners
      */
     bindEvents() {
@@ -125,25 +165,23 @@ const App = {
         // Navigation
         this.elements.backBtn.addEventListener('click', () => this.goBack());
 
-        // Carousel navigation
-        this.elements.carouselPrev.addEventListener('click', () => this.carouselPrev());
-        this.elements.carouselNext.addEventListener('click', () => this.carouselNext());
-        
-        // Carousel touch/mouse events
-        this.elements.carouselTrack.addEventListener('mousedown', (e) => this.carouselDragStart(e));
-        this.elements.carouselTrack.addEventListener('mousemove', (e) => this.carouselDragMove(e));
-        this.elements.carouselTrack.addEventListener('mouseup', () => this.carouselDragEnd());
-        this.elements.carouselTrack.addEventListener('mouseleave', () => this.carouselDragEnd());
-        
-        this.elements.carouselTrack.addEventListener('touchstart', (e) => this.carouselDragStart(e), { passive: true });
-        this.elements.carouselTrack.addEventListener('touchmove', (e) => this.carouselDragMove(e), { passive: true });
-        this.elements.carouselTrack.addEventListener('touchend', () => this.carouselDragEnd());
-        
-        // Start from carousel
+        // Start from carousel - get current technique
         this.elements.startFromCarousel.addEventListener('click', () => {
-            const techIds = Object.keys(techniques);
-            const selectedId = techIds[this.state.carouselIndex];
-            this.showTechniqueDetail(selectedId);
+            const activeSlide = this.swiper.slides[this.swiper.activeIndex];
+            if (activeSlide) {
+                const techId = activeSlide.dataset.id;
+                if (techId) {
+                    this.showTechniqueDetail(techId);
+                }
+            }
+        });
+
+        // Double-click/tap on slide to start
+        document.getElementById('techniqueSwiper').addEventListener('dblclick', (e) => {
+            const slide = e.target.closest('.swiper-slide');
+            if (slide && slide.dataset.id) {
+                this.showTechniqueDetail(slide.dataset.id);
+            }
         });
 
         // Repetitions slider
@@ -171,17 +209,15 @@ const App = {
      * Generate carousel cards for technique selection
      */
     generateTechniqueCards() {
-        this.elements.carouselTrack.innerHTML = '';
-        this.elements.carouselDots.innerHTML = '';
+        this.elements.swiperWrapper.innerHTML = '';
         
         const techArray = Object.values(techniques);
         
-        techArray.forEach((tech, index) => {
-            // Create carousel card
-            const card = document.createElement('div');
-            card.className = 'carousel-card';
-            card.dataset.id = tech.id;
-            card.dataset.index = index;
+        techArray.forEach((tech) => {
+            // Create swiper slide
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+            slide.dataset.id = tech.id;
             
             const totalTime = tech.phases.reduce((sum, p) => sum + p.duration, 0);
             const timingText = tech.phases.map(p => p.duration).join('-');
@@ -192,119 +228,56 @@ const App = {
             const perCycle = I18n.t('detail.perCycle') || 'per cycle';
             const pattern = I18n.t('detail.pattern') || 'pattern';
             
-            card.innerHTML = `
+            slide.innerHTML = `
                 <div class="icon">${tech.icon}</div>
                 <div class="name">${name}</div>
                 <div class="tagline">${tagline}</div>
                 <div class="timing">${timingText} ${pattern} • ${Math.round(totalTime)}s ${perCycle}</div>
             `;
             
-            this.elements.carouselTrack.appendChild(card);
-            
-            // Create dot indicator
-            const dot = document.createElement('button');
-            dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-            dot.dataset.index = index;
-            dot.addEventListener('click', () => this.carouselGoTo(index));
-            this.elements.carouselDots.appendChild(dot);
+            this.elements.swiperWrapper.appendChild(slide);
         });
-        
-        this.updateCarouselPosition();
-    },
 
-    /**
-     * Navigate carousel to previous item
-     */
-    carouselPrev() {
-        const totalItems = Object.keys(techniques).length;
-        this.state.carouselIndex = (this.state.carouselIndex - 1 + totalItems) % totalItems;
-        this.updateCarouselPosition();
-    },
-
-    /**
-     * Navigate carousel to next item
-     */
-    carouselNext() {
-        const totalItems = Object.keys(techniques).length;
-        this.state.carouselIndex = (this.state.carouselIndex + 1) % totalItems;
-        this.updateCarouselPosition();
-    },
-
-    /**
-     * Navigate carousel to specific index
-     */
-    carouselGoTo(index) {
-        this.state.carouselIndex = index;
-        this.updateCarouselPosition();
-    },
-
-    /**
-     * Update carousel visual position
-     */
-    updateCarouselPosition() {
-        const offset = -this.state.carouselIndex * 100;
-        this.elements.carouselTrack.style.transform = `translateX(${offset}%)`;
-        
-        // Update dots
-        const dots = this.elements.carouselDots.querySelectorAll('.carousel-dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.state.carouselIndex);
-        });
-    },
-
-    /**
-     * Handle carousel drag start
-     */
-    carouselDragStart(e) {
-        this.state.carouselDragging = true;
-        this.state.carouselStartX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        this.elements.carouselTrack.style.transition = 'none';
-    },
-
-    /**
-     * Handle carousel drag move
-     */
-    carouselDragMove(e) {
-        if (!this.state.carouselDragging) return;
-        
-        const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        const diff = currentX - this.state.carouselStartX;
-        const trackWidth = this.elements.carouselTrack.offsetWidth / Object.keys(techniques).length;
-        const percentMove = (diff / trackWidth) * 100;
-        const baseOffset = -this.state.carouselIndex * 100;
-        
-        this.elements.carouselTrack.style.transform = `translateX(${baseOffset + percentMove}%)`;
-        this.state.carouselCurrentX = currentX;
-    },
-
-    /**
-     * Handle carousel drag end
-     */
-    carouselDragEnd() {
-        if (!this.state.carouselDragging) return;
-        
-        this.state.carouselDragging = false;
-        this.elements.carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        
-        const diff = this.state.carouselCurrentX - this.state.carouselStartX;
-        const threshold = 50;
-        
-        if (diff > threshold) {
-            this.carouselPrev();
-        } else if (diff < -threshold) {
-            this.carouselNext();
-        } else {
-            this.updateCarouselPosition();
+        // Update swiper after adding slides
+        if (this.swiper) {
+            this.swiper.update();
         }
     },
 
     /**
-     * Show a specific screen
+     * Show a specific screen with GSAP animation
      * @param {string} screenId - The screen element ID
      */
     showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+        const currentScreen = document.querySelector('.screen.active');
+        const nextScreen = document.getElementById(screenId);
+        
+        if (currentScreen === nextScreen) return;
+        
+        // Animate out current screen
+        if (currentScreen) {
+            gsap.to(currentScreen, {
+                opacity: 0,
+                y: -20,
+                duration: 0.3,
+                ease: 'power2.in',
+                onComplete: () => {
+                    currentScreen.classList.remove('active');
+                    currentScreen.style.opacity = '';
+                    currentScreen.style.transform = '';
+                }
+            });
+        }
+        
+        // Animate in new screen
+        setTimeout(() => {
+            nextScreen.classList.add('active');
+            gsap.fromTo(nextScreen, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+            );
+        }, currentScreen ? 300 : 0);
+        
         this.state.currentScreen = screenId.replace('-screen', '');
         
         // Show/hide back button
@@ -356,12 +329,13 @@ const App = {
         this.elements.detailScience.textContent = science;
         this.elements.detailMechanism.textContent = mechanism;
         
-        // Generate steps list
+        // Generate steps list with GSAP stagger animation
         this.elements.detailSteps.innerHTML = '';
         (Array.isArray(steps) ? steps : tech.steps).forEach((step, index) => {
             const li = document.createElement('li');
             li.dataset.step = `${index + 1}.`;
             li.textContent = step;
+            li.style.opacity = '0';
             this.elements.detailSteps.appendChild(li);
         });
         
@@ -371,6 +345,18 @@ const App = {
         this.elements.repValue.textContent = tech.defaultCycles;
         
         this.showScreen('detail-screen');
+        
+        // Animate steps in with stagger
+        setTimeout(() => {
+            gsap.to(this.elements.detailSteps.querySelectorAll('li'), {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.1,
+                ease: 'power2.out',
+                from: { y: 15 }
+            });
+        }, 400);
     },
 
     /**
@@ -405,14 +391,26 @@ const App = {
         
         this.showScreen('breathing-screen');
         
-        // Countdown
+        // Countdown with GSAP
         this.elements.instruction.textContent = I18n.t('breathing.getReady');
         this.getActiveAnimation().updateTimer('3');
         
         let countdown = 3;
+        
+        // Animate countdown
+        const countdownAnim = () => {
+            gsap.fromTo(this.elements.instruction, 
+                { scale: 1.2, opacity: 0.5 },
+                { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' }
+            );
+        };
+        
+        countdownAnim();
+        
         const countdownInterval = setInterval(() => {
             countdown--;
             this.getActiveAnimation().updateTimer(countdown);
+            countdownAnim();
             if (countdown <= 0) {
                 clearInterval(countdownInterval);
                 this.startPhase();
@@ -489,8 +487,15 @@ const App = {
         const tech = this.state.selectedTechnique;
         const phase = tech.phases[this.state.currentPhase];
         
-        // Use translated phase name
-        this.elements.instruction.textContent = I18n.getPhase(phase.type);
+        // Use translated phase name with GSAP animation
+        const phaseText = I18n.getPhase(phase.type);
+        this.elements.instruction.textContent = phaseText;
+        
+        gsap.fromTo(this.elements.instruction,
+            { scale: 1.3, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.7)' }
+        );
+        
         this.state.timeRemaining = phase.duration;
         this.state.phaseElapsed = 0;
         
@@ -515,6 +520,10 @@ const App = {
             dot.classList.remove('active');
             if (dot.dataset.phase === phaseType) {
                 dot.classList.add('active');
+                gsap.fromTo(dot, 
+                    { scale: 1.5 },
+                    { scale: 1.2, duration: 0.3, ease: 'power2.out' }
+                );
             }
         });
     },
@@ -586,6 +595,12 @@ const App = {
             
             this.elements.currentCycleEl.textContent = this.state.currentCycle;
             
+            // Animate cycle counter
+            gsap.fromTo(this.elements.currentCycleEl,
+                { scale: 1.5, color: '#64b5f6' },
+                { scale: 1, color: '#e8f4f8', duration: 0.4, ease: 'power2.out' }
+            );
+            
             // Reset animation for next cycle
             setTimeout(() => {
                 this.getActiveAnimation().reset();
@@ -645,10 +660,24 @@ const App = {
         this.elements.statTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         
         this.showScreen('congrats-screen');
+        
+        // Celebrate animation
+        setTimeout(() => {
+            gsap.fromTo('.congrats-icon',
+                { scale: 0, rotation: -180 },
+                { scale: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+            );
+            gsap.fromTo('.congrats-title',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, delay: 0.2, ease: 'power2.out' }
+            );
+            gsap.fromTo('.stats',
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, delay: 0.4, ease: 'power2.out' }
+            );
+        }, 100);
     }
 };
 
 // Initialize app when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    App.init();
-});
+document.addEventListener('DOMContentLoaded', () => App.init());
