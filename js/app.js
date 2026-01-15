@@ -122,7 +122,7 @@ const App = {
                 depth: 150,
                 modifier: 1,
                 slideShadows: false,
-                scale: 0.85
+                scale: 0.8
             },
             breakpoints: {
                 // On screens smaller than 480px, show 1.5 slides
@@ -131,7 +131,7 @@ const App = {
                     coverflowEffect: {
                         rotate: 10,
                         depth: 100,
-                        scale: 0.9
+                        scale: 0.85
                     }
                 },
                 // On tablets, show 2.5 slides
@@ -140,7 +140,7 @@ const App = {
                     coverflowEffect: {
                         rotate: 12,
                         depth: 120,
-                        scale: 0.88
+                        scale: 0.82
                     }
                 },
                 // On larger screens, show 3 slides
@@ -149,7 +149,7 @@ const App = {
                     coverflowEffect: {
                         rotate: 15,
                         depth: 150,
-                        scale: 0.85
+                        scale: 0.8
                     }
                 }
             },
