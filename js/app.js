@@ -20,7 +20,8 @@ const App = {
         lastTimestamp: null,
         startTime: null,
         pauseStartTime: null,
-        totalPausedTime: 0
+        totalPausedTime: 0,
+        wakeLock: null
     },
 
     // Swiper instance
@@ -390,12 +391,43 @@ const App = {
     },
 
     /**
+     * Request a wake lock to keep the screen on during exercises
+     */
+    async requestWakeLock() {
+        if ('wakeLock' in navigator) {
+            try {
+                this.state.wakeLock = await navigator.wakeLock.request('screen');
+                this.state.wakeLock.addEventListener('release', () => {
+                    this.state.wakeLock = null;
+                });
+            } catch (e) {
+                // Wake lock request failed (e.g., low battery)
+            }
+        }
+    },
+
+    /**
+     * Release the wake lock
+     */
+    async releaseWakeLock() {
+        if (this.state.wakeLock) {
+            try {
+                await this.state.wakeLock.release();
+            } catch (e) {
+                // Already released
+            }
+            this.state.wakeLock = null;
+        }
+    },
+
+    /**
      * Start the breathing exercise
      */
     startExercise() {
         if (!this.state.selectedTechnique) return;
         
         AudioManager.init();
+        this.requestWakeLock();
         
         const tech = this.state.selectedTechnique;
         this.state.totalCycles = parseInt(this.elements.repetitionsSlider.value);
@@ -664,6 +696,7 @@ const App = {
     stopExercise() {
         this.state.isRunning = false;
         this.state.isPaused = false;
+        this.releaseWakeLock();
         
         if (this.state.animationFrame) {
             cancelAnimationFrame(this.state.animationFrame);
@@ -678,6 +711,7 @@ const App = {
      */
     completeExercise() {
         this.state.isRunning = false;
+        this.releaseWakeLock();
         AudioManager.playComplete();
         
         const totalTime = Math.round((Date.now() - this.state.startTime - this.state.totalPausedTime) / 1000);
@@ -711,3 +745,10 @@ const App = {
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => App.init());
+
+// Re-acquire wake lock when returning to the app during an exercise
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && App.state.isRunning) {
+        App.requestWakeLock();
+    }
+});

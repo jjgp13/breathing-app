@@ -51,7 +51,7 @@ const techniques = {
             'Repeat for 4 breaths initially; never exceed 8 cycles per session'
         ],
         animation: 'arc',
-        maxCycles: 8,
+        maxCycles: 20,
         defaultCycles: 4
     },
 
