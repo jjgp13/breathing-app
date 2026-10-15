@@ -20,7 +20,7 @@ npm run build
 npm run check
 ```
 
-The build generates translations and bundles pinned Three.js locally. Commit the generated files with source changes. Tests use Node's built-in runner and cover session timing, recommendation constraints, guidance continuity, reduced motion, and renderer failures.
+The build generates translations, bundles pinned Three.js locally, and versions scripts, stylesheets, and model URLs by content hash. Commit generated files with source changes. `npm run check` detects stale generated content or asset versions. Tests use Node's built-in runner and cover session timing, recommendation constraints, guidance continuity, reduced motion, and renderer failures.
 
 ## Use on Android
 
@@ -41,7 +41,7 @@ The published web app runs independently of a development computer. Pushes to `m
 
 `js/recommendations.js` uses transparent rules based on the selected feeling, time, and hold preference. These are wellness suggestions, not a validated clinical matching algorithm. Advanced hyperventilation/retention practices are never recommended automatically. Check-ins remain in memory; only language and visual preferences are saved locally. No health records, session history, account, or wearable connection are implemented.
 
-`js/breath-guide.js` maps phase progress into words, a countdown, a phase strip, and either a simple SVG circle or the 3D bloom. The second inhale in cyclic sighing is shown as a small additional opening. The bloom stays still during holds. Reduced-motion mode uses a stable circle and text without loading WebGL. A failed 3D load falls back to the circle. `js/guide3d.mjs` lazy-loads the small GLB, caps pixel ratio, and seeks its animation from the session clock; it has no independent animation loop.
+`js/breath-guide.js` maps phase progress into words, a countdown, a phase strip, and a technique-specific 2D or 3D guide. `js/guide-patterns.js` creates one shared pose for both renderers; `js/guide2d.js` draws the nine SVG guides, and `js/guide-poses.mjs` poses the named Blender parts. A failed 3D load falls back to the matching 2D guide. Reduced motion keeps that technique's static illustration and text without loading WebGL. The 3D renderer caps pixel ratio and frame rate, has no independent animation clock, and disposes the previous model when the technique changes. [The visual guide map](docs/visual-guides.md) explains all nine pairs.
 
 ## Sound and music
 
@@ -53,13 +53,14 @@ The rain recording is dedicated to the public domain; the stream is CC0. Creator
 
 ## Blender artwork
 
-The original model and morph animation were generated in Blender 5.2 from `scripts/create-bloom.py`. Editable source: `assets/models/breathing-bloom.blend`; web export: `assets/models/breathing-bloom.glb` (about 133 KiB). It is a pacing metaphor, not anatomical or physiological feedback. To regenerate:
+Nine original models and preview animations were authored in Blender 5.2 using `scripts/create-technique-models.py`. Editable source: `assets/models/techniques/technique-guides.blend`; individual web exports are in the same directory. The saved scene arranges all nine designs together. The app poses their named parts directly from breathing phases, rather than playing their preview clips at a fixed speed. To regenerate:
 
 ```powershell
-& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --python scripts/create-bloom.py
+& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --python scripts/create-technique-models.py
+npm run build
 ```
 
-Three.js's MIT license is included at `assets/THREE-LICENSE.txt`. The repository's own distribution/contribution license still needs an owner decision.
+The earlier bloom source and generator remain as an archived art study; the practice screen uses the nine new guides. These visuals explain pacing and movement; they do not measure respiration or HRV. Three.js's MIT license is included at `assets/THREE-LICENSE.txt`. The repository's own distribution/contribution license still needs an owner decision.
 
 ## Research and next steps
 

@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/backgrounds.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/guide.css?v=4">
-    <link rel="stylesheet" href="css/audio.css?v=1">
+    <link rel="stylesheet" href="css/main.css?v=4374a3aed9baeb74">
+    <link rel="stylesheet" href="css/backgrounds.css?v=83a76d7eecf0367a">
+    <link rel="stylesheet" href="css/components.css?v=74cde4f99d935d49">
+    <link rel="stylesheet" href="css/guide.css?v=da2a41ad8e52f174">
+    <link rel="stylesheet" href="css/audio.css?v=0972cfc1a52f9f7c">
 </head>
 <body>
     <!-- Global Controls -->
@@ -182,16 +182,13 @@
                 <h2 id="breathingTitle"></h2>
                 <div class="instruction-text" id="instruction" aria-live="polite" aria-atomic="true"></div>
                 <p id="guideCue" class="guide-cue"></p>
+                <p id="guideVisualName" class="guide-visual-name"></p>
                 <div class="guide-stage" id="guideStage" aria-hidden="true">
-                    <div id="bloom3d" class="bloom-host" hidden></div>
-                    <svg id="simpleGuide" class="simple-guide" viewBox="0 0 220 220">
-                        <defs><radialGradient id="orbGradient"><stop offset="0" stop-color="#d8f2da"/><stop offset="1" stop-color="#449b91"/></radialGradient></defs>
-                        <circle class="guide-ring-bg" cx="110" cy="110" r="84"/>
-                        <circle id="guideProgress" class="guide-ring-progress" cx="110" cy="110" r="84"/>
-                        <g id="guideOrb"><circle cx="110" cy="110" r="65" fill="url(#orbGradient)"/></g>
-                    </svg>
+                    <div id="model3d" class="model-host" hidden></div>
+                    <div id="simpleGuide" class="technique-2d"></div>
                     <div id="guideTimer" class="guide-timer"></div>
                 </div>
+                <p id="guideVisualDetail" class="guide-visual-detail"></p>
                 <p id="guideNext" class="guide-next"></p>
                 <ol id="phaseTrack" class="phase-track"></ol>
                 <p id="holdNote" class="hold-note" hidden data-i18n="guide.holdNote"></p>
@@ -203,8 +200,8 @@
                 </div>
                 <div class="guide-mode" role="group" aria-labelledby="guideModeLabel">
                     <span id="guideModeLabel" class="sr-only" data-i18n="guide.choose"></span>
-                    <button type="button" data-guide-mode="3d" aria-pressed="false" data-i18n="guide.bloom"></button>
-                    <button type="button" data-guide-mode="simple" aria-pressed="true" data-i18n="guide.simple"></button>
+                    <button type="button" data-guide-mode="3d" aria-pressed="false" data-i18n="guide.mode3d"></button>
+                    <button type="button" data-guide-mode="simple" aria-pressed="true" data-i18n="guide.mode2d"></button>
                 </div>
                 <p id="guideModeStatus" class="guide-mode-status"></p>
                 <p class="comfort-note" data-i18n="checkin.comfort"></p>
@@ -238,15 +235,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     
     <!-- JavaScript Modules -->
-    <script src="js/locales.generated.js?v=5"></script>
-    <script src="js/i18n.js?v=4"></script>
-    <script src="js/techniques.js?v=4"></script>
-    <script src="js/audio.js?v=2"></script>
-    <script src="js/audio-ui.js?v=1"></script>
-    <script src="js/backgrounds.js"></script>
-    <script src="js/session.js?v=4"></script>
-    <script src="js/recommendations.js?v=4"></script>
-    <script src="js/breath-guide.js?v=4"></script>
-    <script src="js/app.js?v=5"></script>
+    <script src="js/locales.generated.js?v=06307f5096371e8f"></script>
+    <script src="js/i18n.js?v=cfa4e5cda5a13b57"></script>
+    <script src="js/techniques.js?v=dea35a88a2b649b1"></script>
+    <script src="js/audio.js?v=7af5c180ce480353"></script>
+    <script src="js/audio-ui.js?v=1f35a67d3a11e0ec"></script>
+    <script src="js/backgrounds.js?v=f043fc3b6b28502c"></script>
+    <script src="js/session.js?v=12825d78fe2793c7"></script>
+    <script src="js/recommendations.js?v=78c1729da8907cd5"></script>
+    <script src="js/breath-guide.js?v=711b7775e18ed985"></script>
+    <script src="js/guide-patterns.js?v=8b20aa0cab092674"></script>
+    <script src="js/guide2d.js?v=169003916d162f40"></script>
+    <script src="js/app.js?v=453417fd8bf7b5bf"></script>
 </body>
 </html>

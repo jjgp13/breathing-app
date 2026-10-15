@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
-    "build": "node scripts/sync-locales.cjs && esbuild js/guide3d.mjs --bundle --minify --format=iife --outfile=js/vendor/guide3d.bundle.js --legal-comments=eof",
+    "build": "node scripts/sync-locales.cjs && node scripts/version-assets.cjs --models && esbuild js/guide3d.mjs --bundle --minify --format=iife --outfile=js/vendor/guide3d.bundle.js --legal-comments=eof && node scripts/version-assets.cjs",
     "test": "node --test tests/*.test.cjs",
-    "check": "node scripts/sync-locales.cjs --check && npm test"
+    "check": "node scripts/sync-locales.cjs --check && node scripts/version-assets.cjs --check && npm test"
   },
   "dependencies": { "three": "0.186.1" },
   "devDependencies": { "esbuild": "0.28.2" }

@@ -291,7 +291,7 @@ const BreatheLocales = {
     "guide": {
       "bloom": "3D breathing bloom",
       "simple": "Simple circle",
-      "fallback": "Simple guide is ready",
+      "fallback": "The 2D guide is ready.",
       "reduced": "Reduced motion · follow the words",
       "choose": "Visual guide",
       "next": "Next",
@@ -319,7 +319,48 @@ const BreatheLocales = {
       },
       "estimated": "Guided breathing time",
       "preview": "The bloom opens as you inhale and closes as you exhale.",
-      "pausedLabel": "Resume when ready"
+      "pausedLabel": "Resume when ready",
+      "mode3d": "3D guide",
+      "mode2d": "2D guide",
+      "breathCount": "Breath {{count}} / 30",
+      "visuals": {
+        "box": {
+          "name": "The four-sided path",
+          "description": "Follow one side for each phase: inhale, pause, exhale, pause. The marker counts time during pauses too."
+        },
+        "fourSevenEight": {
+          "name": "The 4–7–8 timing ring",
+          "description": "The ring gives 4, 7, and 8 seconds their own space. The center opens on inhale, rests during the pause, and closes on exhale."
+        },
+        "diaphragmatic": {
+          "name": "Belly & diaphragm schematic",
+          "description": "The lower belly expands gently on inhale as the gold diaphragm curve lowers. Both return on exhale. This is a simplified movement cue."
+        },
+        "resonance": {
+          "name": "The breathing tide",
+          "description": "Rise with the tide on inhale and settle with it on exhale, without pauses. This shows your breathing pace, not an HRV measurement."
+        },
+        "wimHof": {
+          "name": "Breath-count beads",
+          "description": "One bead for each of the 30 guided breaths. The center rests during retention. Holds end whenever you need to breathe."
+        },
+        "buteyko": {
+          "name": "The resting feather",
+          "description": "Small movements accompany the gentle inhale and exhale. The feather rests during the optional pause and natural breathing; it is not a target to beat."
+        },
+        "cyclicSighing": {
+          "name": "The two inhale chambers",
+          "description": "One easy inhale opens the larger chamber; a small top-up opens the smaller one. Both release together during the longer exhale."
+        },
+        "extendedExhale": {
+          "name": "The slow hourglass",
+          "description": "The upper bowl fills during the 4-second inhale and releases during the 6-second exhale. Follow a comfortable breath, without pushing."
+        },
+        "humming": {
+          "name": "The humming bowl",
+          "description": "The pearl opens for your inhale. Gentle vibration arcs appear only during the humming exhale; they show sound, not extra breaths."
+        }
+      }
     },
     "audio": {
       "title": "Sound & music",
@@ -643,7 +684,7 @@ const BreatheLocales = {
     "guide": {
       "bloom": "Flor respiratoria en 3D",
       "simple": "Círculo sencillo",
-      "fallback": "La guía sencilla está lista",
+      "fallback": "La guía en 2D está lista.",
       "reduced": "Movimiento reducido · sigue las palabras",
       "choose": "Guía visual",
       "next": "Después",
@@ -671,7 +712,48 @@ const BreatheLocales = {
       },
       "estimated": "Tiempo de respiración guiada",
       "preview": "La flor se abre al inhalar y se cierra al exhalar.",
-      "pausedLabel": "Continúa cuando estés preparado"
+      "pausedLabel": "Continúa cuando estés preparado",
+      "mode3d": "Guía en 3D",
+      "mode2d": "Guía en 2D",
+      "breathCount": "Respiración {{count}} / 30",
+      "visuals": {
+        "box": {
+          "name": "El recorrido de cuatro lados",
+          "description": "Sigue un lado por fase: inhala, pausa, exhala, pausa. El marcador también cuenta el tiempo durante las pausas."
+        },
+        "fourSevenEight": {
+          "name": "El anillo 4–7–8",
+          "description": "El anillo da su propio espacio a los 4, 7 y 8 segundos. El centro se abre al inhalar, descansa en la pausa y se cierra al exhalar."
+        },
+        "diaphragmatic": {
+          "name": "Esquema del abdomen y diafragma",
+          "description": "El abdomen se expande suavemente al inhalar mientras baja la curva dorada del diafragma. Ambos vuelven al exhalar. Es una indicación simplificada del movimiento."
+        },
+        "resonance": {
+          "name": "La marea respiratoria",
+          "description": "Sube con la marea al inhalar y baja al exhalar, sin pausas. Representa el ritmo respiratorio, no una medición de VRC."
+        },
+        "wimHof": {
+          "name": "Cuentas respiratorias",
+          "description": "Una cuenta por cada una de las 30 respiraciones guiadas. El centro descansa durante la retención. Termina las pausas cuando necesites respirar."
+        },
+        "buteyko": {
+          "name": "La pluma en reposo",
+          "description": "Pequeños movimientos acompañan la inhalación y exhalación suaves. La pluma descansa en la pausa opcional y la respiración natural; no es una meta que superar."
+        },
+        "cyclicSighing": {
+          "name": "Las dos cámaras de inhalación",
+          "description": "Una inhalación cómoda abre la cámara grande; una segunda pequeña abre la menor. Ambas se vacían juntas durante la exhalación más larga."
+        },
+        "extendedExhale": {
+          "name": "El reloj de arena lento",
+          "description": "La parte superior se llena durante los 4 segundos de inhalación y se vacía durante los 6 de exhalación. Respira con comodidad y sin forzar."
+        },
+        "humming": {
+          "name": "El cuenco del zumbido",
+          "description": "La perla se abre al inhalar. Los arcos de vibración solo aparecen al exhalar con un zumbido; representan sonido, no respiraciones adicionales."
+        }
+      }
     },
     "audio": {
       "title": "Sonido y música",

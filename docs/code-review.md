@@ -1,5 +1,13 @@
 # Code review and validation
 
+## Technique-specific visual guides update
+
+Replaced the shared bloom/circle on the practice screen with nine pairs of technique-specific Blender/SVG guides. [The guide map](visual-guides.md) records the design rationale and source files. Both modes use the same pose data and session clock. The original bloom assets are retained as an archived art study.
+
+Added model lifecycle handling for technique changes, matching 2D fallback, localized visual names and explanatory captions, static reduced-motion poses, and GLB part validation. The renderer releases the previous WebGL context. A cache issue found in the local browser also led to content-hashed script, CSS, bundle, and model URLs; build/check commands maintain those versions automatically.
+
+Verification: 31 tests pass, all nine SVGs parse as XML, and all nine GLBs load with required parts and bounded geometry. Browser review rendered all eighteen visual variants. The app was checked for technique changes, 2D/3D switching, pause behavior, English/Spanish captions, and 320/390-pixel layouts without horizontal overflow. Real-device comfort, accessibility, and battery feedback remain useful follow-ups.
+
 ## Optional soundscapes update
 
 Added local public-domain rain, a CC0 stream recording, and original synthesized ambient tones with separate background/cue volume controls, a global mute, a 15-second preview, and in-app credits. No sound or recording download starts on page load. Files and permission provenance are recorded under `assets/audio/`. Background audio is off by default; sound choices are preference settings rather than additional health claims.

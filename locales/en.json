@@ -289,7 +289,7 @@
   "guide": {
     "bloom": "3D breathing bloom",
     "simple": "Simple circle",
-    "fallback": "Simple guide is ready",
+    "fallback": "The 2D guide is ready.",
     "reduced": "Reduced motion · follow the words",
     "choose": "Visual guide",
     "next": "Next",
@@ -317,7 +317,48 @@
     },
     "estimated": "Guided breathing time",
     "preview": "The bloom opens as you inhale and closes as you exhale.",
-    "pausedLabel": "Resume when ready"
+    "pausedLabel": "Resume when ready",
+    "mode3d": "3D guide",
+    "mode2d": "2D guide",
+    "breathCount": "Breath {{count}} / 30",
+    "visuals": {
+      "box": {
+        "name": "The four-sided path",
+        "description": "Follow one side for each phase: inhale, pause, exhale, pause. The marker counts time during pauses too."
+      },
+      "fourSevenEight": {
+        "name": "The 4–7–8 timing ring",
+        "description": "The ring gives 4, 7, and 8 seconds their own space. The center opens on inhale, rests during the pause, and closes on exhale."
+      },
+      "diaphragmatic": {
+        "name": "Belly & diaphragm schematic",
+        "description": "The lower belly expands gently on inhale as the gold diaphragm curve lowers. Both return on exhale. This is a simplified movement cue."
+      },
+      "resonance": {
+        "name": "The breathing tide",
+        "description": "Rise with the tide on inhale and settle with it on exhale, without pauses. This shows your breathing pace, not an HRV measurement."
+      },
+      "wimHof": {
+        "name": "Breath-count beads",
+        "description": "One bead for each of the 30 guided breaths. The center rests during retention. Holds end whenever you need to breathe."
+      },
+      "buteyko": {
+        "name": "The resting feather",
+        "description": "Small movements accompany the gentle inhale and exhale. The feather rests during the optional pause and natural breathing; it is not a target to beat."
+      },
+      "cyclicSighing": {
+        "name": "The two inhale chambers",
+        "description": "One easy inhale opens the larger chamber; a small top-up opens the smaller one. Both release together during the longer exhale."
+      },
+      "extendedExhale": {
+        "name": "The slow hourglass",
+        "description": "The upper bowl fills during the 4-second inhale and releases during the 6-second exhale. Follow a comfortable breath, without pushing."
+      },
+      "humming": {
+        "name": "The humming bowl",
+        "description": "The pearl opens for your inhale. Gentle vibration arcs appear only during the humming exhale; they show sound, not extra breaths."
+      }
+    }
   },
   "audio": {
     "title": "Sound & music",
