@@ -1,4 +1,4 @@
-/** Timing, animation, and source metadata. User-facing copy lives in locales/*.json. */
+/** Protocol and source metadata; copy lives in locales/*.json. */
 const techniques = {
   "box": {
     "id": "box",
@@ -30,7 +30,7 @@ const techniques = {
     "maxCycles": 10,
     "defaultCycles": 4,
     "research": {
-      "reviewed": "2026-10-14",
+      "reviewed": "2026-10-15",
       "sources": [
         {
           "title": "Balban et al. — Brief structured respiration practices",
@@ -41,9 +41,15 @@ const techniques = {
           "title": "Marchant et al. — Square, 4-7-8, and six breaths per minute",
           "year": 2025,
           "url": "https://pubmed.ncbi.nlm.nih.gov/39864026/"
+        },
+        {
+          "title": "Riedl et al. — One-minute cyclic sighing and box breathing pilot",
+          "year": 2026,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42002307/"
         }
       ]
-    }
+    },
+    "advanced": false
   },
   "fourSevenEight": {
     "id": "fourSevenEight",
@@ -83,7 +89,8 @@ const techniques = {
           "url": "https://pubmed.ncbi.nlm.nih.gov/39864026/"
         }
       ]
-    }
+    },
+    "advanced": false
   },
   "diaphragmatic": {
     "id": "diaphragmatic",
@@ -102,8 +109,8 @@ const techniques = {
       }
     ],
     "animation": "belly",
-    "maxCycles": 12,
-    "defaultCycles": 6,
+    "maxCycles": 60,
+    "defaultCycles": 18,
     "research": {
       "reviewed": "2026-10-14",
       "sources": [
@@ -118,7 +125,8 @@ const techniques = {
           "url": "https://pubmed.ncbi.nlm.nih.gov/31436595/"
         }
       ]
-    }
+    },
+    "advanced": false
   },
   "resonance": {
     "id": "resonance",
@@ -137,8 +145,8 @@ const techniques = {
       }
     ],
     "animation": "wave",
-    "maxCycles": 20,
-    "defaultCycles": 10,
+    "maxCycles": 55,
+    "defaultCycles": 16,
     "research": {
       "reviewed": "2026-10-14",
       "sources": [
@@ -158,7 +166,8 @@ const techniques = {
           "url": "https://pubmed.ncbi.nlm.nih.gov/28478782/"
         }
       ]
-    }
+    },
+    "advanced": false
   },
   "wimHof": {
     "id": "wimHof",
@@ -177,9 +186,14 @@ const techniques = {
         "type": "retention"
       },
       {
-        "name": "Recovery Breath",
+        "name": "Recovery inhale",
+        "duration": 3,
+        "type": "inhale"
+      },
+      {
+        "name": "Optional hold",
         "duration": 15,
-        "type": "recovery"
+        "type": "hold"
       }
     ],
     "animation": "power",
@@ -194,7 +208,8 @@ const techniques = {
           "url": "https://doi.org/10.1371/journal.pone.0286933"
         }
       ]
-    }
+    },
+    "advanced": true
   },
   "buteyko": {
     "id": "buteyko",
@@ -219,7 +234,7 @@ const techniques = {
       {
         "name": "Shallow Breathing",
         "duration": 30,
-        "type": "shallow"
+        "type": "easy"
       }
     ],
     "animation": "gauge",
@@ -234,10 +249,113 @@ const techniques = {
           "url": "https://www.cochrane.org/evidence/CD001277_breathing-exercises-asthma"
         }
       ]
-    }
+    },
+    "advanced": true
+  },
+  "cyclicSighing": {
+    "id": "cyclicSighing",
+    "icon": "🍃",
+    "color": "#8ddfc4",
+    "phases": [
+      {
+        "duration": 3,
+        "type": "inhale",
+        "volumeFrom": 0,
+        "volumeTo": 0.72
+      },
+      {
+        "duration": 1,
+        "type": "topUp",
+        "volumeFrom": 0.72,
+        "volumeTo": 1
+      },
+      {
+        "duration": 6,
+        "type": "exhale"
+      }
+    ],
+    "animation": "bloom",
+    "maxCycles": 60,
+    "defaultCycles": 30,
+    "research": {
+      "reviewed": "2026-10-15",
+      "sources": [
+        {
+          "title": "Balban et al. — Brief structured respiration practices",
+          "year": 2023,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36630953/"
+        },
+        {
+          "title": "Riedl et al. — One-minute cyclic sighing and box breathing pilot",
+          "year": 2026,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42002307/"
+        }
+      ]
+    },
+    "advanced": false
+  },
+  "extendedExhale": {
+    "id": "extendedExhale",
+    "icon": "🌅",
+    "color": "#dbc19b",
+    "phases": [
+      {
+        "duration": 4,
+        "type": "inhale"
+      },
+      {
+        "duration": 6,
+        "type": "exhale"
+      }
+    ],
+    "animation": "bloom",
+    "maxCycles": 60,
+    "defaultCycles": 18,
+    "research": {
+      "reviewed": "2026-10-14",
+      "sources": [
+        {
+          "title": "Marchant et al. — Square, 4-7-8, and six breaths per minute",
+          "year": 2025,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39864026/"
+        },
+        {
+          "title": "Meehan & Shaffer — Do longer exhalations increase HRV?",
+          "year": 2024,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38507210/"
+        }
+      ]
+    },
+    "advanced": false
+  },
+  "humming": {
+    "id": "humming",
+    "icon": "🎵",
+    "color": "#b7b4e9",
+    "phases": [
+      {
+        "duration": 4,
+        "type": "inhale"
+      },
+      {
+        "duration": 6,
+        "type": "hum"
+      }
+    ],
+    "animation": "bloom",
+    "maxCycles": 60,
+    "defaultCycles": 18,
+    "research": {
+      "reviewed": "2026-10-14",
+      "sources": [
+        {
+          "title": "Woo & Kim — Slow-paced breathing and humming: pilot study",
+          "year": 2025,
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40482984/"
+        }
+      ]
+    },
+    "advanced": false
   }
 };
-
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = techniques;
-}
+if (typeof module !== 'undefined') module.exports = techniques;

@@ -17,7 +17,8 @@ const I18n = {
      */
     init() {
         // Check saved preference or browser language
-        const savedLang = localStorage.getItem('breathe-lang');
+        let savedLang;
+        try { savedLang = localStorage.getItem('breathe-lang'); } catch {}
         const browserLang = navigator.language.split('-')[0];
         
         if (savedLang && this.supportedLangs.includes(savedLang)) {
@@ -39,7 +40,7 @@ const I18n = {
         if (!this.supportedLangs.includes(lang)) return;
         
         this.currentLang = lang;
-        localStorage.setItem('breathe-lang', lang);
+        try { localStorage.setItem('breathe-lang', lang); } catch {}
         this.translations = this.locales[lang];
         this.applyTranslations();
         this.updateLangSelector();
@@ -47,7 +48,8 @@ const I18n = {
         // Re-generate dynamic content
         if (typeof App !== 'undefined' && App.generateTechniqueCards) {
             App.generateTechniqueCards();
-            if (App.state.currentScreen === 'detail') App.renderTechniqueDetail();
+            if (App.state.selectedTechnique) App.renderTechniqueDetail();
+            App.refreshLanguage();
         }
     },
 

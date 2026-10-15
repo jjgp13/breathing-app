@@ -1,6 +1,14 @@
 # Breathing research and product direction
 
-Reviewed October 14, 2026. Initial scope: understand the existing app, investigate breathing techniques, evaluate Android/Fitbit data access, and consider richer visual guidance. The first implementation focuses on a clear priority: explain the potential benefits and scientific support for each existing technique.
+Reviewed October 14–15, 2026. Initial scope: understand the existing app, investigate breathing techniques, evaluate Android/Fitbit data access, and consider richer visual guidance. The first release explained potential benefits and scientific support; the next release adds feeling-based suggestions, three practices, reliable timing, and a Blender-authored visual guide.
+
+## Implemented October 15
+
+The catalog now includes gentle cyclic sighing (3-1-6), longer exhale (4-6), and gentle humming (4-6). These exact presets are app adaptations, with that limitation stated in both languages. The optional check-in offers two choices based on feeling, time, and comfort with holds. These rules express a preference match rather than a proven clinical ranking. No advanced hyperventilation or retention practice is recommended. Feelings remain in memory, without a health connection or account.
+
+A newly checked [2026 pilot by Riedl et al.](https://pubmed.ncbi.nlm.nih.gov/42002307/) studied 47 students using one-minute cyclic sighing, box breathing, or passive control. It reported greater acute anxiety reduction after both breathing conditions, with mixed attention results including slower reaction times. Added to box/sighing citations; it does not establish lasting effects or validate the app's exact delivery. A [2025 orthopedic waiting-room pilot](https://ohiostate.elsevierpure.com/en/publications/cyclic-sighing-in-the-clinic-waiting-room-may-decrease-pain-resul/) reported pain reductions but no between-condition anxiety/depression differences; this clinical context does not justify offering pain treatment in the app.
+
+The shared session engine removes timing gaps, rejects stale callbacks, supports preparation/hidden pauses, and lets users end any hold immediately. The original Blender bloom and animated GLB are included with their generator. Its opening follows inhalation, its closing follows exhalation, and holds stay still. SVG and reduced-motion alternatives remain available. This is pacing guidance, not measured respiratory or HRV biofeedback.
 
 ## Research approach
 
@@ -87,10 +95,10 @@ A [72-person VR respiratory-biofeedback study](https://pubmed.ncbi.nlm.nih.gov/3
 
 ## Development sequence
 
-1. **This iteration:** source-linked benefits, evidence limits, corrected instructions and claims, consistent English/Spanish content. Complete.
-2. **Reliable sessions:** fix countdown/restart and pause handling, remove unintended gaps, support ending a hold immediately, and introduce comfortable duration-based sessions. See the code review.
-3. **A small useful expansion:** evaluate cyclic sighing, goal selection, optional before/after check-ins, and local session history. Maintain provenance and evidence boundaries for every technique.
+1. **Evidence content:** source-linked benefits, evidence limits, corrected instructions and claims, consistent English/Spanish content. Complete.
+2. **Reliable sessions:** shared clock, preparation/hidden pauses, no unintended cycle gaps, immediate hold release, and duration-based suggestions. Implemented; real Android testing remains.
+3. **A small useful expansion:** feeling selection, cyclic sighing, longer exhale, and humming implemented. Optional after-session check-ins and local history remain candidates.
 4. **Android feasibility:** read a small set of real Health Connect records with the user's permission, compare them with Google Health, and handle missing data before designing any metric-based recommendation.
-5. **Richer guidance:** trial one optional 3D visual with an accessible 2D/minimal alternative. Keep the shared session clock independent of the renderer.
+5. **Richer guidance:** Blender bloom and simple/reduced-motion alternatives implemented. Gather feedback on clarity, comfort, and battery use before expanding the artwork.
 
 Success should mean people can find a comfortable practice, understand why it may help, and report whether it helped them. Avoid optimizing for longest holds, highest apparent HRV, or streak pressure.

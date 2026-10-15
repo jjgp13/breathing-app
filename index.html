@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/backgrounds.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/guide.css?v=4">
 </head>
 <body>
     <!-- Global Controls -->
@@ -41,6 +41,38 @@
             <h1>🌬️ <span data-i18n="app.title">Breathe</span></h1>
             <p class="subtitle" data-i18n="app.subtitle">Swipe or use arrows to choose a technique</p>
             
+            <form id="checkinForm" class="checkin-card">
+                <p class="eyebrow" data-i18n="checkin.eyebrow"></p>
+                <h2 data-i18n="checkin.title"></h2>
+                <p data-i18n="checkin.intro"></p>
+                <div class="feeling-choices" role="group" aria-labelledby="feelingLabel">
+                    <span id="feelingLabel" class="sr-only" data-i18n="checkin.title"></span>
+                    <button type="button" data-feeling="tense" aria-pressed="false"><span aria-hidden="true">〰</span> <span data-i18n="checkin.feelings.tense"></span></button>
+                    <button type="button" data-feeling="busy" aria-pressed="false"><span aria-hidden="true">◎</span> <span data-i18n="checkin.feelings.busy"></span></button>
+                    <button type="button" data-feeling="sleep" aria-pressed="false"><span aria-hidden="true">☾</span> <span data-i18n="checkin.feelings.sleep"></span></button>
+                    <button type="button" data-feeling="low" aria-pressed="false"><span aria-hidden="true">◡</span> <span data-i18n="checkin.feelings.low"></span></button>
+                    <button type="button" data-feeling="curious" aria-pressed="false"><span aria-hidden="true">✧</span> <span data-i18n="checkin.feelings.curious"></span></button>
+                </div>
+                <div class="checkin-options">
+                    <label for="checkinMinutes" data-i18n="checkin.time"></label>
+                    <select id="checkinMinutes">
+                        <option value="1" data-i18n="checkin.minute"></option>
+                        <option value="3" selected data-i18n="checkin.threeMinutes"></option>
+                        <option value="5" data-i18n="checkin.fiveMinutes"></option>
+                    </select>
+                </div>
+                <label class="hold-preference"><input type="checkbox" id="checkinHolds"> <span data-i18n="checkin.holds"></span></label>
+                <button class="btn btn-start" id="findPractice" disabled data-i18n="checkin.find"></button>
+                <p class="privacy-note" data-i18n="checkin.privacy"></p>
+            </form>
+            <section id="recommendation" class="recommendation" tabindex="-1" hidden aria-labelledby="recommendationTitle">
+                <h2 id="recommendationTitle" data-i18n="checkin.suggestion"></h2>
+                <p id="recommendationReason"></p>
+                <div id="recommendationChoices" class="recommendation-choices"></div>
+                <p class="boundary-note" data-i18n="checkin.boundary"></p>
+            </section>
+            <button type="button" id="browsePractices" class="text-button" data-i18n="checkin.skip"></button>
+            <h2 id="browseTitle" class="browse-title" data-i18n="checkin.browse"></h2>
             <div class="swiper-carousel">
                 <div class="swiper" id="techniqueSwiper">
                     <div class="swiper-wrapper" id="swiperWrapper">
@@ -101,6 +133,7 @@
 
                 <div class="settings">
                     <p class="protocol-note" data-i18n="detail.protocolNote"></p>
+                    <p class="session-estimate"><span data-i18n="guide.estimated"></span>: <strong id="sessionDuration"></strong></p>
                     <div class="setting-group">
                         <label for="repetitions" data-i18n="detail.cycles">Number of Cycles</label>
                         <input type="range" id="repetitions" min="1" max="10" value="4">
@@ -114,108 +147,38 @@
             </div>
         </div>
 
-        <!-- ==================== Breathing Exercise Screen ==================== -->
+        <!-- Breathing guide: text, audio, and both visuals share one clock. -->
         <div id="breathing-screen" class="screen">
-            <div class="breathing-container">
-                <h2 id="breathingTitle" style="color: #a8d8ea; margin-bottom: 10px; font-size: 1.2rem;">Box Breathing</h2>
-                
-                <!-- Phase Indicator (for 4-7-8) -->
-                <div class="phase-indicator" id="phaseIndicator" style="display: none;">
-                    <div class="phase-dot inhale" data-phase="inhale"></div>
-                    <div class="phase-dot hold" data-phase="hold"></div>
-                    <div class="phase-dot exhale" data-phase="exhale"></div>
+            <div class="breathing-container guided-session">
+                <h2 id="breathingTitle"></h2>
+                <div class="instruction-text" id="instruction" aria-live="polite" aria-atomic="true"></div>
+                <p id="guideCue" class="guide-cue"></p>
+                <div class="guide-stage" id="guideStage" aria-hidden="true">
+                    <div id="bloom3d" class="bloom-host" hidden></div>
+                    <svg id="simpleGuide" class="simple-guide" viewBox="0 0 220 220">
+                        <defs><radialGradient id="orbGradient"><stop offset="0" stop-color="#d8f2da"/><stop offset="1" stop-color="#449b91"/></radialGradient></defs>
+                        <circle class="guide-ring-bg" cx="110" cy="110" r="84"/>
+                        <circle id="guideProgress" class="guide-ring-progress" cx="110" cy="110" r="84"/>
+                        <g id="guideOrb"><circle cx="110" cy="110" r="65" fill="url(#orbGradient)"/></g>
+                    </svg>
+                    <div id="guideTimer" class="guide-timer"></div>
                 </div>
-                
-                <div class="instruction-text" id="instruction" data-i18n="breathing.getReady">Get Ready...</div>
-                
-                <!-- Box Breathing Animation -->
-                <div class="animation-container" id="boxAnimation">
-                    <div class="square-container">
-                        <div class="square-base"></div>
-                        <div class="square-side side-top" id="sideTop"></div>
-                        <div class="square-side side-right" id="sideRight"></div>
-                        <div class="square-side side-bottom" id="sideBottom"></div>
-                        <div class="square-side side-left" id="sideLeft"></div>
-                    </div>
-                    <div class="timer-display" id="timerBox">4</div>
-                </div>
-
-                <!-- 4-7-8 Arc Animation -->
-                <div class="animation-container" id="arcAnimation" style="display: none;">
-                    <div class="arc-container">
-                        <svg class="arc-svg" viewBox="0 0 100 100">
-                            <circle class="arc-bg" cx="50" cy="50" r="42"/>
-                            <circle class="arc-segment arc-inhale" id="arcInhale" cx="50" cy="50" r="42" 
-                                stroke-dasharray="0 264" stroke-dashoffset="0"/>
-                            <circle class="arc-segment arc-hold" id="arcHold" cx="50" cy="50" r="42" 
-                                stroke-dasharray="0 264" stroke-dashoffset="0"/>
-                            <circle class="arc-segment arc-exhale" id="arcExhale" cx="50" cy="50" r="42" 
-                                stroke-dasharray="0 264" stroke-dashoffset="0"/>
-                        </svg>
-                    </div>
-                    <div class="timer-display purple" id="timerArc">4</div>
-                </div>
-
-                <!-- Diaphragmatic/Belly Breathing Animation -->
-                <div class="animation-container" id="bellyAnimation" style="display: none;">
-                    <div class="belly-container">
-                        <div class="belly-circle" id="bellyCircle"></div>
-                        <div class="belly-inner-circle" id="bellyInnerCircle"></div>
-                        <div class="belly-label" data-i18n="animations.belly">Belly</div>
-                    </div>
-                    <div class="timer-display teal" id="timerBelly">5</div>
-                </div>
-
-                <!-- Resonance/Wave Breathing Animation -->
-                <div class="animation-container" id="waveAnimation" style="display: none;">
-                    <div class="wave-container">
-                        <div class="wave-track">
-                            <div class="wave-line" id="wave1"></div>
-                            <div class="wave-line" id="wave2"></div>
-                            <div class="wave-line" id="wave3"></div>
-                        </div>
-                        <div class="wave-ball" id="waveBall"></div>
-                        <div class="wave-label" data-i18n="animations.flow">Flow</div>
-                    </div>
-                    <div class="timer-display indigo" id="timerWave">6</div>
-                </div>
-
-                <!-- Wim Hof/Power Breathing Animation -->
-                <div class="animation-container" id="powerAnimation" style="display: none;">
-                    <div class="power-container">
-                        <div class="power-ring" id="powerRing1"></div>
-                        <div class="power-ring" id="powerRing2"></div>
-                        <div class="power-ring" id="powerRing3"></div>
-                        <div class="power-core" id="powerCore"></div>
-                        <div class="breath-counter" id="breathCounter">1</div>
-                        <div class="power-label" data-i18n="animations.power">Power</div>
-                    </div>
-                    <div class="timer-display orange" id="timerPower">45</div>
-                </div>
-
-                <!-- Buteyko/Gauge Animation -->
-                <div class="animation-container" id="gaugeAnimation" style="display: none;">
-                    <div class="gauge-container">
-                        <svg class="gauge-svg" viewBox="0 0 100 100">
-                            <circle class="gauge-bg" cx="50" cy="50" r="45"/>
-                            <circle class="gauge-fill" id="gaugeFill" cx="50" cy="50" r="45"/>
-                        </svg>
-                        <div class="gauge-center" id="gaugeCenter">
-                            <span class="cp-label" id="cpLabel">CP</span>
-                        </div>
-                        <div class="gauge-label" data-i18n="animations.control">Control</div>
-                    </div>
-                    <div class="timer-display teal-dark" id="timerGauge">20</div>
-                </div>
-                
-                <div class="progress-info">
-                    <span data-i18n="breathing.cycle">Cycle</span> <span id="currentCycle">1</span> <span data-i18n="breathing.of">of</span> <span id="totalCycles">4</span>
-                </div>
-                
+                <p id="guideNext" class="guide-next"></p>
+                <ol id="phaseTrack" class="phase-track"></ol>
+                <p id="holdNote" class="hold-note" hidden data-i18n="guide.holdNote"></p>
+                <button type="button" id="endHoldBtn" class="btn btn-secondary" hidden data-i18n="guide.breatheNow"></button>
+                <div class="progress-info"><span data-i18n="breathing.cycle"></span> <span id="currentCycle">1</span> <span data-i18n="breathing.of"></span> <span id="totalCycles">1</span></div>
                 <div class="controls">
-                    <button class="btn btn-pause" id="pauseBtn" data-i18n="breathing.pause">Pause</button>
-                    <button class="btn btn-stop" id="stopBtn" data-i18n="breathing.stop">Stop</button>
+                    <button class="btn btn-pause" id="pauseBtn" data-i18n="breathing.pause"></button>
+                    <button class="btn btn-stop" id="stopBtn" data-i18n="breathing.stop"></button>
                 </div>
+                <div class="guide-mode" role="group" aria-labelledby="guideModeLabel">
+                    <span id="guideModeLabel" class="sr-only" data-i18n="guide.choose"></span>
+                    <button type="button" data-guide-mode="3d" aria-pressed="false" data-i18n="guide.bloom"></button>
+                    <button type="button" data-guide-mode="simple" aria-pressed="true" data-i18n="guide.simple"></button>
+                </div>
+                <p id="guideModeStatus" class="guide-mode-status"></p>
+                <p class="comfort-note" data-i18n="checkin.comfort"></p>
             </div>
         </div>
 
@@ -246,17 +209,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     
     <!-- JavaScript Modules -->
-    <script src="js/locales.generated.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/techniques.js"></script>
-    <script src="js/audio.js"></script>
+    <script src="js/locales.generated.js?v=4"></script>
+    <script src="js/i18n.js?v=4"></script>
+    <script src="js/techniques.js?v=4"></script>
+    <script src="js/audio.js?v=4"></script>
     <script src="js/backgrounds.js"></script>
-    <script src="js/animations/boxAnimation.js"></script>
-    <script src="js/animations/arcAnimation.js"></script>
-    <script src="js/animations/bellyAnimation.js"></script>
-    <script src="js/animations/waveAnimation.js"></script>
-    <script src="js/animations/powerAnimation.js"></script>
-    <script src="js/animations/gaugeAnimation.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/session.js?v=4"></script>
+    <script src="js/recommendations.js?v=4"></script>
+    <script src="js/breath-guide.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
 </body>
 </html>

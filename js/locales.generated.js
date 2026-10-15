@@ -3,7 +3,7 @@ const BreatheLocales = {
   "en": {
     "app": {
       "title": "Breathe",
-      "subtitle": "Swipe or use arrows to choose a technique",
+      "subtitle": "Find a comfortable rhythm, one breath at a time.",
       "beginPractice": "Begin Practice",
       "backgroundAnimation": "Background Animation"
     },
@@ -37,7 +37,9 @@ const BreatheLocales = {
       "of": "of",
       "pause": "Pause",
       "resume": "Resume",
-      "stop": "Stop"
+      "stop": "Stop",
+      "paused": "Paused",
+      "upTo": "Up to {{seconds}}s"
     },
     "animations": {
       "belly": "Belly",
@@ -55,7 +57,10 @@ const BreatheLocales = {
       "shallow": "Shallow Breathing",
       "lightInhale": "Light Inhale",
       "lightExhale": "Light Exhale",
-      "controlPause": "Control Pause"
+      "controlPause": "Control Pause",
+      "topUp": "A little more in",
+      "hum": "Hum out",
+      "easy": "Breathe naturally"
     },
     "congrats": {
       "title": "Well Done!",
@@ -71,14 +76,14 @@ const BreatheLocales = {
       "box": {
         "name": "Box Breathing",
         "tagline": "A steady rhythm for a moment of calm",
-        "science": "A 2023 trial included box breathing in a month of daily five-minute practice. Mood and anxiety improved across the study groups; this does not establish box breathing as the best technique.",
+        "science": "A 2023 trial included box breathing in a month of daily five-minute practice. A 2026 pilot in 47 students found less acute anxiety after one minute of box breathing or sighing than after a passive control.",
         "mechanism": "Equal phases structure your attention and slow the breathing cycle. The pauses are optional for comfort; they are not a test of lung capacity.",
         "steps": [
           "Sit comfortably and relax your shoulders.",
           "Inhale gently through your nose for 4 seconds.",
           "Pause for up to 4 seconds, only while comfortable.",
           "Exhale gently for 4 seconds.",
-          "Pause for up to 4 seconds. Stop the exercise if you need to breathe sooner.",
+          "Pause for up to 4 seconds. Use Breathe now whenever you need to end a hold.",
           "Begin with a few comfortable cycles. Never force a breath or hold."
         ],
         "benefits": [
@@ -86,7 +91,7 @@ const BreatheLocales = {
           "Offers a simple counting rhythm to anchor your attention."
         ],
         "evidenceLabel": "Early evidence",
-        "limitations": "Direct evidence for box breathing is limited. A 2025 comparison did not find meaningful mood changes after a single session. Better performance under pressure is not established.",
+        "limitations": "Evidence remains limited. A 2025 comparison found no meaningful immediate mood change. Attention results in the 2026 pilot were mixed, including slower responses. Better performance under pressure and lasting benefits are not established.",
         "safety": "If the holds feel uncomfortable, stop and choose diaphragmatic breathing without holds."
       },
       "fourSevenEight": {
@@ -120,7 +125,7 @@ const BreatheLocales = {
           "Inhale gently for 5 seconds, allowing the belly and lower ribs to move.",
           "Exhale gently for 5 seconds without squeezing all the air out.",
           "Use a smaller, comfortable breath rather than the deepest breath possible.",
-          "The default 6 cycles guide about 1 minute; 12 cycles guide about 2 minutes, excluding the countdown and transitions."
+          "Choose a comfortable session length; the guided duration is shown below."
         ],
         "benefits": [
           "May reduce perceived stress with regular practice.",
@@ -134,14 +139,14 @@ const BreatheLocales = {
         "name": "Slow / Resonance Breathing",
         "tagline": "A gentle pace to explore HRV and relaxation",
         "science": "A 2024 meta-analysis found short-term increases in HRV with slow breathing. Research on HRV biofeedback also supports stress reduction, but biofeedback uses physiological measurements that this timer does not provide.",
-        "mechanism": "Breathing influences the natural speeding and slowing of the heart. Many adults have a resonance rate around 4.5-6.5 breaths per minute. The 5.5-second inhale and 5.5-second exhale correspond to about 5.45 breaths per minute before cycle transitions.",
+        "mechanism": "Breathing influences the natural speeding and slowing of the heart. Many adults have a resonance rate around 4.5-6.5 breaths per minute. This 5.5-second inhale and exhale pattern is about 5.45 breaths per minute, without inter-cycle gaps.",
         "steps": [
           "Sit or lie comfortably.",
           "Inhale gently for 5.5 seconds.",
           "Exhale gently for 5.5 seconds.",
           "Continue smoothly without holding at either end.",
           "Use comfortable-sized breaths; slow breathing can still cause over-breathing if breaths are too large.",
-          "The default 10 cycles guide about 1 minute 50 seconds; 20 cycles guide about 3 minutes 40 seconds, excluding the countdown and transitions."
+          "Choose a comfortable session length; the guided duration is shown below."
         ],
         "benefits": [
           "Can increase HRV while breathing slowly.",
@@ -159,9 +164,9 @@ const BreatheLocales = {
         "steps": [
           "Review the safety information before considering this advanced pattern.",
           "The animation guides 30 breaths over 45 seconds. Do not force your breathing.",
-          "After the exhale, pause only while comfortable. Use Stop and breathe normally at the first urge to breathe.",
+          "After the exhale, pause only while comfortable. Use Breathe now at the first urge to breathe.",
           "Do not wait for the 60-second timer to finish if you need to breathe sooner.",
-          "The final phase represents a recovery breath and pause, for up to 15 seconds only if comfortable.",
+          "Take an easy recovery inhale over about 3 seconds, followed by an optional pause of up to 15 seconds. Use Breathe now to end it sooner.",
           "Stop immediately if you feel dizzy or unwell."
         ],
         "benefits": [
@@ -169,7 +174,7 @@ const BreatheLocales = {
         ],
         "evidenceLabel": "Uncertain evidence",
         "limitations": "This does not show that the app boosts immunity, prevents illness, or improves sports recovery. This breathing timer is not the full Wim Hof Method.",
-        "safety": "Hyperventilation and holds can cause fainting. Never practice in water, while driving, standing, or anywhere fainting could cause harm. The 60-second timer is not a target: stop at the first urge to breathe. Do not practice during pregnancy. Seek clinical advice first if you have a health condition."
+        "safety": "Hyperventilation and holds can cause fainting. Never practice in water, while driving, standing, or anywhere fainting could cause harm. The 60-second timer is not a target: use Breathe now at the first urge to breathe. Do not practice during pregnancy. Seek clinical advice first if you have a health condition."
       },
       "buteyko": {
         "name": "Buteyko-style Breathing",
@@ -180,7 +185,7 @@ const BreatheLocales = {
           "Sit comfortably and breathe naturally through your nose if comfortable.",
           "Take a small, gentle inhale for 3 seconds.",
           "Exhale gently for 3 seconds.",
-          "Pause only until the first urge to breathe. Use Stop and breathe normally sooner than the timer if needed.",
+          "Pause only until the first urge to breathe. Use Breathe now to finish the pause sooner.",
           "Return to easy, comfortable breathing. Do not force shallow breaths or air hunger.",
           "The app does not measure a control-pause baseline or diagnose your breathing."
         ],
@@ -189,14 +194,138 @@ const BreatheLocales = {
         ],
         "evidenceLabel": "Evidence is specific to clinical programs",
         "limitations": "The findings do not validate this fixed control-pause timer or prove general CO2-tolerance benefits. A timed pause is not a lung-health or fitness test.",
-        "safety": "Use alongside your usual care; never change prescribed inhalers based on this app. Stop a pause at the first urge to breathe, even if the 20-second timer continues. Do not create distressing air hunger."
+        "safety": "Use alongside your usual care; never change prescribed inhalers based on this app. Stop a pause at the first urge to breathe, using Breathe now; the 20-second timer is not a target. Do not create distressing air hunger."
+      },
+      "cyclicSighing": {
+        "name": "Gentle Cyclic Sighing",
+        "tagline": "Two easy inhales, one longer exhale",
+        "benefits": [
+          "Promising research for mood and everyday stress management."
+        ],
+        "evidenceLabel": "Promising · early trials",
+        "science": "A 2023 trial found encouraging mood and breathing-rate results from five minutes of daily practice over one month. A 2026 pilot in 47 students found less acute anxiety after one-minute sighing or box breathing than after a passive control.",
+        "limitations": "The app uses a gentle 3-1-6 adaptation that has not been tested as delivered here. Early trials do not establish lasting benefits, a best technique, or better attention; the 2026 pilot also found slower attention-test responses.",
+        "mechanism": "The second inhale is a small top-up before an easy, longer exhale. Comfort matters more than filling your lungs.",
+        "safety": "Keep both inhales comfortable. Stop if you feel dizzy or uncomfortable; ordinary belly breathing is another option.",
+        "steps": [
+          "Sit comfortably and relax your shoulders.",
+          "Inhale gently through your nose for 3 seconds.",
+          "Add a small second inhale for about 1 second, only if comfortable.",
+          "Exhale slowly and easily for 6 seconds.",
+          "Repeat without holds or straining. You can stop at any time."
+        ]
+      },
+      "extendedExhale": {
+        "name": "Longer Exhale",
+        "tagline": "A gentle rhythm for winding down",
+        "benefits": [
+          "Offers a comfortable, hold-free wind-down routine."
+        ],
+        "evidenceLabel": "Supported as slow breathing; ratio is not superior",
+        "science": "Slow-breathing studies include 4-second inhales and 6-second exhales. A longer exhale has not consistently increased HRV more than equal inhale and exhale.",
+        "limitations": "This is not an insomnia treatment. The best-feeling ratio can differ from person to person.",
+        "mechanism": "A slightly longer exhale gives you time to release the breath without holding or pushing.",
+        "safety": "Never force a long exhale. Return to your normal rhythm if this pace feels difficult.",
+        "steps": [
+          "Sit or lie comfortably.",
+          "Inhale gently for 4 seconds.",
+          "Exhale softly for 6 seconds.",
+          "Flow directly into the next comfortable inhale, with no holds."
+        ]
+      },
+      "humming": {
+        "name": "Gentle Humming",
+        "tagline": "A soft sound to follow on the exhale",
+        "benefits": [
+          "May offer a pleasant sensory focus during a breathing pause."
+        ],
+        "evidenceLabel": "Early evidence · 16-person pilot",
+        "science": "A 2025 pilot found similar HRV and self-rated feelings during humming and slow breathing. It did not establish that humming works better.",
+        "limitations": "This small study does not establish long-term health benefits. The app’s 4-6 pace is a practice adaptation.",
+        "mechanism": "A soft hum adds a sound and vibration you can notice as you exhale.",
+        "safety": "Hum quietly without squeezing the throat or running out of air. Skip the sound if it feels uncomfortable.",
+        "steps": [
+          "Relax your jaw, neck, and shoulders.",
+          "Inhale gently through your nose for 4 seconds.",
+          "Exhale for up to 6 seconds with a soft “mmm”, lips comfortably together.",
+          "Take the next comfortable breath without holding. The sound is optional."
+        ]
       }
+    },
+    "checkin": {
+      "eyebrow": "A moment for you",
+      "title": "How do you feel today?",
+      "intro": "Choose what fits right now. We’ll suggest a gentle place to start.",
+      "feelings": {
+        "tense": "Tense or stressed",
+        "busy": "My mind is busy",
+        "sleep": "Ready to wind down",
+        "low": "Low on energy",
+        "curious": "Just exploring"
+      },
+      "time": "Time for yourself",
+      "minute": "1 minute",
+      "threeMinutes": "3 minutes",
+      "fiveMinutes": "5 minutes",
+      "holds": "I’m comfortable with gentle breath holds",
+      "find": "Find a practice",
+      "skip": "Browse all practices",
+      "suggestion": "A place to start",
+      "alternative": "Another gentle option",
+      "view": "View practice",
+      "privacy": "Your check-in stays in this tab. No account needed.",
+      "boundary": "Suggestions follow your preferences, not a medical assessment. Choose what feels comfortable.",
+      "reasons": {
+        "tense": "You feel tense. A gentle sighing pattern offers an exhale-focused pause; you can choose belly breathing instead.",
+        "busy": "You want a mental pause without holds. An easy belly-breathing rhythm gives your attention a simple anchor.",
+        "busyWithHolds": "You’re comfortable with holds and want a mental pause. Box breathing offers a clear counting rhythm; holds can end whenever you need.",
+        "sleep": "You want to wind down. Try a comfortable, longer exhale without holding your breath. This is a relaxation routine, not an insomnia treatment.",
+        "low": "You feel low on energy. Start with gentle breathing rather than an intense exercise. Rest may be more useful if you’re tired.",
+        "curious": "You’re exploring. Try a smooth slow-breathing rhythm or humming if the sound feels pleasant."
+      },
+      "browse": "Explore all practices",
+      "advanced": "Advanced · includes breath holds",
+      "duration": "About {{time}}",
+      "comfort": "Comfort comes before the countdown."
+    },
+    "guide": {
+      "bloom": "3D breathing bloom",
+      "simple": "Simple circle",
+      "fallback": "Simple guide is ready",
+      "reduced": "Reduced motion · follow the words",
+      "choose": "Visual guide",
+      "next": "Next",
+      "ready": "Get comfortable",
+      "readyCue": "Sit comfortably. Let your breathing settle.",
+      "paused": "Paused",
+      "pauseCue": "Breathe normally. Resume when you feel ready.",
+      "hiddenPause": "Paused while you were away. Breathe normally before resuming.",
+      "breatheNow": "Breathe now",
+      "holdNote": "This is a maximum, not a target. Breathe whenever you need.",
+      "preparation": "Preparation",
+      "seconds": "seconds",
+      "cue": {
+        "inhale": "Breathe in gently through your nose.",
+        "topUp": "Add one small, comfortable second inhale.",
+        "exhale": "Let the air out slowly and easily.",
+        "hum": "Exhale with a soft, comfortable “mmm”.",
+        "holdFull": "Rest briefly with air in. No straining.",
+        "holdEmpty": "Rest briefly after exhaling. No straining.",
+        "retention": "Pause only while comfortable. Breathe as soon as you need.",
+        "power": "Inhale and release at your own comfort. Stop if you feel dizzy.",
+        "easy": "Let your own easy breathing rhythm return.",
+        "bellyIn": "Let your belly expand gently. Keep your shoulders relaxed.",
+        "bellyOut": "Let your belly settle as the air leaves. No pushing."
+      },
+      "estimated": "Guided breathing time",
+      "preview": "The bloom opens as you inhale and closes as you exhale.",
+      "pausedLabel": "Resume when ready"
     }
   },
   "es": {
     "app": {
       "title": "Respira",
-      "subtitle": "Desliza o usa las flechas para elegir una técnica",
+      "subtitle": "Encuentra un ritmo cómodo, una respiración a la vez.",
       "beginPractice": "Comenzar Práctica",
       "backgroundAnimation": "Animación de Fondo"
     },
@@ -230,7 +359,9 @@ const BreatheLocales = {
       "of": "de",
       "pause": "Pausar",
       "resume": "Continuar",
-      "stop": "Detener"
+      "stop": "Detener",
+      "paused": "En pausa",
+      "upTo": "Hasta {{seconds}} s"
     },
     "animations": {
       "belly": "Abdomen",
@@ -248,7 +379,10 @@ const BreatheLocales = {
       "shallow": "Respiración Superficial",
       "lightInhale": "Inhala Suave",
       "lightExhale": "Exhala Suave",
-      "controlPause": "Pausa de Control"
+      "controlPause": "Pausa de Control",
+      "topUp": "Un poco más de aire",
+      "hum": "Exhala con zumbido",
+      "easy": "Respira naturalmente"
     },
     "congrats": {
       "title": "¡Bien Hecho!",
@@ -264,14 +398,14 @@ const BreatheLocales = {
       "box": {
         "name": "Respiración Cuadrada",
         "tagline": "Un ritmo constante para un momento de calma",
-        "science": "Un ensayo de 2023 incluyó respiración cuadrada durante un mes de práctica diaria de cinco minutos. El ánimo y la ansiedad mejoraron en los grupos del estudio; esto no demuestra que sea la mejor técnica.",
+        "science": "Un ensayo de 2023 incluyó respiración cuadrada en una práctica diaria de cinco minutos durante un mes. Un piloto de 2026 con 47 estudiantes encontró menos ansiedad aguda tras un minuto de respiración cuadrada o suspiros que con un control pasivo.",
         "mechanism": "Las fases iguales estructuran la atención y ralentizan el ciclo respiratorio. Las pausas dependen de la comodidad; no son una prueba de capacidad pulmonar.",
         "steps": [
           "Siéntate con comodidad y relaja los hombros.",
           "Inhala suavemente por la nariz durante 4 segundos.",
           "Haz una pausa de hasta 4 segundos, solo mientras resulte cómoda.",
           "Exhala suavemente durante 4 segundos.",
-          "Haz otra pausa de hasta 4 segundos. Detén el ejercicio si necesitas respirar antes.",
+          "Pausa hasta 4 segundos. Usa Respira ahora cuando necesites terminar una pausa.",
           "Empieza con unos pocos ciclos cómodos. Nunca fuerces la respiración ni las pausas."
         ],
         "benefits": [
@@ -279,7 +413,7 @@ const BreatheLocales = {
           "Ofrece un ritmo sencillo de conteo para centrar la atención."
         ],
         "evidenceLabel": "Evidencia inicial",
-        "limitations": "La evidencia específica es limitada. Una comparación de 2025 no encontró cambios relevantes en el ánimo tras una sesión. No está demostrado que mejore el rendimiento bajo presión.",
+        "limitations": "La evidencia sigue siendo limitada. Una comparación de 2025 no encontró cambios inmediatos relevantes en el ánimo. Los resultados de atención del piloto de 2026 fueron mixtos e incluyeron respuestas más lentas. No se han establecido mejor rendimiento bajo presión ni beneficios duraderos.",
         "safety": "Si las pausas resultan incómodas, detente y elige respiración diafragmática sin retenciones."
       },
       "fourSevenEight": {
@@ -313,7 +447,7 @@ const BreatheLocales = {
           "Inhala suavemente durante 5 segundos y deja que se muevan el abdomen y las costillas.",
           "Exhala suavemente durante 5 segundos sin vaciar los pulmones a la fuerza.",
           "Respira con un volumen cómodo, sin buscar la máxima profundidad.",
-          "Los 6 ciclos predeterminados guían aproximadamente 1 minuto; 12 ciclos, unos 2 minutos, sin contar la preparación ni las transiciones."
+          "Elige una duración cómoda; el tiempo guiado aparece abajo."
         ],
         "benefits": [
           "Puede reducir el estrés percibido con la práctica regular.",
@@ -327,14 +461,14 @@ const BreatheLocales = {
         "name": "Respiración lenta / de resonancia",
         "tagline": "Un ritmo suave para explorar la VRC y la relajación",
         "science": "Un metaanálisis de 2024 encontró aumentos de VRC a corto plazo con respiración lenta. La biorretroalimentación de VRC también tiene respaldo para reducir el estrés, pero utiliza mediciones fisiológicas que este temporizador no ofrece.",
-        "mechanism": "La respiración influye en la aceleración y desaceleración naturales del corazón. Muchos adultos tienen una frecuencia de resonancia entre 4,5 y 6,5 respiraciones por minuto. El patrón de 5,5 segundos al inhalar y 5,5 al exhalar corresponde a unas 5,45 respiraciones por minuto antes de las transiciones entre ciclos.",
+        "mechanism": "La respiración influye en la aceleración y desaceleración naturales del corazón. Muchos adultos tienen una frecuencia de resonancia de 4,5 a 6,5 respiraciones por minuto. Este patrón de 5,5 segundos al inhalar y al exhalar equivale a unas 5,45 respiraciones por minuto, sin pausas entre ciclos.",
         "steps": [
           "Siéntate o acuéstate con comodidad.",
           "Inhala suavemente durante 5,5 segundos.",
           "Exhala suavemente durante 5,5 segundos.",
           "Continúa sin retener el aire entre las fases.",
           "Usa un volumen cómodo; respirar lento también puede causar sobreventilación si las respiraciones son demasiado grandes.",
-          "Los 10 ciclos predeterminados guían unos 1 minuto y 50 segundos; 20 ciclos, unos 3 minutos y 40 segundos, sin contar la preparación ni las transiciones."
+          "Elige una duración cómoda; el tiempo guiado aparece abajo."
         ],
         "benefits": [
           "Puede aumentar la VRC mientras respiras lentamente.",
@@ -352,9 +486,9 @@ const BreatheLocales = {
         "steps": [
           "Lee la información de seguridad antes de considerar este patrón avanzado.",
           "La animación guía 30 respiraciones en 45 segundos. No fuerces la respiración.",
-          "Tras exhalar, pausa solo mientras resulte cómodo. Pulsa Detener y respira normalmente ante la primera necesidad de aire.",
+          "Tras exhalar, pausa solo mientras resulte cómodo. Pulsa Respirar ahora ante la primera necesidad de aire.",
           "No esperes a que terminen los 60 segundos si necesitas respirar antes.",
-          "La fase final representa una respiración de recuperación y una pausa de hasta 15 segundos, solo si resulta cómoda.",
+          "Toma una inhalación de recuperación cómoda de unos 3 segundos, seguida de una pausa opcional de hasta 15 segundos. Puedes terminarla antes con Respirar ahora.",
           "Detente de inmediato si sientes mareo o malestar."
         ],
         "benefits": [
@@ -362,7 +496,7 @@ const BreatheLocales = {
         ],
         "evidenceLabel": "Evidencia incierta",
         "limitations": "Esto no demuestra que la app mejore la inmunidad, prevenga enfermedades o acelere la recuperación deportiva. Este temporizador no es el método Wim Hof completo.",
-        "safety": "La hiperventilación y las retenciones pueden causar desmayos. Nunca practiques en el agua, al conducir, de pie ni donde un desmayo pueda causar daño. Los 60 segundos no son una meta: detente ante la primera necesidad de respirar. No practiques durante el embarazo. Consulta antes con un profesional si tienes una enfermedad."
+        "safety": "La hiperventilación y las retenciones pueden causar desmayos. Nunca practiques en el agua, al conducir, de pie ni donde un desmayo pueda causar daño. Los 60 segundos no son una meta: pulsa Respirar ahora ante la primera necesidad de respirar. No practiques durante el embarazo. Consulta antes con un profesional si tienes una enfermedad."
       },
       "buteyko": {
         "name": "Respiración estilo Buteyko",
@@ -373,7 +507,7 @@ const BreatheLocales = {
           "Siéntate con comodidad y respira naturalmente por la nariz si resulta cómodo.",
           "Inhala suave y brevemente durante 3 segundos.",
           "Exhala suavemente durante 3 segundos.",
-          "Pausa solo hasta la primera necesidad de respirar. Pulsa Detener y respira normalmente antes de que termine el tiempo si lo necesitas.",
+          "Pausa solo hasta la primera necesidad de respirar. Usa Respirar ahora para terminar la pausa antes.",
           "Vuelve a una respiración fácil y cómoda. No fuerces respiraciones superficiales ni falta de aire.",
           "La app no mide una pausa de control basal ni diagnostica tu respiración."
         ],
@@ -382,8 +516,132 @@ const BreatheLocales = {
         ],
         "evidenceLabel": "Evidencia de programas clínicos específicos",
         "limitations": "Los resultados no validan este temporizador fijo ni demuestran beneficios generales de tolerancia al CO2. Una pausa cronometrada no es una prueba de salud pulmonar ni de condición física.",
-        "safety": "Úsala como complemento de tu atención habitual; nunca cambies los inhaladores recetados por esta app. Termina la pausa ante la primera necesidad de respirar, aunque continúen los 20 segundos. No provoques una falta de aire angustiante."
+        "safety": "Úsala como complemento de tu atención habitual; nunca cambies los inhaladores recetados por esta app. Termina la pausa ante la primera necesidad de respirar, pulsando Respirar ahora; los 20 segundos no son una meta. No provoques una falta de aire angustiante."
+      },
+      "cyclicSighing": {
+        "name": "Suspiros cíclicos suaves",
+        "tagline": "Dos inhalaciones cómodas y una exhalación más larga",
+        "benefits": [
+          "Investigación prometedora sobre el ánimo y el manejo del estrés cotidiano."
+        ],
+        "evidenceLabel": "Prometedor · ensayos iniciales",
+        "science": "Un ensayo de 2023 encontró resultados alentadores en ánimo y frecuencia respiratoria con cinco minutos diarios durante un mes. Un piloto de 2026 con 47 estudiantes encontró menos ansiedad aguda tras un minuto de suspiros o respiración cuadrada que con un control pasivo.",
+        "limitations": "La app usa una adaptación suave de 3-1-6 que no se ha evaluado tal como se ofrece aquí. Los ensayos iniciales no establecen beneficios duraderos, una técnica superior ni mejor atención; el piloto de 2026 también encontró respuestas más lentas en la prueba de atención.",
+        "mechanism": "La segunda inhalación es pequeña, seguida de una exhalación cómoda y más larga. La comodidad importa más que llenar los pulmones.",
+        "safety": "Mantén ambas inhalaciones cómodas. Detente si hay mareo o incomodidad; la respiración abdominal también es una opción.",
+        "steps": [
+          "Siéntate con comodidad y relaja los hombros.",
+          "Inhala suavemente por la nariz durante 3 segundos.",
+          "Añade una segunda inhalación pequeña de aproximadamente 1 segundo, solo si resulta cómoda.",
+          "Exhala lenta y suavemente durante 6 segundos.",
+          "Repite sin retenciones ni esfuerzo. Puedes parar cuando quieras."
+        ]
+      },
+      "extendedExhale": {
+        "name": "Exhalación más larga",
+        "tagline": "Un ritmo suave para relajarse",
+        "benefits": [
+          "Ofrece una rutina cómoda de relajación sin retenciones."
+        ],
+        "evidenceLabel": "Respaldo como respiración lenta; proporción sin superioridad",
+        "science": "Los estudios de respiración lenta incluyen 4 segundos al inhalar y 6 al exhalar. Una exhalación más larga no ha aumentado siempre la VRC más que tiempos iguales.",
+        "limitations": "No es un tratamiento del insomnio. La proporción más cómoda puede variar entre personas.",
+        "mechanism": "Una exhalación algo más larga da tiempo para soltar el aire sin retenerlo ni empujarlo.",
+        "safety": "Nunca fuerces una exhalación larga. Vuelve a tu ritmo natural si te cuesta seguir la guía.",
+        "steps": [
+          "Siéntate o acuéstate con comodidad.",
+          "Inhala suavemente durante 4 segundos.",
+          "Exhala suavemente durante 6 segundos.",
+          "Continúa directamente con la siguiente inhalación cómoda, sin retenciones."
+        ]
+      },
+      "humming": {
+        "name": "Zumbido suave",
+        "tagline": "Un sonido suave para seguir al exhalar",
+        "benefits": [
+          "Puede ofrecer un punto de atención sensorial agradable durante una pausa respiratoria."
+        ],
+        "evidenceLabel": "Evidencia inicial · piloto con 16 personas",
+        "science": "Un piloto de 2025 encontró resultados similares de VRC y sensaciones durante zumbido y respiración lenta. No demostró superioridad del zumbido.",
+        "limitations": "Este pequeño estudio no establece beneficios de salud a largo plazo. El ritmo 4-6 de la app es una adaptación práctica.",
+        "mechanism": "Un zumbido suave añade sonido y vibración que puedes notar mientras exhalas.",
+        "safety": "Haz un zumbido suave sin apretar la garganta ni agotar el aire. Omite el sonido si incomoda.",
+        "steps": [
+          "Relaja la mandíbula, el cuello y los hombros.",
+          "Inhala suavemente por la nariz durante 4 segundos.",
+          "Exhala hasta 6 segundos con un “mmm” suave y los labios juntos sin tensión.",
+          "Toma la siguiente respiración cómoda sin retener el aire. El sonido es opcional."
+        ]
       }
+    },
+    "checkin": {
+      "eyebrow": "Un momento para ti",
+      "title": "¿Cómo te sientes hoy?",
+      "intro": "Elige lo que encaje ahora. Te sugerimos una forma suave de empezar.",
+      "feelings": {
+        "tense": "Tensión o estrés",
+        "busy": "Mi mente está ocupada",
+        "sleep": "Quiero relajarme",
+        "low": "Tengo poca energía",
+        "curious": "Quiero explorar"
+      },
+      "time": "Tiempo para ti",
+      "minute": "1 minuto",
+      "threeMinutes": "3 minutos",
+      "fiveMinutes": "5 minutos",
+      "holds": "Me siento cómodo con pausas respiratorias suaves",
+      "find": "Encontrar una práctica",
+      "skip": "Ver todas las prácticas",
+      "suggestion": "Una forma de empezar",
+      "alternative": "Otra opción suave",
+      "view": "Ver práctica",
+      "privacy": "Tu respuesta se queda en esta pestaña. No necesitas una cuenta.",
+      "boundary": "Las sugerencias siguen tus preferencias; no son una evaluación médica. Elige lo que te resulte cómodo.",
+      "reasons": {
+        "tense": "Sientes tensión. Los suspiros suaves ofrecen una pausa centrada en la exhalación; también puedes elegir respiración abdominal.",
+        "busy": "Buscas una pausa mental sin retenciones. Un ritmo abdominal suave ofrece un punto sencillo para centrar la atención.",
+        "busyWithHolds": "Aceptas pausas cómodas y buscas una pausa mental. La respiración cuadrada ofrece un conteo claro; puedes terminar las pausas cuando lo necesites.",
+        "sleep": "Quieres relajarte. Prueba una exhalación cómoda y más larga, sin retener el aire. Es una rutina de relajación, no un tratamiento del insomnio.",
+        "low": "Tienes poca energía. Empieza con una respiración suave en lugar de un ejercicio intenso. Descansar puede ser más útil si tienes cansancio.",
+        "curious": "Quieres explorar. Prueba un ritmo lento y continuo o el zumbido si el sonido te resulta agradable."
+      },
+      "browse": "Explora todas las prácticas",
+      "advanced": "Avanzada · incluye retenciones",
+      "duration": "Unos {{time}}",
+      "comfort": "La comodidad importa más que el tiempo."
+    },
+    "guide": {
+      "bloom": "Flor respiratoria en 3D",
+      "simple": "Círculo sencillo",
+      "fallback": "La guía sencilla está lista",
+      "reduced": "Movimiento reducido · sigue las palabras",
+      "choose": "Guía visual",
+      "next": "Después",
+      "ready": "Ponte cómodo",
+      "readyCue": "Siéntate con comodidad. Deja que se asiente tu respiración.",
+      "paused": "En pausa",
+      "pauseCue": "Respira normalmente. Continúa cuando estés preparado.",
+      "hiddenPause": "Pausa mientras estabas fuera. Respira normalmente antes de continuar.",
+      "breatheNow": "Respirar ahora",
+      "holdNote": "Es un máximo, no una meta. Respira cuando lo necesites.",
+      "preparation": "Preparación",
+      "seconds": "segundos",
+      "cue": {
+        "inhale": "Inhala suavemente por la nariz.",
+        "topUp": "Añade una segunda inhalación pequeña y cómoda.",
+        "exhale": "Deja salir el aire lenta y suavemente.",
+        "hum": "Exhala con un “mmm” suave y cómodo.",
+        "holdFull": "Descansa brevemente con aire. Sin esfuerzo.",
+        "holdEmpty": "Descansa brevemente tras exhalar. Sin esfuerzo.",
+        "retention": "Pausa solo mientras resulte cómodo. Respira en cuanto lo necesites.",
+        "power": "Inhala y suelta según tu comodidad. Detente si sientes mareo.",
+        "easy": "Vuelve a tu propio ritmo respiratorio cómodo.",
+        "bellyIn": "Deja que el abdomen se expanda suavemente. Relaja los hombros.",
+        "bellyOut": "Deja que el abdomen vuelva al soltar el aire, sin forzarlo."
+      },
+      "estimated": "Tiempo de respiración guiada",
+      "preview": "La flor se abre al inhalar y se cierra al exhalar.",
+      "pausedLabel": "Continúa cuando estés preparado"
     }
   }
 };

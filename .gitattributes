@@ -1,0 +1,4 @@
+# The vendor bundle includes upstream GLSL template strings with intentional whitespace.
+js/vendor/* -whitespace linguist-generated=true
+*.blend binary
+*.glb binary

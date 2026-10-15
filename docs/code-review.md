@@ -1,14 +1,33 @@
 # Code review and validation
 
+## October 15 update: check-in and shared breathing guide
+
+The earlier review below records the original app and first content release. The current release adds nine practices, an optional feeling/time/hold check-in, and a Blender-authored 3D bloom with an SVG alternative. Check-in rules are transparent product choices, not a clinically validated matching system. No health data is read or transmitted.
+
+- `BreathingSession` now owns preparation and phases with one cancelable animation-frame clock. Generation tokens reject stale callbacks. Stop/restart and pauses during preparation are covered by deterministic clock tests.
+- Removed the 500 ms cycle gaps and carried frame overshoot across phase/cycle boundaries. Completion reports actual practice time, excluding preparation and pauses.
+- Added **Breathe now** during every hold; duration labels say **up to**. The advanced recovery inhale is a separate phase, and the final Buteyko-style phase returns to natural breathing. Advanced practices are labeled and excluded from recommendations.
+- Hidden tabs pause and require an explicit resume. Long frame stalls pause instead of skipping instructions. Wake-lock requests use an epoch so a late result cannot keep a stopped session awake.
+- Text, countdown, sound cues, the SVG, and the Blender morph animation use the same phase state. The bloom opens on inhale, adds a smaller opening for the second inhale, closes on exhale/hum, and stays still during holds. The renderer has no independent animation loop.
+- 3D loads on demand, caps device pixel ratio at 1.5 and rendering at about 30 fps, skips unchanged poses, and disposes scene resources. Failed WebGL/model loads keep the simple guide available. Reduced-motion preferences prevent WebGL loading and scaling; background decoration is disabled.
+- Added focus handling, live phase announcements, visible focus styles, translated check-in/guidance in English and Spanish, and storage fallbacks. The carousel's start button waits for transitions to finish.
+- The Blender source, export, reproducible generator, dependency lockfile, and Three.js license are committed with the generated browser bundle. Static hosting needs no server-side build.
+
+Verification: 14 Node tests cover timing boundaries, stale frames, preparation/hidden pauses, early hold release, completion accounting, every feeling/time/hold combination, evidence/locale coverage, guide continuity, real GLB morph animation, reduced motion, and renderer failures. Browser checks at 390 px confirmed recommendations, opt-in box breathing, one-cycle completion with early hold release, pause during preparation, stop/restart, switching visual modes, and English/Spanish guidance. Console errors were absent during the tested flows. The phone-width menu had no horizontal overflow.
+
+Remaining: physical Android testing (battery, audio, wake lock and real background behavior); deeper assistive-technology testing; offline/PWA delivery and fully local dependencies; optional session history; native Health Connect permissions/records; and validation of any future metric-based suggestions. The two older CDNs remain runtime dependencies. Automated tests and a desktop phone-size viewport do not establish clinical benefit or real-device compatibility.
+
+## Original review record
+
 Repository: `jjgp13/breathing-app`. Reviewed baseline: `2d6aae0` on `main`. Local working branch: `codex/research-and-roadmap`. Date: October 14, 2026.
 
-## Current architecture
+## Baseline architecture
 
 Static HTML/CSS and global JavaScript modules, with six techniques and six corresponding DOM/SVG animation controllers. Swiper provides the coverflow selector; GSAP provides transitions. `App` coordinates four screens, phase/cycle state, animation frames, audio cues, and a screen wake lock. No backend, account system, health adapter, session persistence, recommender, service worker, dependency lockfile, or test runner was present.
 
 The architecture is small enough to evolve incrementally. A framework rewrite is not required for either evidence content or a first optional 3D renderer.
 
-## Changes made in this iteration
+## First content release
 
 - Added potential benefits, technique-specific evidence summaries, evidence limitations, direct citations, review dates, and practice guidance to all six detail views.
 - Removed broad immunity, nervous-system reset, uniquely optimal frequency, guaranteed cortisol, and general CO2-tolerance claims. Clinical-program evidence is identified as such.
@@ -19,7 +38,7 @@ The architecture is small enough to evolve incrementally. A framework rewrite is
 - Fixed a language-switch carousel defect found during phone-width testing: translating cards now preserves the slide nodes and active state owned by Swiper, so Begin Practice continues to work after changing languages.
 - Re-enabled browser zoom. Sources use semantic links and native disclosure controls.
 
-## Remaining findings
+## Baseline findings (current status is described above)
 
 ### High priority: session lifecycle
 

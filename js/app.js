@@ -11,16 +11,7 @@ const App = {
         selectedTechnique: null,
         isRunning: false,
         isPaused: false,
-        currentCycle: 1,
         totalCycles: 4,
-        currentPhase: 0,
-        timeRemaining: 4,
-        phaseElapsed: 0,
-        animationFrame: null,
-        lastTimestamp: null,
-        startTime: null,
-        pauseStartTime: null,
-        totalPausedTime: 0,
         wakeLock: null
     },
 
@@ -40,7 +31,8 @@ const App = {
         this.generateTechniqueCards();
         this.initSwiper();
         this.bindEvents();
-        BackgroundManager.setAnimation('combined');
+        BackgroundManager.setAnimation('none');
+        this.initCheckin();
     },
 
     /**
@@ -88,7 +80,12 @@ const App = {
             totalCyclesEl: document.getElementById('totalCycles'),
             pauseBtn: document.getElementById('pauseBtn'),
             stopBtn: document.getElementById('stopBtn'),
-            phaseIndicator: document.getElementById('phaseIndicator'),
+            guideCue: document.getElementById('guideCue'),
+            guideNext: document.getElementById('guideNext'),
+            phaseTrack: document.getElementById('phaseTrack'),
+            holdNote: document.getElementById('holdNote'),
+            endHoldBtn: document.getElementById('endHoldBtn'),
+            sessionDuration: document.getElementById('sessionDuration'),
             
             // Congrats screen
             statTechnique: document.getElementById('statTechnique'),
@@ -104,12 +101,7 @@ const App = {
      */
     initModules() {
         BackgroundManager.init(document.getElementById('background-animation'));
-        BoxAnimation.init();
-        ArcAnimation.init();
-        BellyAnimation.init();
-        WaveAnimation.init();
-        PowerAnimation.init();
-        GaugeAnimation.init();
+        BreathGuide.init();
     },
 
     /**
@@ -169,9 +161,11 @@ const App = {
                 enabled: true
             },
             on: {
+                transitionStart: () => { this.elements.startFromCarousel.disabled = true; },
+                transitionEnd: () => { this.elements.startFromCarousel.disabled = false; },
                 slideChange: () => {
                     // Add subtle animation on slide change
-                    if (this.swiper) {
+                    if (this.swiper && !BreathGuide.reduced) {
                         const activeSlide = this.swiper.slides[this.swiper.activeIndex];
                         if (activeSlide) {
                             gsap.fromTo(activeSlide, 
@@ -225,10 +219,13 @@ const App = {
         // Repetitions slider
         this.elements.repetitionsSlider.addEventListener('input', (e) => {
             this.elements.repValue.textContent = e.target.value;
+            this.updateDuration();
         });
 
         // Start practice
         this.elements.startPracticeBtn.addEventListener('click', () => this.startExercise());
+
+        this.elements.endHoldBtn.addEventListener('click', () => this.session?.endHold());
 
         // Pause/Stop
         this.elements.pauseBtn.addEventListener('click', () => this.togglePause());
@@ -273,6 +270,7 @@ const App = {
                 <div class="icon">${tech.icon}</div>
                 <div class="name">${name}</div>
                 <div class="tagline">${tagline}</div>
+                ${tech.advanced ? `<span class="advanced-tag">${I18n.t('checkin.advanced')}</span>` : ''}
                 <div class="timing">${timingText} ${pattern} • ${Math.round(totalTime)}s ${perCycle}</div>
             `;
             
@@ -290,39 +288,22 @@ const App = {
      * @param {string} screenId - The screen element ID
      */
     showScreen(screenId) {
-        const currentScreen = document.querySelector('.screen.active');
-        const nextScreen = document.getElementById(screenId);
-        
-        if (currentScreen === nextScreen) return;
-        
-        // Animate out current screen
-        if (currentScreen) {
-            gsap.to(currentScreen, {
-                opacity: 0,
-                y: -20,
-                duration: 0.3,
-                ease: 'power2.in',
-                onComplete: () => {
-                    currentScreen.classList.remove('active');
-                    currentScreen.style.opacity = '';
-                    currentScreen.style.transform = '';
-                }
-            });
-        }
-        
-        // Animate in new screen
-        setTimeout(() => {
-            nextScreen.classList.add('active');
-            gsap.fromTo(nextScreen, 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
-            );
-        }, currentScreen ? 300 : 0);
-        
+        const next = document.getElementById(screenId);
+        document.querySelectorAll('.screen').forEach(screen => {
+            gsap.killTweensOf(screen);
+            screen.classList.toggle('active', screen === next);
+            screen.style.opacity = '';
+            screen.style.transform = '';
+        });
         this.state.currentScreen = screenId.replace('-screen', '');
-        
-        // Show/hide back button
+        document.body.classList.toggle('session-mode', screenId === 'breathing-screen');
         this.elements.backBtn.classList.toggle('visible', screenId !== 'menu-screen');
+        if (screenId === 'menu-screen') this.swiper?.update();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        const heading = next.querySelector('h1, h2');
+        heading?.setAttribute('tabindex', '-1');
+        heading?.focus({ preventScroll: true });
+        if (!BreathGuide.reduced) gsap.fromTo(next, { opacity: 0.5 }, { opacity: 1, duration: 0.18 });
     },
 
     /**
@@ -351,7 +332,7 @@ const App = {
      * Show technique detail screen
      * @param {string} techId - Technique identifier
      */
-    showTechniqueDetail(techId) {
+    showTechniqueDetail(techId, cycles = null) {
         const tech = techniques[techId];
         if (!tech) return;
         
@@ -360,8 +341,9 @@ const App = {
         this.elements.researchSources.open = false;
 
         this.elements.repetitionsSlider.max = tech.maxCycles;
-        this.elements.repetitionsSlider.value = tech.defaultCycles;
-        this.elements.repValue.textContent = tech.defaultCycles;
+        this.elements.repetitionsSlider.value = cycles ?? tech.defaultCycles;
+        this.elements.repValue.textContent = this.elements.repetitionsSlider.value;
+        this.updateDuration();
         this.showScreen('detail-screen');
     },
 
@@ -418,365 +400,203 @@ const App = {
         });
     },
 
-    /**
-     * Request a wake lock to keep the screen on during exercises
-     */
-    async requestWakeLock() {
-        if ('wakeLock' in navigator) {
-            try {
-                this.state.wakeLock = await navigator.wakeLock.request('screen');
-                this.state.wakeLock.addEventListener('release', () => {
-                    this.state.wakeLock = null;
-                });
-            } catch (e) {
-                // Wake lock request failed (e.g., low battery)
-            }
-        }
+
+    checkin: { feeling: null, minutes: 3, holds: false },
+    hasSuggestion: false,
+    session: null,
+
+    initCheckin() {
+        const form = document.getElementById('checkinForm');
+        document.querySelectorAll('[data-feeling]').forEach(button => {
+            button.addEventListener('click', () => {
+                this.checkin.feeling = button.dataset.feeling;
+                document.querySelectorAll('[data-feeling]').forEach(choice => choice.setAttribute('aria-pressed', String(choice === button)));
+                document.getElementById('findPractice').disabled = false;
+                if (this.hasSuggestion) this.renderRecommendation();
+            });
+        });
+        form.addEventListener('change', () => {
+            this.checkin.minutes = Number(document.getElementById('checkinMinutes').value);
+            this.checkin.holds = document.getElementById('checkinHolds').checked;
+            if (this.hasSuggestion) this.renderRecommendation();
+        });
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            this.hasSuggestion = true;
+            this.renderRecommendation();
+            document.getElementById('recommendation').focus({ preventScroll: true });
+        });
+        document.getElementById('browsePractices').addEventListener('click', () => document.getElementById('browseTitle').scrollIntoView({ behavior: BreathGuide.reduced ? 'instant' : 'smooth', block: 'start' }));
     },
 
-    /**
-     * Release the wake lock
-     */
-    async releaseWakeLock() {
-        if (this.state.wakeLock) {
-            try {
-                await this.state.wakeLock.release();
-            } catch (e) {
-                // Already released
-            }
-            this.state.wakeLock = null;
-        }
+    formatDuration(seconds) {
+        const rounded = Math.round(seconds);
+        return Math.floor(rounded / 60) + ':' + String(rounded % 60).padStart(2, '0');
     },
 
-    /**
-     * Start the breathing exercise
-     */
-    startExercise() {
-        if (!this.state.selectedTechnique) return;
-        
-        AudioManager.init();
-        this.requestWakeLock();
-        
-        const tech = this.state.selectedTechnique;
-        this.state.totalCycles = parseInt(this.elements.repetitionsSlider.value);
-        this.state.currentCycle = 1;
-        this.state.currentPhase = 0;
-        this.state.isRunning = true;
-        this.state.isPaused = false;
-        this.state.startTime = Date.now();
-        this.state.totalPausedTime = 0;
-        this.state.phaseElapsed = 0;
-        
-        // Setup UI with translated name
-        this.elements.breathingTitle.textContent = I18n.getTechnique(tech.id, 'name');
-        this.elements.totalCyclesEl.textContent = this.state.totalCycles;
-        this.elements.currentCycleEl.textContent = this.state.currentCycle;
-        this.elements.pauseBtn.textContent = I18n.t('breathing.pause');
-        
-        // Setup animation
-        this.setupAnimation(tech.animation);
-        
-        // Show phase indicator for arc animation
-        this.elements.phaseIndicator.style.display = tech.animation === 'arc' ? 'flex' : 'none';
-        
-        this.showScreen('breathing-screen');
-        
-        // Countdown with GSAP
-        this.elements.instruction.textContent = I18n.t('breathing.getReady');
-        this.getActiveAnimation().updateTimer('3');
-        
-        let countdown = 3;
-        
-        // Animate countdown
-        const countdownAnim = () => {
-            gsap.fromTo(this.elements.instruction, 
-                { scale: 1.2, opacity: 0.5 },
-                { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' }
-            );
-        };
-        
-        countdownAnim();
-        
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            this.getActiveAnimation().updateTimer(countdown);
-            countdownAnim();
-            if (countdown <= 0) {
-                clearInterval(countdownInterval);
-                this.startPhase();
-            }
-        }, 1000);
-    },
-
-    /**
-     * Setup the appropriate animation for the technique
-     * @param {string} animationType - 'box', 'arc', 'belly', 'wave', 'power', or 'gauge'
-     */
-    setupAnimation(animationType) {
-        // Hide all animations
-        BoxAnimation.hide();
-        ArcAnimation.hide();
-        BellyAnimation.hide();
-        WaveAnimation.hide();
-        PowerAnimation.hide();
-        GaugeAnimation.hide();
-        
-        // Show and reset the appropriate one
-        switch (animationType) {
-            case 'box':
-                BoxAnimation.show();
-                BoxAnimation.reset();
-                break;
-            case 'arc':
-                ArcAnimation.show();
-                ArcAnimation.reset();
-                break;
-            case 'belly':
-                BellyAnimation.show();
-                BellyAnimation.reset();
-                break;
-            case 'wave':
-                WaveAnimation.show();
-                WaveAnimation.reset();
-                break;
-            case 'power':
-                PowerAnimation.show();
-                PowerAnimation.reset();
-                break;
-            case 'gauge':
-                GaugeAnimation.show();
-                GaugeAnimation.reset();
-                break;
-        }
-    },
-
-    /**
-     * Get the currently active animation module
-     * @returns {Object} Animation module
-     */
-    getActiveAnimation() {
-        const tech = this.state.selectedTechnique;
-        if (!tech) return BoxAnimation;
-        
-        switch (tech.animation) {
-            case 'arc': return ArcAnimation;
-            case 'belly': return BellyAnimation;
-            case 'wave': return WaveAnimation;
-            case 'power': return PowerAnimation;
-            case 'gauge': return GaugeAnimation;
-            default: return BoxAnimation;
-        }
-    },
-
-    /**
-     * Start a new phase
-     */
-    startPhase() {
-        if (!this.state.isRunning) return;
-        
-        const tech = this.state.selectedTechnique;
-        const phase = tech.phases[this.state.currentPhase];
-        
-        // Use translated phase name with GSAP animation
-        const phaseText = I18n.getPhase(phase.type);
-        this.elements.instruction.textContent = phaseText;
-        
-        gsap.fromTo(this.elements.instruction,
-            { scale: 1.3, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.7)' }
-        );
-        
-        this.state.timeRemaining = phase.duration;
-        this.state.phaseElapsed = 0;
-        
-        this.getActiveAnimation().updateTimer(phase.duration);
-        
-        // Update phase indicator
-        this.updatePhaseIndicator(phase.type);
-        
-        // Play sound
-        AudioManager.playPhaseSound(phase.type);
-        
-        this.state.lastTimestamp = performance.now();
-        this.animatePhase();
-    },
-
-    /**
-     * Update the phase indicator dots
-     * @param {string} phaseType - Current phase type
-     */
-    updatePhaseIndicator(phaseType) {
-        document.querySelectorAll('.phase-dot').forEach(dot => {
-            dot.classList.remove('active');
-            if (dot.dataset.phase === phaseType) {
-                dot.classList.add('active');
-                gsap.fromTo(dot, 
-                    { scale: 1.5 },
-                    { scale: 1.2, duration: 0.3, ease: 'power2.out' }
-                );
-            }
+    renderRecommendation() {
+        const result = Recommendations.suggest(this.checkin);
+        if (!result || !this.hasSuggestion) return;
+        document.getElementById('recommendation').hidden = false;
+        document.getElementById('recommendationReason').textContent = I18n.t('checkin.reasons.' + result.reason);
+        const list = document.getElementById('recommendationChoices');
+        list.replaceChildren();
+        result.choices.forEach((choice, index) => {
+            const article = document.createElement('article');
+            article.className = 'practice-suggestion';
+            const label = document.createElement('p');
+            label.className = 'suggestion-label';
+            label.textContent = I18n.t(index ? 'checkin.alternative' : 'checkin.suggestion');
+            const title = document.createElement('h3');
+            title.textContent = I18n.getTechnique(choice.id, 'name');
+            const description = document.createElement('p');
+            description.textContent = I18n.getTechnique(choice.id, 'tagline');
+            const duration = document.createElement('p');
+            duration.className = 'suggestion-duration';
+            duration.textContent = I18n.t('checkin.duration', { time: this.formatDuration(choice.seconds) });
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn ' + (index ? 'btn-secondary' : 'btn-start');
+            button.textContent = I18n.t('checkin.view');
+            button.addEventListener('click', () => this.showTechniqueDetail(choice.id, choice.cycles));
+            article.append(label, title, description, duration, button);
+            list.appendChild(article);
         });
     },
 
-    /**
-     * Animate the current phase
-     */
-    animatePhase() {
-        if (!this.state.isRunning || this.state.isPaused) return;
-        
+    updateDuration() {
         const tech = this.state.selectedTechnique;
-        const phase = tech.phases[this.state.currentPhase];
-        const phaseDuration = phase.duration * 1000;
-        
-        const now = performance.now();
-        const elapsed = now - this.state.lastTimestamp + this.state.phaseElapsed;
-        
-        // Update timer
-        const newTimeRemaining = Math.ceil(phase.duration - (elapsed / 1000));
-        if (newTimeRemaining !== this.state.timeRemaining && newTimeRemaining > 0) {
-            this.state.timeRemaining = newTimeRemaining;
-            this.getActiveAnimation().updateTimer(this.state.timeRemaining);
-            AudioManager.playTick();
-        }
-        
-        // Calculate progress
-        const progress = Math.min(elapsed / phaseDuration, 1);
-        
-        // Update animation
-        const animation = this.getActiveAnimation();
-        if (tech.animation === 'box') {
-            animation.update(this.state.currentPhase, progress * 100);
-        } else {
-            animation.update(this.state.currentPhase, progress, tech);
-        }
-        
-        if (elapsed < phaseDuration) {
-            this.state.animationFrame = requestAnimationFrame(() => this.animatePhase());
-        } else {
-            this.completePhase();
+        if (!tech) return;
+        const seconds = tech.phases.reduce((sum, phase) => sum + phase.duration, 0) * Number(this.elements.repetitionsSlider.value);
+        this.elements.sessionDuration.textContent = this.formatDuration(seconds);
+    },
+
+    refreshLanguage() {
+        this.renderRecommendation();
+        BreathGuide.refreshMode();
+        if (this.state.isRunning && this.session) {
+            this.renderPhaseTrack();
+            this.lastPhaseKey = null;
+            this.renderSession(this.session.snapshot());
         }
     },
 
-    /**
-     * Complete the current phase
-     */
-    completePhase() {
-        const tech = this.state.selectedTechnique;
-        
-        // Ensure animation shows complete
-        const animation = this.getActiveAnimation();
-        if (tech.animation === 'box') {
-            animation.update(this.state.currentPhase, 100);
-        } else {
-            animation.update(this.state.currentPhase, 1, tech);
-        }
-        
-        this.state.currentPhase++;
-        
-        if (this.state.currentPhase >= tech.phases.length) {
-            // Cycle complete
-            this.state.currentPhase = 0;
-            this.state.currentCycle++;
-            
-            if (this.state.currentCycle > this.state.totalCycles) {
-                this.completeExercise();
-                return;
-            }
-            
-            this.elements.currentCycleEl.textContent = this.state.currentCycle;
-            
-            // Animate cycle counter
-            gsap.fromTo(this.elements.currentCycleEl,
-                { scale: 1.5, color: '#64b5f6' },
-                { scale: 1, color: '#e8f4f8', duration: 0.4, ease: 'power2.out' }
-            );
-            
-            // Reset animation for next cycle
-            setTimeout(() => {
-                this.getActiveAnimation().reset();
-                this.startPhase();
-            }, 500);
-        } else {
-            this.startPhase();
-        }
+    async requestWakeLock() {
+        const epoch = this.wakeEpoch = (this.wakeEpoch || 0) + 1;
+        if (!navigator.wakeLock || !this.state.isRunning || this.state.isPaused) return;
+        try {
+            const lock = await navigator.wakeLock.request('screen');
+            if (epoch !== this.wakeEpoch || !this.state.isRunning || this.state.isPaused) { await lock.release(); return; }
+            this.state.wakeLock = lock;
+            lock.addEventListener('release', () => { if (this.state.wakeLock === lock) this.state.wakeLock = null; });
+        } catch { /* Practice remains available when the device declines a wake lock. */ }
     },
 
-    /**
-     * Toggle pause state
-     */
+    async releaseWakeLock() {
+        this.wakeEpoch = (this.wakeEpoch || 0) + 1;
+        const lock = this.state.wakeLock;
+        this.state.wakeLock = null;
+        try { await lock?.release(); } catch {}
+    },
+
+    startExercise() {
+        const tech = this.state.selectedTechnique;
+        if (!tech) return;
+        this.session?.stop(false);
+        try { AudioManager.init(); } catch {}
+        this.state.isRunning = true;
+        this.state.isPaused = false;
+        this.state.totalCycles = Number(this.elements.repetitionsSlider.value);
+        this.lastPhaseKey = null;
+        this.renderPhaseTrack();
+        this.showScreen('breathing-screen');
+        this.session = new BreathingSession(tech, this.state.totalCycles, {
+            onUpdate: snapshot => this.renderSession(snapshot),
+            onCue: snapshot => AudioManager.playPhaseSound(snapshot.phase.type),
+            onComplete: snapshot => this.completeExercise(snapshot)
+        });
+        this.session.start();
+        this.requestWakeLock();
+    },
+
+    renderPhaseTrack() {
+        this.elements.phaseTrack.replaceChildren();
+        this.state.selectedTechnique.phases.forEach((phase, index) => {
+            const item = document.createElement('li');
+            item.dataset.index = index;
+            const label = document.createElement('span');
+            label.textContent = I18n.getPhase(phase.type);
+            const duration = document.createElement('small');
+            duration.textContent = ['hold', 'retention', 'recovery'].includes(phase.type)
+                ? I18n.t('breathing.upTo', { seconds: phase.duration }) : phase.duration + ' s';
+            item.append(label, duration);
+            this.elements.phaseTrack.appendChild(item);
+        });
+    },
+
+    renderSession(snapshot) {
+        if (!this.state.isRunning) return;
+        this.state.isPaused = snapshot.mode === 'paused';
+        this.elements.breathingTitle.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
+        this.elements.currentCycleEl.textContent = snapshot.cycle;
+        this.elements.totalCyclesEl.textContent = snapshot.cycles;
+        this.elements.pauseBtn.textContent = I18n.t(this.state.isPaused ? 'breathing.resume' : 'breathing.pause');
+        const hold = !snapshot.preparing && ['hold', 'retention', 'recovery'].includes(snapshot.phase.type);
+        this.elements.endHoldBtn.hidden = !hold;
+        this.elements.endHoldBtn.disabled = this.state.isPaused;
+        this.elements.holdNote.hidden = !hold;
+        const key = [snapshot.mode, snapshot.preparing, snapshot.phaseIndex, snapshot.cycle, I18n.currentLang].join(':');
+        if (key !== this.lastPhaseKey) {
+            this.lastPhaseKey = key;
+            let cue = snapshot.phase.type;
+            if (cue === 'hold') cue = GuideMath.volume(this.state.selectedTechnique, snapshot.phaseIndex, 0) ? 'holdFull' : 'holdEmpty';
+            if (this.state.selectedTechnique.id === 'diaphragmatic' && ['inhale','exhale'].includes(cue)) cue = cue === 'inhale' ? 'bellyIn' : 'bellyOut';
+            this.elements.instruction.textContent = snapshot.mode === 'paused' ? I18n.t('guide.paused')
+                : snapshot.preparing ? I18n.t('guide.ready') : I18n.getPhase(snapshot.phase.type);
+            this.elements.guideCue.textContent = snapshot.mode === 'paused'
+                ? I18n.t(snapshot.pauseReason === 'user' ? 'guide.pauseCue' : 'guide.hiddenPause')
+                : snapshot.preparing ? I18n.t('guide.readyCue') : I18n.t('guide.cue.' + cue);
+            const nextIndex = (snapshot.phaseIndex + 1) % this.state.selectedTechnique.phases.length;
+            this.elements.guideNext.textContent = snapshot.mode === 'paused' ? I18n.t('guide.pausedLabel')
+                : I18n.t('guide.next') + ': ' + I18n.getPhase(this.state.selectedTechnique.phases[snapshot.preparing ? 0 : nextIndex].type);
+            Array.from(this.elements.phaseTrack.children).forEach((item, index) => {
+                item.classList.toggle('is-current', !snapshot.preparing && index === snapshot.phaseIndex);
+                if (!snapshot.preparing && index === snapshot.phaseIndex) item.setAttribute('aria-current','step');
+                else item.removeAttribute('aria-current');
+            });
+        }
+        BreathGuide.update(snapshot, this.state.selectedTechnique);
+    },
+
     togglePause() {
-        this.state.isPaused = !this.state.isPaused;
-        this.elements.pauseBtn.textContent = this.state.isPaused ? I18n.t('breathing.resume') : I18n.t('breathing.pause');
-        
-        if (this.state.isPaused) {
-            this.state.pauseStartTime = performance.now();
-            this.state.phaseElapsed += performance.now() - this.state.lastTimestamp;
-        } else {
-            this.state.totalPausedTime += performance.now() - this.state.pauseStartTime;
-            this.state.lastTimestamp = performance.now();
-            this.animatePhase();
-        }
+        if (!this.session || !this.state.isRunning) return;
+        if (this.session.mode === 'paused') { this.session.resume(); this.requestWakeLock(); }
+        else { this.session.pause(); this.releaseWakeLock(); }
     },
 
-    /**
-     * Stop the exercise
-     */
     stopExercise() {
+        this.session?.stop(false);
         this.state.isRunning = false;
         this.state.isPaused = false;
         this.releaseWakeLock();
-        
-        if (this.state.animationFrame) {
-            cancelAnimationFrame(this.state.animationFrame);
-        }
-        
-        this.getActiveAnimation().reset();
+        BreathGuide.clear();
         this.showScreen('detail-screen');
     },
 
-    /**
-     * Complete the exercise and show results
-     */
-    completeExercise() {
+    completeExercise(snapshot) {
         this.state.isRunning = false;
+        this.state.isPaused = false;
         this.releaseWakeLock();
         AudioManager.playComplete();
-        
-        const totalTime = Math.round((Date.now() - this.state.startTime - this.state.totalPausedTime) / 1000);
-        const minutes = Math.floor(totalTime / 60);
-        const seconds = totalTime % 60;
-        
-        // Use translated technique name
         this.elements.statTechnique.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
-        this.elements.statCycles.textContent = this.state.totalCycles;
-        this.elements.statTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        
+        this.elements.statCycles.textContent = snapshot.cycles;
+        this.elements.statTime.textContent = this.formatDuration(snapshot.practiceSeconds);
+        BreathGuide.clear();
         this.showScreen('congrats-screen');
-        
-        // Celebrate animation
-        setTimeout(() => {
-            gsap.fromTo('.congrats-icon',
-                { scale: 0, rotation: -180 },
-                { scale: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
-            );
-            gsap.fromTo('.congrats-title',
-                { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, delay: 0.2, ease: 'power2.out' }
-            );
-            gsap.fromTo('.stats',
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, delay: 0.4, ease: 'power2.out' }
-            );
-        }, 100);
     }
 };
 
-// Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => App.init());
-
-// Re-acquire wake lock when returning to the app during an exercise
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && App.state.isRunning) {
-        App.requestWakeLock();
-    }
+    if (document.hidden && App.state.isRunning) { App.session?.pause('hidden'); App.releaseWakeLock(); }
 });

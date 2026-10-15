@@ -1,0 +1,12 @@
+{
+  "name": "breathe-practice",
+  "private": true,
+  "version": "0.2.0",
+  "scripts": {
+    "build": "node scripts/sync-locales.cjs && esbuild js/guide3d.mjs --bundle --minify --format=iife --outfile=js/vendor/guide3d.bundle.js --legal-comments=eof",
+    "test": "node --test tests/*.test.cjs",
+    "check": "node scripts/sync-locales.cjs --check && npm test"
+  },
+  "dependencies": { "three": "0.186.1" },
+  "devDependencies": { "esbuild": "0.28.2" }
+}

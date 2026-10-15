@@ -101,12 +101,16 @@ const AudioManager = {
     playPhaseSound(phaseType) {
         switch (phaseType) {
             case 'inhale':
+            case 'topUp':
                 this.playInhale();
                 break;
             case 'hold':
+            case 'retention':
+            case 'recovery':
                 this.playHold();
                 break;
             case 'exhale':
+            case 'hum':
                 this.playExhale();
                 break;
         }
