@@ -68,6 +68,13 @@ const App = {
             detailName: document.getElementById('detailName'),
             detailTagline: document.getElementById('detailTagline'),
             detailScience: document.getElementById('detailScience'),
+            detailBenefits: document.getElementById('detailBenefits'),
+            detailEvidence: document.getElementById('detailEvidence'),
+            detailLimitations: document.getElementById('detailLimitations'),
+            detailSources: document.getElementById('detailSources'),
+            detailReviewed: document.getElementById('detailReviewed'),
+            detailSafety: document.getElementById('detailSafety'),
+            researchSources: document.getElementById('researchSources'),
             detailMechanism: document.getElementById('detailMechanism'),
             detailSteps: document.getElementById('detailSteps'),
             repetitionsSlider: document.getElementById('repetitions'),
@@ -240,14 +247,17 @@ const App = {
      * Generate carousel cards for technique selection
      */
     generateTechniqueCards() {
-        this.elements.swiperWrapper.innerHTML = '';
+        // Swiper owns and reorders these nodes in loop mode. Keep their identity
+        // when translating so its active-slide references remain valid.
+        const existingSlides = new Map(Array.from(this.elements.swiperWrapper.children)
+            .map(slide => [slide.dataset.id, slide]));
         
         const techArray = Object.values(techniques);
         
         techArray.forEach((tech) => {
             // Create swiper slide
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
+            const slide = existingSlides.get(tech.id) || document.createElement('div');
+            slide.classList.add('swiper-slide');
             slide.dataset.id = tech.id;
             
             const totalTime = tech.phases.reduce((sum, p) => sum + p.duration, 0);
@@ -266,7 +276,7 @@ const App = {
                 <div class="timing">${timingText} ${pattern} • ${Math.round(totalTime)}s ${perCycle}</div>
             `;
             
-            this.elements.swiperWrapper.appendChild(slide);
+            if (!existingSlides.has(tech.id)) this.elements.swiperWrapper.appendChild(slide);
         });
 
         // Update swiper after adding slides
@@ -346,6 +356,20 @@ const App = {
         if (!tech) return;
         
         this.state.selectedTechnique = tech;
+        this.renderTechniqueDetail();
+        this.elements.researchSources.open = false;
+
+        this.elements.repetitionsSlider.max = tech.maxCycles;
+        this.elements.repetitionsSlider.value = tech.defaultCycles;
+        this.elements.repValue.textContent = tech.defaultCycles;
+        this.showScreen('detail-screen');
+    },
+
+    /** Refresh localized detail content without resetting the chosen cycle count. */
+    renderTechniqueDetail() {
+        const tech = this.state.selectedTechnique;
+        if (!tech) return;
+        const techId = tech.id;
         
         // Get translated content
         const name = I18n.getTechnique(techId, 'name');
@@ -360,34 +384,38 @@ const App = {
         this.elements.detailScience.textContent = science;
         this.elements.detailMechanism.textContent = mechanism;
         
-        // Generate steps list with GSAP stagger animation
+        this.elements.detailEvidence.textContent = I18n.getTechnique(techId, 'evidenceLabel');
+        this.elements.detailLimitations.textContent = I18n.getTechnique(techId, 'limitations');
+        this.elements.detailSafety.textContent = I18n.getTechnique(techId, 'safety');
+        this.elements.detailBenefits.replaceChildren();
+        I18n.getTechnique(techId, 'benefits').forEach(benefit => {
+            const item = document.createElement('li');
+            item.textContent = benefit;
+            this.elements.detailBenefits.appendChild(item);
+        });
+
+        this.elements.detailSources.replaceChildren();
+        tech.research.sources.forEach(source => {
+            const item = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = source.url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = `${source.title} (${source.year})`;
+            item.appendChild(link);
+            this.elements.detailSources.appendChild(item);
+        });
+        this.elements.detailReviewed.dateTime = tech.research.reviewed;
+        this.elements.detailReviewed.textContent = tech.research.reviewed;
+
+        // Render immediately so language changes are readable without an animation delay.
         this.elements.detailSteps.innerHTML = '';
-        (Array.isArray(steps) ? steps : tech.steps).forEach((step, index) => {
+        (Array.isArray(steps) ? steps : []).forEach((step, index) => {
             const li = document.createElement('li');
             li.dataset.step = `${index + 1}.`;
             li.textContent = step;
-            li.style.opacity = '0';
             this.elements.detailSteps.appendChild(li);
         });
-        
-        // Set slider limits
-        this.elements.repetitionsSlider.max = tech.maxCycles;
-        this.elements.repetitionsSlider.value = tech.defaultCycles;
-        this.elements.repValue.textContent = tech.defaultCycles;
-        
-        this.showScreen('detail-screen');
-        
-        // Animate steps in with stagger
-        setTimeout(() => {
-            gsap.to(this.elements.detailSteps.querySelectorAll('li'), {
-                opacity: 1,
-                y: 0,
-                duration: 0.4,
-                stagger: 0.1,
-                ease: 'power2.out',
-                from: { y: 15 }
-            });
-        }, 400);
     },
 
     /**

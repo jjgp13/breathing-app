@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1a1a2e">
@@ -63,8 +63,22 @@
                 </div>
 
                 <div class="detail-section">
-                    <h3>🔬 <span data-i18n="detail.science">Scientific Support</span></h3>
-                    <p id="detailScience">Scientific information here.</p>
+                    <h3 data-i18n="detail.benefits">Potential benefits</h3>
+                    <ul class="benefits-list" id="detailBenefits"></ul>
+                </div>
+
+                <div class="detail-section">
+                    <h3>🔬 <span data-i18n="detail.science">What the research says</span></h3>
+                    <p class="evidence-label" id="detailEvidence"></p>
+                    <p id="detailScience"></p>
+                    <h4 class="limitations-title" data-i18n="detail.limitations">What remains uncertain</h4>
+                    <p id="detailLimitations"></p>
+                    <details class="research-sources" id="researchSources">
+                        <summary data-i18n="detail.sources">Read the studies</summary>
+                        <ol id="detailSources"></ol>
+                        <p class="research-date"><span data-i18n="detail.reviewed">Evidence reviewed</span>: <time id="detailReviewed"></time></p>
+                        <p data-i18n="detail.evidenceGuide"></p>
+                    </details>
                 </div>
 
                 <div class="detail-section">
@@ -79,7 +93,14 @@
                     </ol>
                 </div>
 
+                <div class="detail-section practice-safety">
+                    <h3 data-i18n="detail.safety">Before you begin</h3>
+                    <p id="detailSafety"></p>
+                    <p data-i18n="detail.generalSafety"></p>
+                </div>
+
                 <div class="settings">
+                    <p class="protocol-note" data-i18n="detail.protocolNote"></p>
                     <div class="setting-group">
                         <label for="repetitions" data-i18n="detail.cycles">Number of Cycles</label>
                         <input type="range" id="repetitions" min="1" max="10" value="4">
@@ -225,6 +246,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     
     <!-- JavaScript Modules -->
+    <script src="js/locales.generated.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/techniques.js"></script>
     <script src="js/audio.js"></script>

@@ -13,13 +13,21 @@
     "none": "Ninguno (Mínimo)"
   },
   "detail": {
-    "science": "Respaldo Científico",
+    "science": "Qué dice la investigación",
     "mechanism": "Cómo Funciona",
     "steps": "Pasos",
     "cycles": "Número de Ciclos",
     "cyclesUnit": "ciclos",
     "pattern": "patrón",
-    "perCycle": "por ciclo"
+    "perCycle": "por ciclo",
+    "benefits": "Beneficios potenciales",
+    "limitations": "Qué sigue sin estar claro",
+    "sources": "Ver los estudios",
+    "reviewed": "Evidencia revisada",
+    "safety": "Antes de empezar",
+    "evidenceGuide": "Estas etiquetas resumen la investigación citada; no son una calificación clínica formal ni una validación de esta app.",
+    "protocolNote": "Este temporizador es una guía de práctica. Su ritmo exacto y la duración de sus sesiones no se han probado clínicamente.",
+    "generalSafety": "Respira con suavidad. Detente y vuelve a tu respiración normal si sientes mareo, incomodidad o más ansiedad. La práctica respiratoria no sustituye la atención médica."
   },
   "breathing": {
     "getReady": "Prepárate...",
@@ -60,85 +68,126 @@
   "techniques": {
     "box": {
       "name": "Respiración Cuadrada",
-      "tagline": "Respiración de Caja - Usada por Navy SEALs",
-      "science": "Utilizada por los Navy SEALs para el \"control de la activación\". Un estudio de 2023 indicó que equilibra eficazmente el Sistema Nervioso Autónomo (SNA) y mejora el rendimiento bajo estrés.",
-      "mechanism": "La forma simétrica de \"caja\" crea un ritmo constante que evita que el corazón se acelere durante transiciones de alta presión. Las fases de igual duración ayudan a sincronizar la respiración con la variabilidad del ritmo cardíaco.",
+      "tagline": "Un ritmo constante para un momento de calma",
+      "science": "Un ensayo de 2023 incluyó respiración cuadrada durante un mes de práctica diaria de cinco minutos. El ánimo y la ansiedad mejoraron en los grupos del estudio; esto no demuestra que sea la mejor técnica.",
+      "mechanism": "Las fases iguales estructuran la atención y ralentizan el ciclo respiratorio. Las pausas dependen de la comodidad; no son una prueba de capacidad pulmonar.",
       "steps": [
-        "Inhala por la nariz durante 4 segundos",
-        "Mantén el aire durante 4 segundos",
-        "Exhala por la boca durante 4 segundos",
-        "Mantén con los pulmones vacíos durante 4 segundos",
-        "Repite de 4 a 10 ciclos"
-      ]
+        "Siéntate con comodidad y relaja los hombros.",
+        "Inhala suavemente por la nariz durante 4 segundos.",
+        "Haz una pausa de hasta 4 segundos, solo mientras resulte cómoda.",
+        "Exhala suavemente durante 4 segundos.",
+        "Haz otra pausa de hasta 4 segundos. Detén el ejercicio si necesitas respirar antes.",
+        "Empieza con unos pocos ciclos cómodos. Nunca fuerces la respiración ni las pausas."
+      ],
+      "benefits": [
+        "Puede aliviar la sensación de ansiedad con la práctica regular.",
+        "Ofrece un ritmo sencillo de conteo para centrar la atención."
+      ],
+      "evidenceLabel": "Evidencia inicial",
+      "limitations": "La evidencia específica es limitada. Una comparación de 2025 no encontró cambios relevantes en el ánimo tras una sesión. No está demostrado que mejore el rendimiento bajo presión.",
+      "safety": "Si las pausas resultan incómodas, detente y elige respiración diafragmática sin retenciones."
     },
     "fourSevenEight": {
       "name": "Técnica 4-7-8",
-      "tagline": "El \"Reinicio del Sistema Nervioso\"",
-      "science": "Un estudio de 2022 en Physiological Reports sugiere que la proporción 4-7-8 aumenta específicamente la Potencia de Alta Frecuencia en la Variabilidad del Ritmo Cardíaco (VRC), indicando un aumento agudo en la actividad parasimpática (descanso y digestión).",
-      "mechanism": "La retención de 7 segundos permite un aumento temporal de CO₂ en la sangre, lo que dilata los vasos sanguíneos y reduce la presión arterial. La exhalación de 8 segundos estimula el nervio Vago para reducir el ritmo cardíaco.",
+      "tagline": "Un patrón lento con una exhalación prolongada",
+      "science": "Un estudio de 2022 con 43 adultos jóvenes sanos observó cambios inmediatos en la frecuencia cardíaca y la presión arterial. Una comparación de 2025 encontró mayores aumentos de VRC a seis respiraciones por minuto.",
+      "mechanism": "El patrón combina una inhalación lenta, una pausa y una exhalación más larga. La respiración influye en el ritmo cardíaco; esta app no demuestra un mecanismo específico del CO2 o del nervio vago.",
       "steps": [
-        "Coloca la punta de la lengua contra el paladar detrás de los dientes frontales",
-        "Inhala silenciosamente por la nariz durante 4 segundos",
-        "Mantén la respiración durante 7 segundos",
-        "Exhala con fuerza por la boca (haz un sonido \"whoosh\") durante 8 segundos",
-        "Repite 4 respiraciones inicialmente; nunca excedas 8 ciclos por sesión"
-      ]
+        "Siéntate con comodidad.",
+        "Inhala suavemente por la nariz durante 4 segundos.",
+        "Mantén hasta 7 segundos solo si resulta cómodo.",
+        "Exhala suavemente por la boca durante 8 segundos, sin forzar la salida del aire.",
+        "Empieza con 4 ciclos. Detente antes si lo necesitas; más ciclos no implican más beneficios."
+      ],
+      "benefits": [
+        "Puede reducir temporalmente la frecuencia cardíaca tras la práctica en algunos adultos sanos.",
+        "Ofrece una rutina estructurada para relajarse."
+      ],
+      "evidenceLabel": "Evidencia inicial",
+      "limitations": "Estos estudios breves no demuestran que trate el insomnio, reinicie el sistema nervioso o tenga beneficios únicos a largo plazo.",
+      "safety": "La pausa de 7 segundos puede resultar exigente. Si incomoda, detente y elige una técnica sin retenciones."
     },
     "diaphragmatic": {
       "name": "Respiración Diafragmática",
-      "tagline": "Respiración Abdominal - Reduce Estrés y Cortisol",
-      "science": "Investigaciones publicadas por la Clínica Cleveland y Johns Hopkins confirman que esta técnica reduce los niveles de cortisol y mejora la estabilidad del core. Los estudios muestran que activa eficazmente el sistema nervioso parasimpático.",
-      "mechanism": "Al usar el diafragma en lugar del pecho, optimizas el intercambio de oxígeno y reduces el \"trabajo de respirar\", señalando al cerebro que el cuerpo está seguro. Esto activa la respuesta de relajación.",
+      "tagline": "Respiración abdominal suave para relajarse",
+      "science": "Un pequeño estudio aleatorizado observó mejoras en atención, ánimo negativo y cortisol tras ocho semanas de entrenamiento. Una revisión de 2019 encontró resultados alentadores sobre estrés en tres estudios, con limitaciones importantes.",
+      "mechanism": "Deja que el diafragma se mueva de forma natural, con movimiento suave del abdomen y las costillas inferiores. Evita respiraciones demasiado grandes o intentar mantener el pecho totalmente inmóvil.",
       "steps": [
-        "Acuéstate boca arriba o siéntate con la espalda recta",
-        "Coloca una mano en el pecho y la otra en el abdomen",
-        "Inhala por la nariz, haciendo que el abdomen suba mientras el pecho permanece quieto",
-        "Exhala con los labios fruncidos como si soplaras por una pajita",
-        "Siente cómo el abdomen baja al exhalar completamente",
-        "Practica de 5 a 10 minutos (6-12 ciclos)"
-      ]
+        "Siéntate con comodidad o acuéstate boca arriba.",
+        "Apoya una mano en el abdomen o las costillas inferiores.",
+        "Inhala suavemente durante 5 segundos y deja que se muevan el abdomen y las costillas.",
+        "Exhala suavemente durante 5 segundos sin vaciar los pulmones a la fuerza.",
+        "Respira con un volumen cómodo, sin buscar la máxima profundidad.",
+        "Los 6 ciclos predeterminados guían aproximadamente 1 minuto; 12 ciclos, unos 2 minutos, sin contar la preparación ni las transiciones."
+      ],
+      "benefits": [
+        "Puede reducir el estrés percibido con la práctica regular.",
+        "Puede favorecer la atención sostenida; los resultados son preliminares."
+      ],
+      "evidenceLabel": "Evidencia prometedora, pero limitada",
+      "limitations": "Los programas fueron distintos y la evidencia es escasa. No está demostrado que esta sesión breve reduzca el cortisol de inmediato.",
+      "safety": "La comodidad importa más que la profundidad. Vuelve a respirar de forma natural si te cuesta seguir el ritmo."
     },
     "resonance": {
-      "name": "Frecuencia de Resonancia",
-      "tagline": "Respiración Coherente - Maximiza la VRC",
-      "science": "Revisiones sistemáticas en Scientific Reports muestran que esta es la tasa óptima para maximizar la Variabilidad del Ritmo Cardíaco (VRC) y sincronizar el corazón y los pulmones para un equilibrio autonómico óptimo.",
-      "mechanism": "La mayoría de los adultos tienen una \"frecuencia de resonancia\" de aproximadamente 5.5 a 6 respiraciones por minuto. Este ritmo maximiza la eficiencia del barorreflejo (el sistema de control de presión arterial del cuerpo), creando coherencia entre los ritmos cardiovascular y respiratorio.",
+      "name": "Respiración lenta / de resonancia",
+      "tagline": "Un ritmo suave para explorar la VRC y la relajación",
+      "science": "Un metaanálisis de 2024 encontró aumentos de VRC a corto plazo con respiración lenta. La biorretroalimentación de VRC también tiene respaldo para reducir el estrés, pero utiliza mediciones fisiológicas que este temporizador no ofrece.",
+      "mechanism": "La respiración influye en la aceleración y desaceleración naturales del corazón. Muchos adultos tienen una frecuencia de resonancia entre 4,5 y 6,5 respiraciones por minuto. El patrón de 5,5 segundos al inhalar y 5,5 al exhalar corresponde a unas 5,45 respiraciones por minuto antes de las transiciones entre ciclos.",
       "steps": [
-        "Siéntate o acuéstate en una posición cómoda",
-        "Inhala suavemente por la nariz durante 5.5 segundos",
-        "Exhala suavemente por la nariz o boca durante 5.5 segundos",
-        "Mantén un flujo continuo sin pausas arriba o abajo",
-        "Mantén la respiración suave y sin esfuerzo",
-        "Practica de 10 a 20 minutos para beneficios óptimos de VRC"
-      ]
+        "Siéntate o acuéstate con comodidad.",
+        "Inhala suavemente durante 5,5 segundos.",
+        "Exhala suavemente durante 5,5 segundos.",
+        "Continúa sin retener el aire entre las fases.",
+        "Usa un volumen cómodo; respirar lento también puede causar sobreventilación si las respiraciones son demasiado grandes.",
+        "Los 10 ciclos predeterminados guían unos 1 minuto y 50 segundos; 20 ciclos, unos 3 minutos y 40 segundos, sin contar la preparación ni las transiciones."
+      ],
+      "benefits": [
+        "Puede aumentar la VRC mientras respiras lentamente.",
+        "Puede favorecer la relajación y el manejo del estrés con la práctica regular."
+      ],
+      "evidenceLabel": "Mayor respaldo para la VRC a corto plazo",
+      "limitations": "Una VRC mayor durante la práctica no demuestra una mejor recuperación al día siguiente. Un temporizador fijo no puede determinar tu frecuencia de resonancia personal.",
+      "safety": "Respira con suavidad y sin esfuerzo. Si este ritmo es demasiado lento, detente y vuelve a tu ritmo natural cómodo."
     },
     "wimHof": {
-      "name": "Método Wim Hof",
-      "tagline": "Hiperventilación Cíclica - Fortalece la Inmunidad",
-      "science": "Una revisión sistemática de 2024 en PLOS ONE confirmó que este método aumenta significativamente la epinefrina (adrenalina) e Interleucina-10 (una citocina antiinflamatoria), mientras reduce los marcadores proinflamatorios.",
-      "mechanism": "La hiperventilación controlada seguida de una retención crea una respuesta de estrés \"hormético\" (beneficioso) que \"entrena\" el sistema inmunológico. Esto activa el sistema nervioso simpático y libera opioides endógenos.",
+      "name": "Respiración estilo Wim Hof",
+      "tagline": "Patrón avanzado; beneficios de salud aún inciertos",
+      "science": "Una revisión de 2024 de ocho ensayos encontró indicios en marcadores inflamatorios, pero las muestras pequeñas, los sesgos y los protocolos distintos limitan la confianza. Algunos estudios combinaron respiración, frío y otros entrenamientos.",
+      "mechanism": "Respirar rápida y profundamente reduce el dióxido de carbono y cambia la química sanguínea. Una retención posterior puede reducir el oxígeno. Estos cambios fisiológicos no demuestran por sí mismos un beneficio para la salud.",
       "steps": [
-        "Toma 30 respiraciones profundas y rítmicas (inhala completamente, exhala naturalmente)",
-        "Después de la última exhalación, mantén la respiración lo más que puedas cómodamente",
-        "Cuando sientas la necesidad de respirar, toma una inhalación profunda",
-        "Mantén esa respiración de recuperación durante 15 segundos",
-        "Esto completa una ronda - repite 3 rondas",
-        "⚠️ ¡Nunca practiques en el agua o mientras conduces!"
-      ]
+        "Lee la información de seguridad antes de considerar este patrón avanzado.",
+        "La animación guía 30 respiraciones en 45 segundos. No fuerces la respiración.",
+        "Tras exhalar, pausa solo mientras resulte cómodo. Pulsa Detener y respira normalmente ante la primera necesidad de aire.",
+        "No esperes a que terminen los 60 segundos si necesitas respirar antes.",
+        "La fase final representa una respiración de recuperación y una pausa de hasta 15 segundos, solo si resulta cómoda.",
+        "Detente de inmediato si sientes mareo o malestar."
+      ],
+      "benefits": [
+        "Se investigan cambios en la respuesta inflamatoria; no hay beneficios establecidos para la salud cotidiana."
+      ],
+      "evidenceLabel": "Evidencia incierta",
+      "limitations": "Esto no demuestra que la app mejore la inmunidad, prevenga enfermedades o acelere la recuperación deportiva. Este temporizador no es el método Wim Hof completo.",
+      "safety": "La hiperventilación y las retenciones pueden causar desmayos. Nunca practiques en el agua, al conducir, de pie ni donde un desmayo pueda causar daño. Los 60 segundos no son una meta: detente ante la primera necesidad de respirar. No practiques durante el embarazo. Consulta antes con un profesional si tienes una enfermedad."
     },
     "buteyko": {
-      "name": "Pausa de Control Buteyko",
-      "tagline": "Tolerancia al CO₂ - Eficiencia Respiratoria",
-      "science": "Ampliamente estudiada para el asma y la eficiencia respiratoria. Los ensayos clínicos muestran que reduce la dependencia de inhaladores de rescate y mejora la tolerancia al CO₂, con mejoras significativas en la calidad de vida para condiciones respiratorias.",
-      "mechanism": "Aumenta la \"Pausa de Control\" (PC)—el tiempo que puedes mantener cómodamente la respiración—que refleja la sensibilidad de tu cuerpo al CO₂. Al practicar respiración nasal ligera, reentrenar tu patrón respiratorio para ser más eficiente.",
+      "name": "Respiración estilo Buteyko",
+      "tagline": "Reeducación respiratoria; evidencia en atención del asma",
+      "science": "Una revisión Cochrane incluyó 22 estudios de asma con varios métodos respiratorios, entre ellos Buteyko. Encontró algunos beneficios en calidad de vida, con calidad de evidencia variable.",
+      "mechanism": "Los programas Buteyko enseñan cambios en los hábitos respiratorios, a menudo con respiración nasal suave. La app muestra un patrón simplificado, no un programa clínico individualizado.",
       "steps": [
-        "Toma una respiración pequeña y suave por la nariz",
-        "Suelta una respiración pequeña y suave",
-        "Tapa tu nariz y mantén hasta sentir la primera necesidad de respirar",
-        "Esto mide tu Pausa de Control (PC) base",
-        "Luego respira ligeramente por la nariz con una \"ligera hambre de aire\"",
-        "Mantén la respiración superficial durante 30 segundos para aumentar la tolerancia al CO₂"
-      ]
+        "Siéntate con comodidad y respira naturalmente por la nariz si resulta cómodo.",
+        "Inhala suave y brevemente durante 3 segundos.",
+        "Exhala suavemente durante 3 segundos.",
+        "Pausa solo hasta la primera necesidad de respirar. Pulsa Detener y respira normalmente antes de que termine el tiempo si lo necesitas.",
+        "Vuelve a una respiración fácil y cómoda. No fuerces respiraciones superficiales ni falta de aire.",
+        "La app no mide una pausa de control basal ni diagnostica tu respiración."
+      ],
+      "benefits": [
+        "La reeducación respiratoria puede mejorar la calidad de vida de algunos adultos con asma."
+      ],
+      "evidenceLabel": "Evidencia de programas clínicos específicos",
+      "limitations": "Los resultados no validan este temporizador fijo ni demuestran beneficios generales de tolerancia al CO2. Una pausa cronometrada no es una prueba de salud pulmonar ni de condición física.",
+      "safety": "Úsala como complemento de tu atención habitual; nunca cambies los inhaladores recetados por esta app. Termina la pausa ante la primera necesidad de respirar, aunque continúen los 20 segundos. No provoques una falta de aire angustiante."
     }
   }
 }

@@ -394,6 +394,76 @@ input[type="range"]::-webkit-slider-thumb {
     line-height: 1.6;
 }
 
+.benefits-list {
+    padding-left: 22px;
+    color: #e8f4f8;
+    line-height: 1.6;
+}
+
+.benefits-list li + li {
+    margin-top: 6px;
+}
+
+.detail-section .evidence-label {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(168, 216, 234, 0.45);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #c5e8f5;
+}
+
+.limitations-title {
+    margin: 12px 0 4px;
+    color: #e8f4f8;
+    font-size: 0.95rem;
+}
+
+.research-sources {
+    margin-top: 14px;
+    color: #e8f4f8;
+    line-height: 1.6;
+}
+
+.research-sources summary {
+    cursor: pointer;
+    color: #a8d8ea;
+    padding: 6px 0;
+}
+
+.research-sources ol {
+    padding-left: 22px;
+    margin: 8px 0;
+}
+
+.research-sources li + li {
+    margin-top: 10px;
+}
+
+.research-sources a {
+    color: #b3ddff;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+}
+
+.research-sources p + p,
+.practice-safety p + p {
+    margin-top: 10px;
+}
+
+.practice-safety {
+    border-left: 3px solid #a8d8ea;
+    padding-left: 14px;
+}
+
+.protocol-note {
+    color: #e8f4f8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
 .steps-list {
     list-style: none;
     padding: 0;
