@@ -102,6 +102,7 @@ const App = {
     initModules() {
         BackgroundManager.init(document.getElementById('background-animation'));
         BreathGuide.init();
+        AudioUI.init();
     },
 
     /**
@@ -190,8 +191,7 @@ const App = {
 
         // Sound toggle
         this.elements.soundToggle.addEventListener('click', () => {
-            const enabled = AudioManager.toggle();
-            this.elements.soundToggle.textContent = enabled ? '🔊' : '🔇';
+            AudioManager.toggle();
         });
 
         // Navigation
@@ -474,6 +474,7 @@ const App = {
     refreshLanguage() {
         this.renderRecommendation();
         BreathGuide.refreshMode();
+        AudioUI.refresh();
         if (this.state.isRunning && this.session) {
             this.renderPhaseTrack();
             this.lastPhaseKey = null;
@@ -503,7 +504,7 @@ const App = {
         const tech = this.state.selectedTechnique;
         if (!tech) return;
         this.session?.stop(false);
-        try { AudioManager.init(); } catch {}
+        AudioManager.startSession();
         this.state.isRunning = true;
         this.state.isPaused = false;
         this.state.totalCycles = Number(this.elements.repetitionsSlider.value);
@@ -537,6 +538,7 @@ const App = {
     renderSession(snapshot) {
         if (!this.state.isRunning) return;
         this.state.isPaused = snapshot.mode === 'paused';
+        AudioManager.setPaused(this.state.isPaused);
         this.elements.breathingTitle.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
         this.elements.currentCycleEl.textContent = snapshot.cycle;
         this.elements.totalCyclesEl.textContent = snapshot.cycles;
@@ -576,6 +578,7 @@ const App = {
 
     stopExercise() {
         this.session?.stop(false);
+        AudioManager.stop();
         this.state.isRunning = false;
         this.state.isPaused = false;
         this.releaseWakeLock();
@@ -587,6 +590,7 @@ const App = {
         this.state.isRunning = false;
         this.state.isPaused = false;
         this.releaseWakeLock();
+        AudioManager.stop();
         AudioManager.playComplete();
         this.elements.statTechnique.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
         this.elements.statCycles.textContent = snapshot.cycles;

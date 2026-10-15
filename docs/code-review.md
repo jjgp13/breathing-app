@@ -1,5 +1,13 @@
 # Code review and validation
 
+## Optional soundscapes update
+
+Added local public-domain rain, a CC0 stream recording, and original synthesized ambient tones with separate background/cue volume controls, a global mute, a 15-second preview, and in-app credits. No sound or recording download starts on page load. Files and permission provenance are recorded under `assets/audio/`. Background audio is off by default; sound choices are preference settings rather than additional health claims.
+
+The audio graph uses quieter envelopes and ramps instead of delayed JavaScript chimes. Session pauses clear scheduled cues and fade out the ambience; stop/restart, previews, track changes, and hidden-page pauses invalidate pending playback. Recorded loops blend their endpoints and use bounded RMS/peak levels. The app does not request microphone access or use an external streaming service.
+
+Eight additional tests cover silent initialization, bounded saved preferences, pause/resume and mute, canceling pending downloads, rapid track switches, preview expiry/cancellation, failed-load recovery, muted-to-cues-only playback, and loop amplitude/seams. Total: 22 tests. Browser verification includes actual OGG decoding/playback state, sound controls at phone width, translated labels, and session integration. Real-phone listening and battery evaluation remain useful follow-ups.
+
 ## October 15 update: check-in and shared breathing guide
 
 The earlier review below records the original app and first content release. The current release adds nine practices, an optional feeling/time/hold check-in, and a Blender-authored 3D bloom with an SVG alternative. Check-in rules are transparent product choices, not a clinically validated matching system. No health data is read or transmitted.

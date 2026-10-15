@@ -320,6 +320,36 @@ const BreatheLocales = {
       "estimated": "Guided breathing time",
       "preview": "The bloom opens as you inhale and closes as you exhale.",
       "pausedLabel": "Resume when ready"
+    },
+    "audio": {
+      "title": "Sound & music",
+      "close": "Close sound settings",
+      "intro": "Choose a quiet background for your practice. Start low and adjust to comfort. Your choice is saved on this device.",
+      "background": "Background sound",
+      "tracks": {
+        "off": "No background",
+        "rain": "Soft rain",
+        "stream": "Flowing stream",
+        "tones": "Soft ambient tones"
+      },
+      "ambientVolume": "Background volume",
+      "cueVolume": "Breathing cues",
+      "preview": "Preview for 15 seconds",
+      "stopPreview": "Stop preview",
+      "mute": "Mute all sounds",
+      "unmute": "Unmute sounds",
+      "credits": "Sound credits & licenses",
+      "publicDomain": "Public domain",
+      "originalTones": "Ambient tones and breathing chimes are created by the app, without a third-party music recording.",
+      "recordingNote": "Nature recordings are hosted with the app and blended for smooth loops. No streaming service or account is needed.",
+      "status": {
+        "ready": "Background sound starts with your practice. Set breathing cues to 0% to turn off the chimes.",
+        "loading": "Preparing your sound…",
+        "playing": "Playing softly. You can change the sound or volume at any time.",
+        "paused": "Sound is paused with your practice.",
+        "muted": "All sounds are muted. Use the speaker button to unmute.",
+        "unavailable": "This sound could not play. Try another sound or continue in silence."
+      }
     }
   },
   "es": {
@@ -642,6 +672,36 @@ const BreatheLocales = {
       "estimated": "Tiempo de respiración guiada",
       "preview": "La flor se abre al inhalar y se cierra al exhalar.",
       "pausedLabel": "Continúa cuando estés preparado"
+    },
+    "audio": {
+      "title": "Sonido y música",
+      "close": "Cerrar ajustes de sonido",
+      "intro": "Elige un fondo tranquilo para tu práctica. Empieza con un volumen bajo y ajústalo a tu comodidad. Tu elección se guarda en este dispositivo.",
+      "background": "Sonido de fondo",
+      "tracks": {
+        "off": "Sin fondo",
+        "rain": "Lluvia suave",
+        "stream": "Arroyo",
+        "tones": "Tonos ambientales suaves"
+      },
+      "ambientVolume": "Volumen del fondo",
+      "cueVolume": "Señales respiratorias",
+      "preview": "Escuchar durante 15 segundos",
+      "stopPreview": "Detener muestra",
+      "mute": "Silenciar todos los sonidos",
+      "unmute": "Activar sonidos",
+      "credits": "Créditos y licencias",
+      "publicDomain": "Dominio público",
+      "originalTones": "La app crea los tonos ambientales y las señales respiratorias sin usar grabaciones musicales de terceros.",
+      "recordingNote": "Las grabaciones naturales se alojan con la app y se mezclan para repetirse suavemente. No necesitas un servicio de música ni una cuenta.",
+      "status": {
+        "ready": "El fondo empieza con tu práctica. Pon las señales respiratorias al 0% para silenciar los cambios de fase.",
+        "loading": "Preparando el sonido…",
+        "playing": "Reproduciendo suavemente. Puedes cambiar el sonido o el volumen cuando quieras.",
+        "paused": "El sonido está en pausa con tu práctica.",
+        "muted": "Todos los sonidos están silenciados. Usa el botón del altavoz para activarlos.",
+        "unavailable": "No se pudo reproducir este sonido. Prueba otro o continúa en silencio."
+      }
     }
   }
 };

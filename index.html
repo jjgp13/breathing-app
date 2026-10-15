@@ -16,12 +16,40 @@
     <link rel="stylesheet" href="css/backgrounds.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/guide.css?v=4">
+    <link rel="stylesheet" href="css/audio.css?v=1">
 </head>
 <body>
     <!-- Global Controls -->
     <button class="sound-toggle" id="soundToggle" title="Toggle Sound">🔊</button>
     <button class="back-btn" id="backBtn" title="Back">←</button>
     
+    <button type="button" class="audio-settings-toggle" id="audioSettingsToggle" data-open-audio aria-haspopup="dialog"><span aria-hidden="true">♫</span><span class="sr-only" data-i18n="audio.title"></span></button>
+    <dialog id="soundDialog" class="sound-dialog" aria-labelledby="soundTitle" aria-describedby="soundIntro">
+        <button type="button" id="closeSounds" class="close-sounds"><span aria-hidden="true">×</span><span class="sr-only" data-i18n="audio.close"></span></button>
+        <h2 id="soundTitle" data-i18n="audio.title"></h2>
+        <p id="soundIntro" data-i18n="audio.intro"></p>
+        <label for="ambientSound" data-i18n="audio.background"></label>
+        <select id="ambientSound">
+            <option value="off" data-i18n="audio.tracks.off"></option>
+            <option value="rain" data-i18n="audio.tracks.rain"></option>
+            <option value="stream" data-i18n="audio.tracks.stream"></option>
+            <option value="tones" data-i18n="audio.tracks.tones"></option>
+        </select>
+        <label for="ambientVolume"><span data-i18n="audio.ambientVolume"></span> <output id="ambientVolumeValue" for="ambientVolume">25%</output></label>
+        <input type="range" id="ambientVolume" min="0" max="100" value="25">
+        <label for="cueVolume"><span data-i18n="audio.cueVolume"></span> <output id="cueVolumeValue" for="cueVolume">35%</output></label>
+        <input type="range" id="cueVolume" min="0" max="100" value="35">
+        <button type="button" id="previewSound" class="btn btn-secondary" data-i18n="audio.preview"></button>
+        <p id="audioStatus" role="status" aria-live="polite"></p>
+        <details class="audio-credits">
+            <summary data-i18n="audio.credits"></summary>
+            <p><a href="https://commons.wikimedia.org/wiki/File:Rain.ogg" target="_blank" rel="noopener noreferrer">Rain — ジダネ</a> · <span data-i18n="audio.publicDomain"></span></p>
+            <p><a href="https://commons.wikimedia.org/wiki/File:Swale.ogg" target="_blank" rel="noopener noreferrer">Swale — Siddharth Patil (Ksd5)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener noreferrer">CC0 1.0</a></p>
+            <p data-i18n="audio.originalTones"></p>
+            <p data-i18n="audio.recordingNote"></p>
+        </details>
+    </dialog>
+
     <!-- Language Selector -->
     <div class="lang-selector">
         <select id="langSelector" title="Select Language">
@@ -132,6 +160,7 @@
                 </div>
 
                 <div class="settings">
+                    <div class="audio-entry"><button type="button" data-open-audio aria-haspopup="dialog" data-i18n="audio.title"></button><span id="audioSummary"></span></div>
                     <p class="protocol-note" data-i18n="detail.protocolNote"></p>
                     <p class="session-estimate"><span data-i18n="guide.estimated"></span>: <strong id="sessionDuration"></strong></p>
                     <div class="setting-group">
@@ -209,14 +238,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     
     <!-- JavaScript Modules -->
-    <script src="js/locales.generated.js?v=4"></script>
+    <script src="js/locales.generated.js?v=5"></script>
     <script src="js/i18n.js?v=4"></script>
     <script src="js/techniques.js?v=4"></script>
-    <script src="js/audio.js?v=4"></script>
+    <script src="js/audio.js?v=2"></script>
+    <script src="js/audio-ui.js?v=1"></script>
     <script src="js/backgrounds.js"></script>
     <script src="js/session.js?v=4"></script>
     <script src="js/recommendations.js?v=4"></script>
     <script src="js/breath-guide.js?v=4"></script>
-    <script src="js/app.js?v=4"></script>
+    <script src="js/app.js?v=5"></script>
 </body>
 </html>

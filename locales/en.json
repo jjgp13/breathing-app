@@ -318,5 +318,35 @@
     "estimated": "Guided breathing time",
     "preview": "The bloom opens as you inhale and closes as you exhale.",
     "pausedLabel": "Resume when ready"
+  },
+  "audio": {
+    "title": "Sound & music",
+    "close": "Close sound settings",
+    "intro": "Choose a quiet background for your practice. Start low and adjust to comfort. Your choice is saved on this device.",
+    "background": "Background sound",
+    "tracks": {
+      "off": "No background",
+      "rain": "Soft rain",
+      "stream": "Flowing stream",
+      "tones": "Soft ambient tones"
+    },
+    "ambientVolume": "Background volume",
+    "cueVolume": "Breathing cues",
+    "preview": "Preview for 15 seconds",
+    "stopPreview": "Stop preview",
+    "mute": "Mute all sounds",
+    "unmute": "Unmute sounds",
+    "credits": "Sound credits & licenses",
+    "publicDomain": "Public domain",
+    "originalTones": "Ambient tones and breathing chimes are created by the app, without a third-party music recording.",
+    "recordingNote": "Nature recordings are hosted with the app and blended for smooth loops. No streaming service or account is needed.",
+    "status": {
+      "ready": "Background sound starts with your practice. Set breathing cues to 0% to turn off the chimes.",
+      "loading": "Preparing your sound…",
+      "playing": "Playing softly. You can change the sound or volume at any time.",
+      "paused": "Sound is paused with your practice.",
+      "muted": "All sounds are muted. Use the speaker button to unmute.",
+      "unavailable": "This sound could not play. Try another sound or continue in silence."
+    }
   }
 }

@@ -1,0 +1,22 @@
+.audio-settings-toggle { position:fixed; top:20px; left:80px; z-index:100; width:50px; height:50px; border:1px solid #95bdad55; border-radius:50%; background:#ffffff12; color:#dceee4; font-size:1.4rem; cursor:pointer; backdrop-filter:blur(10px); }
+.audio-entry { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px auto; max-width:540px; padding:12px 16px; border:1px solid #95bdad44; border-radius:14px; background:#102c3caa; }
+.audio-entry > span { color:#a9c8c9; font-size:.85rem; }
+.audio-entry button { color:#dbefdf; border:0; background:none; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.sound-dialog { margin:auto; padding:28px; width:min(480px,calc(100% - 28px)); max-height:calc(100dvh - 32px); overflow-y:auto; border:1px solid #8ab5ab70; border-radius:24px; color:#e0eee7; background:#142b3b; box-shadow:0 24px 100px #0009; text-align:left; }
+.sound-dialog::backdrop { background:#07131cd6; backdrop-filter:blur(6px); }
+.sound-dialog h2 { font-size:1.5rem; padding-right:45px; }
+.sound-dialog > p { color:#bed4d7; font-size:.9rem; line-height:1.6; margin:12px 0 22px; }
+.sound-dialog .close-sounds { position:absolute; top:14px; right:14px; border:0; border-radius:50%; width:44px; height:44px; color:#e2efe8; background:#ffffff12; cursor:pointer; font-size:1.25rem; }
+.sound-dialog label { margin:22px 0 12px; color:#e0eee7; }
+.sound-dialog select { background:#0d2231; border:1px solid #799e95; min-height:48px; }
+.sound-dialog input[type=range] { min-height:32px; background:transparent; accent-color:#b5d6bc; }
+.sound-dialog input[type=range]::-webkit-slider-runnable-track { height:6px; background:#698d835e; border-radius:4px; }
+.sound-dialog input[type=range]::-webkit-slider-thumb { margin-top:-9px; }
+.sound-dialog output { float:right; color:#b5d6bc; font-variant-numeric:tabular-nums; }
+.sound-dialog .btn { margin:20px 0 0; width:100%; padding:12px 18px; }
+.sound-dialog #audioStatus { min-height:2.8em; margin:14px 0; font-size:.84rem; }
+.audio-credits { border-top:1px solid #b0d3c133; padding-top:16px; color:#a9c8c9; font-size:.78rem; line-height:1.6; }
+.audio-credits summary { min-height:44px; cursor:pointer; color:#cfe5d7; }
+.audio-credits p { margin:8px 0; }
+.audio-credits a { color:#bddfd9; }
+@media(max-width:480px){ .audio-settings-toggle { top:10px; left:64px; width:44px; height:44px; } .sound-dialog { padding:24px 20px; } }

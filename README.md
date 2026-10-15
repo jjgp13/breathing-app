@@ -43,6 +43,14 @@ The published web app runs independently of a development computer. Pushes to `m
 
 `js/breath-guide.js` maps phase progress into words, a countdown, a phase strip, and either a simple SVG circle or the 3D bloom. The second inhale in cyclic sighing is shown as a small additional opening. The bloom stays still during holds. Reduced-motion mode uses a stable circle and text without loading WebGL. A failed 3D load falls back to the circle. `js/guide3d.mjs` lazy-loads the small GLB, caps pixel ratio, and seeks its animation from the session clock; it has no independent animation loop.
 
+## Sound and music
+
+Open **♫ Sound & music** from the header or practice settings. Choose no background, soft rain, a flowing stream, or original synthesized ambient tones. Background and breathing-cue volumes are independent; the speaker button mutes everything. Background sound is off by default. A 15-second preview is available before practice; closing settings stops the preview. Changing settings during practice applies immediately.
+
+`js/audio.js` owns one Web Audio graph, cached decoded recordings, gentle fades, normalized crossfaded loops, and cancellable cues. Pause, hidden-tab interruptions, stop, and track changes invalidate pending loads so a late download cannot restart audio. Preferences are saved locally. Recordings are downloaded only when selected for playback; the app hosts them itself and uses no music-streaming account. Session audio is paused when the page is hidden, so this does not provide background playback with the phone locked.
+
+The rain recording is dedicated to the public domain; the stream is CC0. Creator links and permissions appear in the sound panel and [the asset record](assets/audio/README.md). These permissions apply independently of whether the app is monetized. Ambient tones and softer phase chimes contain no external music samples. Choosing an ambient background is a comfort preference, without an added health-effect claim.
+
 ## Blender artwork
 
 The original model and morph animation were generated in Blender 5.2 from `scripts/create-bloom.py`. Editable source: `assets/models/breathing-bloom.blend`; web export: `assets/models/breathing-bloom.glb` (about 133 KiB). It is a pacing metaphor, not anatomical or physiological feedback. To regenerate:

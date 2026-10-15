@@ -318,5 +318,35 @@
     "estimated": "Tiempo de respiración guiada",
     "preview": "La flor se abre al inhalar y se cierra al exhalar.",
     "pausedLabel": "Continúa cuando estés preparado"
+  },
+  "audio": {
+    "title": "Sonido y música",
+    "close": "Cerrar ajustes de sonido",
+    "intro": "Elige un fondo tranquilo para tu práctica. Empieza con un volumen bajo y ajústalo a tu comodidad. Tu elección se guarda en este dispositivo.",
+    "background": "Sonido de fondo",
+    "tracks": {
+      "off": "Sin fondo",
+      "rain": "Lluvia suave",
+      "stream": "Arroyo",
+      "tones": "Tonos ambientales suaves"
+    },
+    "ambientVolume": "Volumen del fondo",
+    "cueVolume": "Señales respiratorias",
+    "preview": "Escuchar durante 15 segundos",
+    "stopPreview": "Detener muestra",
+    "mute": "Silenciar todos los sonidos",
+    "unmute": "Activar sonidos",
+    "credits": "Créditos y licencias",
+    "publicDomain": "Dominio público",
+    "originalTones": "La app crea los tonos ambientales y las señales respiratorias sin usar grabaciones musicales de terceros.",
+    "recordingNote": "Las grabaciones naturales se alojan con la app y se mezclan para repetirse suavemente. No necesitas un servicio de música ni una cuenta.",
+    "status": {
+      "ready": "El fondo empieza con tu práctica. Pon las señales respiratorias al 0% para silenciar los cambios de fase.",
+      "loading": "Preparando el sonido…",
+      "playing": "Reproduciendo suavemente. Puedes cambiar el sonido o el volumen cuando quieras.",
+      "paused": "El sonido está en pausa con tu práctica.",
+      "muted": "Todos los sonidos están silenciados. Usa el botón del altavoz para activarlos.",
+      "unavailable": "No se pudo reproducir este sonido. Prueba otro o continúa en silencio."
+    }
   }
 }
