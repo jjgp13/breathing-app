@@ -15,7 +15,7 @@ if(process.argv.includes('--models')){
     fs.writeFileSync(path.join(root,generated),manifest);
 }else{
     if(read(generated)!==manifest)throw new Error('Model versions are stale. Run npm run build.');
-    const guideFile='js/breath-guide.js',currentGuide=read(guideFile);
+    const guideFile='js/movement-lesson.js',currentGuide=read(guideFile);
     const guide=currentGuide.replace(/js\/vendor\/guide3d\.bundle\.js\?v=[^']+/,`js/vendor/guide3d.bundle.js?v=${hash(read('js/vendor/guide3d.bundle.js'))}`);
     const currentHtml=read('index.html');
     const html=currentHtml.replace(/((?:src|href)=")((?:js|css)\/[^"?]+)(?:\?[^"\s]*)?"/g,(_,attribute,file)=>{

@@ -102,6 +102,7 @@ const App = {
     initModules() {
         BackgroundManager.init(document.getElementById('background-animation'));
         BreathGuide.init();
+        MovementLesson.init();
         AudioUI.init();
     },
 
@@ -351,6 +352,7 @@ const App = {
     renderTechniqueDetail() {
         const tech = this.state.selectedTechnique;
         if (!tech) return;
+        document.getElementById('movementLessonEntry').hidden=tech.id!=='diaphragmatic';
         const techId = tech.id;
         
         // Get translated content
@@ -473,7 +475,8 @@ const App = {
 
     refreshLanguage() {
         this.renderRecommendation();
-        BreathGuide.refreshMode();
+        BreathGuide.refresh();
+        MovementLesson.refresh();
         AudioUI.refresh();
         if (this.state.isRunning && this.session) {
             this.renderPhaseTrack();

@@ -39,9 +39,11 @@ The published web app runs independently of a development computer. Pushes to `m
 
 `js/app.js` coordinates the four screens. `js/session.js` owns one cancelable clock for preparation, phases, cues, and visuals. It preserves frame overshoot, pauses when hidden or interrupted, rejects stale callbacks, and counts actual practice time. Holds can end immediately with **Breathe now**. A screen wake lock is requested during active practice when supported.
 
-`js/recommendations.js` uses transparent rules based on the selected feeling, time, and hold preference. These are wellness suggestions, not a validated clinical matching algorithm. Advanced hyperventilation/retention practices are never recommended automatically. Check-ins remain in memory; only language and visual preferences are saved locally. No health records, session history, account, or wearable connection are implemented.
+`js/recommendations.js` uses transparent rules based on the selected feeling, time, and hold preference. These are wellness suggestions, not a validated clinical matching algorithm. Advanced hyperventilation/retention practices are never recommended automatically. Check-ins remain in memory; language and audio preferences are saved locally. No health records, session history, account, or wearable connection are implemented.
 
-`js/breath-guide.js` maps phase progress into words, a countdown, a phase strip, and a technique-specific 2D or 3D guide. `js/guide-patterns.js` creates one shared pose for both renderers; `js/guide2d.js` draws the nine SVG guides, and `js/guide-poses.mjs` poses the named Blender parts. A failed 3D load falls back to the matching 2D guide. Reduced motion keeps that technique's static illustration and text without loading WebGL. The 3D renderer caps pixel ratio and frame rate, has no independent animation clock, and disposes the previous model when the technique changes. [The visual guide map](docs/visual-guides.md) explains all nine pairs.
+`js/breath-guide.js` maps phase progress into words, a countdown, a phase strip, and a technique-specific **2D guide** for every practice. `js/guide-patterns.js` derives each pose from the session state; `js/guide2d.js` draws the nine SVG guides. Phase-specific captions explain the movement, and a small progress bar shows time within the current phase. Reduced motion keeps a still illustration and the text/countdown. Old saved 3D preferences are ignored; timed practice never loads WebGL.
+
+Only diaphragmatic breathing offers an optional **Explore the movement in 3D** lesson in its detail screen. `js/movement-lesson.js` loads the renderer on demand, compares inhale/exhale positions, and switches between front and side views to show the diaphragm dome and abdominal movement. There is no autoplay, breathing timer, or audio in this lesson. Reduced motion and WebGL failures retain a usable 2D comparison. Closing it releases GPU resources and invalidates pending loads. [The visual guide map](docs/visual-guides.md) explains the purpose and limits.
 
 ## Sound and music
 
@@ -53,14 +55,14 @@ The rain recording is dedicated to the public domain; the stream is CC0. Creator
 
 ## Blender artwork
 
-Nine original models and preview animations were authored in Blender 5.2 using `scripts/create-technique-models.py`. Editable source: `assets/models/techniques/technique-guides.blend`; individual web exports are in the same directory. The saved scene arranges all nine designs together. The app poses their named parts directly from breathing phases, rather than playing their preview clips at a fixed speed. To regenerate:
+The active 3D lesson is an original Blender 5.2 schematic with a domed diaphragm surface, chest references, and an abdominal shape. Editable source: `assets/models/techniques/diaphragm-lesson.blend`. To regenerate:
 
 ```powershell
-& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --python scripts/create-technique-models.py
+& 'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe' --background --python scripts/create-diaphragm-lesson.py
 npm run build
 ```
 
-The earlier bloom source and generator remain as an archived art study; the practice screen uses the nine new guides. These visuals explain pacing and movement; they do not measure respiration or HRV. Three.js's MIT license is included at `assets/THREE-LICENSE.txt`. The repository's own distribution/contribution license still needs an owner decision.
+The earlier bloom and nine-model gallery remain as archived art studies. Their decorative 3D guides are no longer exposed or loaded by the app. The old `create-technique-models.py` generator recreates the gallery; run the diaphragm lesson generator afterward to restore the active lesson export. These visuals do not measure respiration or HRV. Three.js's MIT license is included at `assets/THREE-LICENSE.txt`. The repository's own distribution/contribution license still needs an owner decision.
 
 ## Research and next steps
 

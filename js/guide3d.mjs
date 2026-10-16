@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { prepareModel, poseModel, requiredParts } from './guide-poses.mjs';
+import { prepareModel, poseModel } from './guide-poses.mjs';
 import modelVersions from './model-versions.generated.json';
 
 window.Breathe3D = {
-    async create(host,onFailure,id='resonance') {
-        if(!requiredParts[id])throw new Error('Unknown breathing guide');
+    async create(host,onFailure,id='diaphragmatic') {
+        if(id!=='diaphragmatic')throw new Error('3D is reserved for the diaphragm movement lesson');
         const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
         renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
         renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -16,7 +16,7 @@ window.Breathe3D = {
         host.replaceChildren(renderer.domElement);
         const scene=new THREE.Scene();
         const camera=new THREE.PerspectiveCamera(35,1,.1,30);
-        camera.position.set(1.15,.65,7.2);camera.lookAt(0,0,0);
+        camera.position.set(0,.15,6.7);camera.lookAt(0,.1,0);
         scene.add(new THREE.HemisphereLight(0xd3fff0,0x163542,2.1));
         const key=new THREE.DirectionalLight(0xfff1d5,3);key.position.set(2,4,5);scene.add(key);
         const rim=new THREE.DirectionalLight(0x8ce3ff,2.4);rim.position.set(-3,1,-2);scene.add(rim);
@@ -53,6 +53,11 @@ window.Breathe3D = {
         }catch(error){destroy();throw error;}
         let lastRender=-Infinity,lastPose=null;
         return {
+            setView(view) {
+                if(disposed)return;
+                camera.position.set(...(view==='side'?[6.3,.35,1.5]:[0,.15,6.7]));
+                camera.lookAt(0,.1,0);resize();
+            },
             update(frame,timestamp=performance.now(),force=false){
                 if(disposed||document.hidden||frame.id!==id)return;
                 const signature=JSON.stringify(frame);

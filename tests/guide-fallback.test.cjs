@@ -1,82 +1,70 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
 const GuidePatterns=require('../js/guide-patterns.js');
 const catalog=require('../js/techniques.js');
+const en=require('../locales/en.json');
 
-function setup({ reduced = false, reject3d = false, create } = {}) {
-    const nodes = new Map();
-    const element = () => ({ hidden:false, style:{}, dataset:{}, textContent:'', disabled:false,
-        attrs:{}, classList:{ toggle(){} },
-        setAttribute(key,value){this.attrs[key]=value;},
-        toggleAttribute(key,value){if(value)this.attrs[key]='';else delete this.attrs[key];}
-    });
-    for (const id of ['guideStage','model3d','simpleGuide','guideTimer','guideModeStatus','guideVisualName','guideVisualDetail']) nodes.set(id, element());
-    const buttons = ['3d','simple'].map(mode => ({...element(),dataset:{guideMode:mode},addEventListener(){}}));
-    let attempts = 0, renders = 0, destroyed=0;
-    const frames=[],loadedIds=[];
-    const events = new Map();
-    const context = {
-        document:{ getElementById:id=>nodes.get(id), querySelectorAll:()=>buttons },
-        window:{ addEventListener:(name,fn)=>events.set(name,fn), matchMedia:()=>({matches:reduced,addEventListener(){}}),
-            Breathe3D:{async create(host,failed,id){ attempts++;loadedIds.push(id); if(reject3d)throw new Error('No WebGL'); return create ? create() : {update(){renders++;},destroy(){destroyed++;}};}} },
-        localStorage:{getItem(){throw new Error('Storage disabled');}},
-        I18n:{t:key=>key},performance:{now:()=>100},GuidePatterns,
-        Guide2D:{create:()=>({update:frame=>frames.push(frame),destroy(){}})}
+function setup(reduced=false) {
+    const nodes=new Map();let motionChanged;
+    const frames=[],mounted=[];
+    const context={
+        document:{getElementById(id){
+            if(!nodes.has(id))nodes.set(id,{dataset:{},style:{},textContent:'',classList:{toggle(){}}});
+            return nodes.get(id);
+        }},
+        window:{matchMedia:()=>({matches:reduced,addEventListener:(type,fn)=>{motionChanged=fn;}}),
+            Breathe3D:{create(){throw new Error('Practice must not load WebGL');}}},
+        localStorage:{getItem:()=> '3d'},
+        I18n:{t:(key,args)=>key==='guide.breathCount'?`Breath ${args.count}`:key.split('.').reduce((v,k)=>v?.[k],en)},
+        GuidePatterns,performance:{now:()=>100},
+        Guide2D:{create:(host,id)=>{mounted.push(id);return {update:frame=>frames.push(frame),destroy(){}};}}
     };
-    const guide = vm.runInNewContext(fs.readFileSync('js/breath-guide.js','utf8')+'\nBreathGuide',context);
+    const guide=vm.runInNewContext(fs.readFileSync('js/breath-guide.js','utf8')+'\nBreathGuide',context);
     guide.init();
-    return {guide,nodes,buttons,events,frames,loadedIds,attempts:()=>attempts,renders:()=>renders,destroyed:()=>destroyed};
+    return {guide,nodes,frames,mounted,motionChanged:matches=>motionChanged({matches})};
 }
+const snapshot=(tech,index=0,progress=.5,mode='running')=>({phase:tech.phases[index],phaseIndex:index,progress,remaining:2,preparing:false,mode});
 
-test('reduced motion uses a stable technique guide, keeps the countdown, and never starts WebGL', () => {
-    const h=setup({reduced:true});
-    h.guide.update({preparing:false,phaseIndex:0,phase:{type:'inhale'},progress:.75,remaining:1,mode:'running'}, catalog.box);
-    assert.equal(h.attempts(),0);
-    assert.equal(h.frames[0].volume,.45);
-    assert.equal(h.frames[0].boxStep,0);
-    assert.equal(h.nodes.get('guideTimer').textContent,1);
-    assert.equal(h.buttons[0].disabled,true);
-});
-
-test('a failed 3D load leaves a working simple guide without a retry loop', async () => {
-    const h=setup({reject3d:true}); await h.guide.load(); await h.guide.load();
-    assert.equal(h.attempts(),1);
-    assert.equal(h.nodes.get('model3d').hidden,true);
-    assert.equal('hidden' in h.nodes.get('simpleGuide').attrs,false);
-    assert.equal(h.nodes.get('guideModeStatus').textContent,'guide.fallback');
-});
-
-test('loading 3D explicitly hides the SVG fallback and switching modes restores it', async () => {
-    const h=setup(); await h.guide.load();
-    assert.equal(h.nodes.get('model3d').hidden,false);
-    assert.equal('hidden' in h.nodes.get('simpleGuide').attrs,true);
-    h.guide.mode='simple'; h.guide.refreshMode();
-    assert.equal(h.nodes.get('model3d').hidden,true);
-    assert.equal('hidden' in h.nodes.get('simpleGuide').attrs,false);
-    h.guide.update({preparing:false,phaseIndex:0,phase:{type:'inhale'},progress:.5,remaining:1,mode:'running'}, catalog.box);
-    assert.equal(h.renders(),0);
-});
-
-test('switching techniques replaces the old model and mounts the matching 2D guide',async()=>{
+test('all practices use matching 2D guides even with an old saved 3D preference',()=>{
     const h=setup();
-    const snapshot={preparing:false,phaseIndex:0,phase:{type:'inhale'},progress:.5,remaining:1,mode:'running'};
-    h.guide.update(snapshot,catalog.box);await h.guide.loading;
-    h.guide.update(snapshot,catalog.diaphragmatic);await h.guide.loading;
-    assert.deepEqual(h.loadedIds,['box','diaphragmatic']);
-    assert.equal(h.destroyed(),1);
-    assert.equal(h.guide.techniqueId,'diaphragmatic');
-    assert.equal(h.nodes.get('guideVisualName').textContent,'guide.visuals.diaphragmatic.name');
+    for(const tech of Object.values(catalog))h.guide.update(snapshot(tech),tech);
+    assert.deepEqual(h.mounted,Object.keys(catalog));
+    assert.equal(h.nodes.has('model3d'),false);
+    assert.equal(h.nodes.get('guideTimer').textContent,2);
 });
 
-test('navigating away while a model is loading disposes the late model', async () => {
-    let resolve, destroyed=0;
-    const h=setup({create:()=>new Promise(done=>{resolve=done;})});
-    const pending=h.guide.load();
-    h.events.get('pagehide')();
-    resolve({destroy(){destroyed++;}});
-    await pending;
-    assert.equal(destroyed,1);
-    assert.equal(h.guide.model,null);
+test('all phase cues are translated and distinguish the second inhale from the exhale',()=>{
+    const h=setup(),sigh=catalog.cyclicSighing;
+    for(const tech of Object.values(catalog))for(let i=0;i<tech.phases.length;i++){
+        h.guide.update(snapshot(tech,i),tech);
+        assert.ok(h.nodes.get('guideVisualDetail').textContent,`${tech.id}:${i}`);
+    }
+    h.guide.update(snapshot(sigh,1),sigh);
+    assert.match(h.nodes.get('guideVisualDetail').textContent,/2 · One small top-up/);
+    h.guide.update(snapshot(sigh,2),sigh);
+    assert.match(h.nodes.get('guideVisualDetail').textContent,/3 · Both chambers release/);
+});
+
+test('pause preserves the pose and phase progress while clearing active movement instructions',()=>{
+    const h=setup(),tech=catalog.box;
+    h.guide.update(snapshot(tech),tech);
+    const volume=h.frames.at(-1).volume;
+    h.guide.update(snapshot(tech,0,.5,'paused'),tech);
+    assert.equal(h.frames.at(-1).volume,volume);
+    assert.equal(h.nodes.get('guidePhaseProgress').style.transform,'scaleX(0.5)');
+    assert.equal(h.nodes.get('guideVisualDetail').textContent,'');
+    h.guide.clear();assert.equal(h.guide.lastSnapshot,null);
+});
+
+test('changing reduced-motion preference stabilizes the illustration and keeps the countdown',()=>{
+    const h=setup(),tech=catalog.box;
+    h.guide.update(snapshot(tech),tech);
+    h.motionChanged(true);
+    assert.equal(h.frames.at(-1).volume,.45);
+    assert.equal(h.frames.at(-1).boxStep,0);
+    assert.equal(h.nodes.get('guidePhaseProgress').style.transform,'scaleX(0)');
+    assert.equal(h.nodes.get('guideTimer').textContent,2);
+    assert.match(h.nodes.get('guideModeStatus').textContent,/Reduced motion/);
 });

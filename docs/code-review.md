@@ -1,5 +1,15 @@
 # Code review and validation
 
+## October 16: purposeful guidance
+
+Timed practice now always uses the technique's 2D guide. Removed 3D mode selection and preference restoration from the session path, added phase-specific explanations and a phase progress bar, and retained still diagrams for reduced motion. Existing gentle pacing, audio, recommendations, and hold controls are preserved.
+
+The only active 3D experience is an optional diaphragmatic-breathing lesson before practice. A new Blender dome surface supports front/side comparisons of the inhale/exhale positions. It has no autoplay, timer, or audio. The model is simplified and exaggerated, with an explanation that abdominal movement is not air filling the belly and a link to NHLBI mechanics. Teaching value remains a usability hypothesis.
+
+The lesson handles load failures, close/reopen races, reduced-motion changes, and GPU cleanup. Its 2D comparison remains usable when WebGL is unavailable. Old decorative models remain archived without client requests. Content hashing now versions the bundle loader in `movement-lesson.js`.
+
+Verification: all 34 tests pass, including old-preference migration to 2D, every phase caption in both languages, paused/reduced-motion guidance, non-autoplay, failure fallback, late-model disposal, and renderer release. Browser checks covered front/side and inhale/exhale comparisons, close/reopen cleanup, zero canvases during practice, English/Spanish labels, diaphragmatic and sighing sessions, and 320/390-pixel layouts without horizontal overflow. No warning/error logs appeared in those flows. Real-device and assistive-technology checks remain follow-ups. The following sections record earlier releases and baseline findings.
+
 ## Technique-specific visual guides update
 
 Replaced the shared bloom/circle on the practice screen with nine pairs of technique-specific Blender/SVG guides. [The guide map](visual-guides.md) records the design rationale and source files. Both modes use the same pose data and session clock. The original bloom assets are retained as an archived art study.

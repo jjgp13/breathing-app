@@ -19,113 +19,55 @@ const GuideMath = {
 };
 
 const BreathGuide = {
-    mode: '3d', model: null, loading: null, failed: false, lastSnapshot: null, lifecycle: 0,
+    lastSnapshot: null,
     techniqueId:null, svgGuide:null, last2DAt:-Infinity,
 
     init() {
         this.stage = document.getElementById('guideStage');
-        this.host = document.getElementById('model3d');
         this.simple = document.getElementById('simpleGuide');
         this.name = document.getElementById('guideVisualName');
         this.detail = document.getElementById('guideVisualDetail');
         this.timer = document.getElementById('guideTimer');
         this.status = document.getElementById('guideModeStatus');
+        this.progress = document.getElementById('guidePhaseProgress');
         this.motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
         this.reduced = this.motionPreference.matches;
-        try { this.mode = localStorage.getItem('breathe-guide') || '3d'; } catch {}
-        if (!['3d', 'simple'].includes(this.mode)) this.mode = '3d';
         this.motionPreference.addEventListener('change', event => {
             this.reduced = event.matches;
-            this.refreshMode();
-            if (this.lastSnapshot) this.update(...this.lastSnapshot);
+            this.refresh();
         });
-        document.querySelectorAll('[data-guide-mode]').forEach(button => {
-            button.addEventListener('click', () => {
-                this.mode = button.dataset.guideMode;
-                try { localStorage.setItem('breathe-guide', this.mode); } catch {}
-                this.refreshMode();
-                this.last2DAt=-Infinity;
-                if (this.lastSnapshot) this.update(...this.lastSnapshot);
-            });
-        });
-        window.addEventListener('pagehide', () => {
-            this.lifecycle++;
-            this.model?.destroy(); this.model = null; this.loading = null;
-        });
-        window.addEventListener('pageshow', () => this.refreshMode());
-        this.refreshMode();
+        this.refresh();
     },
 
-    async load() {
-        if (this.loading || this.model || this.failed || this.reduced || this.mode !== '3d') return;
-        const lifecycle = this.lifecycle;
-        this.loading = (async () => {
-            if (!window.Breathe3D) {
-                await new Promise((resolve, reject) => {
-                    const script = document.createElement('script');
-                    script.src = 'js/vendor/guide3d.bundle.js?v=6304f3f3ab4c4a34';
-                    script.onload = resolve;
-                    script.onerror = reject;
-                    document.head.appendChild(script);
-                });
-            }
-            const model = await window.Breathe3D.create(this.host, () => {
-                if (lifecycle !== this.lifecycle) return;
-                this.model = null;
-                this.failed = true;
-                this.refreshMode();
-            },this.techniqueId||'resonance');
-            if (lifecycle !== this.lifecycle) { model.destroy(); return; }
-            this.model = model;
-            this.refreshMode();
-            if (this.lastSnapshot) this.update(...this.lastSnapshot);
-        })().catch(() => {
-            if (lifecycle !== this.lifecycle) return;
-            this.failed = true;
-            this.refreshMode();
-        }).finally(() => { if (lifecycle === this.lifecycle) this.loading = null; });
-        return this.loading;
-    },
-
-    refreshMode() {
-        const use3d = this.mode === '3d' && !this.reduced && !this.failed && !!this.model;
-        this.host.hidden = !use3d;
-        this.simple.toggleAttribute('hidden', use3d);
-        document.querySelectorAll('[data-guide-mode]').forEach(button => {
-            button.setAttribute('aria-pressed', String(button.dataset.guideMode === (use3d ? '3d' : 'simple')));
-            button.disabled = button.dataset.guideMode === '3d' && (this.reduced || this.failed);
-        });
+    refresh(redraw=true) {
         const description=this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.description`):'';
-        const note=this.reduced?I18n.t('guide.reduced'):this.failed?I18n.t('guide.fallback'):'';
+        const note=this.reduced?I18n.t('guide.reduced'):'';
         this.status.textContent=[description,note].filter(Boolean).join(' ');
         this.name.textContent=this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.name`):'';
-        if (this.mode === '3d' && !this.model && !this.reduced && !this.failed && this.lastSnapshot) this.load();
+        if (redraw && this.lastSnapshot) { this.last2DAt=-Infinity; this.update(...this.lastSnapshot); }
     },
 
     update(snapshot, technique) {
         this.lastSnapshot = [snapshot, technique];
         if(this.techniqueId!==technique.id){
-            this.lifecycle++;
-            this.model?.destroy();this.model=null;this.loading=null;this.failed=false;
             this.techniqueId=technique.id;
             this.svgGuide?.destroy();this.svgGuide=Guide2D.create(this.simple,technique.id);
             this.last2DAt=-Infinity;
             this.stage.dataset.technique=technique.id;
-            this.refreshMode();
+            this.refresh(false);
         }
         const frame=GuidePatterns.sample(technique,snapshot,this.reduced);
         this.timer.textContent = Math.ceil(snapshot.remaining);
-        const use3d=this.mode==='3d'&&!this.reduced&&!this.failed&&!!this.model;
         const now=performance.now();
         const phaseKey=[snapshot.mode,snapshot.phaseIndex,snapshot.preparing].join(':');
-        if(!use3d&&(now-this.last2DAt>=32||phaseKey!==this.last2DPhase)){
+        if(now-this.last2DAt>=32||phaseKey!==this.last2DPhase){
             this.svgGuide.update(frame);this.last2DAt=now;this.last2DPhase=phaseKey;
+            this.progress.style.transform=`scaleX(${this.reduced||snapshot.preparing?0:frame.progress})`;
         }
-        this.detail.textContent=frame.breath?I18n.t('guide.breathCount',{count:frame.breath}):'';
+        const phaseCue=snapshot.preparing||snapshot.mode==='paused'?'':I18n.t(`guide.visualCues.${technique.id}.${frame.phase}`);
+        this.detail.textContent=[frame.breath?I18n.t('guide.breathCount',{count:frame.breath}):'',phaseCue].filter(Boolean).join(' · ');
         this.stage.dataset.phase = snapshot.preparing ? 'preparing' : snapshot.phase.type;
         this.stage.classList.toggle('is-paused', snapshot.mode === 'paused');
-        if(use3d)this.model.update(frame);
-        if (!this.model && this.mode === '3d' && !this.failed && !this.reduced) this.load();
     },
 
     clear() {

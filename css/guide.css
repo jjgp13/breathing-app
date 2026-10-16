@@ -57,8 +57,8 @@ button:disabled { opacity: .45; cursor: default; }
 .guided-session .progress-info { margin: 16px 0; }
 .guided-session .controls { margin: 12px auto 22px; display: flex; justify-content: center; gap: 12px; }
 .guided-session .controls .btn { margin: 0; min-width: 110px; }
-.guide-mode { display: flex; justify-content: center; gap: 8px; }
-.guide-mode button { padding: 8px 14px; font-size: .8rem; }
+.guide-phase-progress {max-width:180px;height:3px;background:#a9c4c726;margin:0 auto 14px;border-radius:3px;overflow:hidden;}
+.guide-phase-progress span {display:block;width:100%;height:100%;background:#b9d9cc;transform:scaleX(0);transform-origin:left;}
 .guide-mode-status { color: #a9c4c7; font-size: .73rem; margin: 10px 0 14px; }
 .comfort-note { max-width: 510px; margin: auto; }
 @media (max-width: 480px) {
@@ -82,7 +82,7 @@ button:disabled { opacity: .45; cursor: default; }
 
 .guide-visual-name {color:#b9d9cc;font-size:.76rem;letter-spacing:.05em;margin:10px 0 0;}
 .guide-visual-detail {color:#dbcead;font-size:.8rem;min-height:1.4em;margin:0 0 6px;font-variant-numeric:tabular-nums;}
-.guide-visual-detail:empty {display:none;}
+.guide-visual-detail {min-height:2.5em;line-height:1.45;max-width:440px;margin:0 auto 8px;}
 .technique-2d {position:absolute;inset:0 0 38px;display:flex;justify-content:center;align-items:center;}
 .technique-svg {display:block;width:100%;height:100%;max-width:360px;overflow:visible;}
 .technique-svg text {fill:#cfe4de;font:14px 'Segoe UI',sans-serif;text-anchor:middle;}
@@ -103,3 +103,28 @@ button:disabled { opacity: .45; cursor: default; }
 .visual-line.tone0 {stroke:#8dccb4;}.visual-line.tone1 {stroke:#d9b678;}.visual-line.tone2 {stroke:#b6a0db;}.visual-line.tone3 {stroke:#88b6e8;}
 .visual-fill.tone2 {fill:#a78bce;}
 @media(max-width:480px){.guide-stage{height:260px;}.guide-cue{min-height:3em;}.guide-mode-status{min-height:3em;line-height:1.55;}}
+
+.movement-lesson-entry {margin-top:18px;border-top:1px solid #8abca33a;padding-top:14px;}
+.movement-lesson-entry p {color:#bad9d0;font-size:.9rem;}
+.movement-lesson {box-sizing:border-box;width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;margin:auto;background:#192b3d;color:#e4f0e7;border:1px solid #8fb9b373;border-radius:22px;padding:24px;text-align:center;}
+.movement-lesson::backdrop {background:#07131bd9;}
+.movement-lesson h2 {font-size:1.55rem;margin:8px 0 12px;}
+.movement-lesson p {line-height:1.5;}
+.movement-lesson button,.movement-lesson-entry button {font:inherit;color:#dcebe4;background:#284456;border:1px solid #92b8ad70;border-radius:10px;padding:10px 16px;cursor:pointer;}
+.movement-lesson button:focus-visible,.movement-lesson-entry button:focus-visible {outline:2px solid #e5d5a6;outline-offset:3px;}
+.lesson-close {display:block;margin-left:auto;font-size:.8rem;padding:8px 12px;}
+.lesson-views,.lesson-positions {display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.movement-lesson button[aria-pressed="true"] {border-color:#d5e5bd;background:#63847545;box-shadow:inset 0 0 0 1px #cfe4c7;}
+.movement-lesson button:disabled {opacity:.45;cursor:default;}
+.lesson-views button,.lesson-positions button {font-size:.84rem;padding:10px 16px;}
+.lesson-stage {height:260px;position:relative;margin:10px 0;}
+.lesson-stage .model-host,.lesson-stage .technique-2d {inset:0;}
+.lesson-key {display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-size:.85rem;margin:0 0 20px;}
+.lesson-key span::before {content:'';display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;}
+.diaphragm-key {color:#dfbd7f;}.diaphragm-key::before {background:#dfbd7f;}
+.belly-key {color:#8dccb4;}.belly-key::before {background:#8dccb4;}
+.lesson-explanation {min-height:3em;color:#d9e7d7;font-size:.95rem;}
+.lesson-status,.lesson-note,.movement-lesson a {font-size:.78rem;color:#b0c7ca;}
+.lesson-status:empty {display:none;}
+.movement-lesson a {text-decoration:underline;}
+@media(max-width:480px){.movement-lesson{padding:18px;}.lesson-stage{height:215px;}.lesson-explanation{min-height:4.5em;}}

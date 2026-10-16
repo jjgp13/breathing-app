@@ -48,6 +48,7 @@ test('each live technique has complete evidence content and translated phase ins
             assert.ok(copy.benefits.length && copy.steps.length);
             technique.phases.forEach(phase => {
                 assert.ok(phase.duration > 0); assert.ok(locale.phases[phase.type]);
+                assert.ok(locale.guide.visualCues[technique.id][phase.type]);
                 if (!['hold'].includes(phase.type)) assert.ok(locale.guide.cue[phase.type]);
             });
         }

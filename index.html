@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/main.css?v=4374a3aed9baeb74">
     <link rel="stylesheet" href="css/backgrounds.css?v=83a76d7eecf0367a">
     <link rel="stylesheet" href="css/components.css?v=74cde4f99d935d49">
-    <link rel="stylesheet" href="css/guide.css?v=da2a41ad8e52f174">
+    <link rel="stylesheet" href="css/guide.css?v=957ca6dbd8de4ded">
     <link rel="stylesheet" href="css/audio.css?v=0972cfc1a52f9f7c">
 </head>
 <body>
@@ -144,6 +144,10 @@
                 <div class="detail-section">
                     <h3>⚙️ <span data-i18n="detail.mechanism">How It Works</span></h3>
                     <p id="detailMechanism">Mechanism explanation here.</p>
+                    <div id="movementLessonEntry" class="movement-lesson-entry" hidden>
+                        <p data-i18n="lesson.invitation"></p>
+                        <button type="button" id="openMovementLesson" aria-haspopup="dialog" data-i18n="lesson.open"></button>
+                    </div>
                 </div>
 
                 <div class="detail-section">
@@ -176,7 +180,7 @@
             </div>
         </div>
 
-        <!-- Breathing guide: text, audio, and both visuals share one clock. -->
+        <!-- Practice stays in 2D; text, audio, and visuals share one clock. -->
         <div id="breathing-screen" class="screen">
             <div class="breathing-container guided-session">
                 <h2 id="breathingTitle"></h2>
@@ -184,10 +188,10 @@
                 <p id="guideCue" class="guide-cue"></p>
                 <p id="guideVisualName" class="guide-visual-name"></p>
                 <div class="guide-stage" id="guideStage" aria-hidden="true">
-                    <div id="model3d" class="model-host" hidden></div>
                     <div id="simpleGuide" class="technique-2d"></div>
                     <div id="guideTimer" class="guide-timer"></div>
                 </div>
+                <div class="guide-phase-progress" aria-hidden="true"><span id="guidePhaseProgress"></span></div>
                 <p id="guideVisualDetail" class="guide-visual-detail"></p>
                 <p id="guideNext" class="guide-next"></p>
                 <ol id="phaseTrack" class="phase-track"></ol>
@@ -197,11 +201,6 @@
                 <div class="controls">
                     <button class="btn btn-pause" id="pauseBtn" data-i18n="breathing.pause"></button>
                     <button class="btn btn-stop" id="stopBtn" data-i18n="breathing.stop"></button>
-                </div>
-                <div class="guide-mode" role="group" aria-labelledby="guideModeLabel">
-                    <span id="guideModeLabel" class="sr-only" data-i18n="guide.choose"></span>
-                    <button type="button" data-guide-mode="3d" aria-pressed="false" data-i18n="guide.mode3d"></button>
-                    <button type="button" data-guide-mode="simple" aria-pressed="true" data-i18n="guide.mode2d"></button>
                 </div>
                 <p id="guideModeStatus" class="guide-mode-status"></p>
                 <p class="comfort-note" data-i18n="checkin.comfort"></p>
@@ -230,12 +229,36 @@
         </div>
     </div>
 
+    <dialog id="movementLesson" class="movement-lesson" aria-labelledby="movementTitle" aria-describedby="movementIntro">
+        <button type="button" id="closeMovementLesson" class="lesson-close" data-i18n="lesson.close"></button>
+        <p class="eyebrow" data-i18n="lesson.eyebrow"></p>
+        <h2 id="movementTitle" data-i18n="lesson.title"></h2>
+        <p id="movementIntro" data-i18n="lesson.intro"></p>
+        <div class="lesson-views" role="group" aria-label="Viewing angle">
+            <button type="button" data-lesson-view="front" aria-pressed="true" data-i18n="lesson.front"></button>
+            <button type="button" data-lesson-view="side" aria-pressed="false" data-i18n="lesson.side"></button>
+        </div>
+        <div class="lesson-stage" aria-hidden="true">
+            <div id="lessonModel" class="model-host" hidden></div>
+            <div id="lessonDiagram" class="technique-2d"></div>
+        </div>
+        <div class="lesson-key"><span class="diaphragm-key" data-i18n="lesson.diaphragm"></span><span class="belly-key" data-i18n="lesson.belly"></span></div>
+        <div class="lesson-positions" role="group" aria-label="Compare positions">
+            <button type="button" data-lesson-position="inhale" aria-pressed="false" data-i18n="lesson.inhale"></button>
+            <button type="button" data-lesson-position="exhale" aria-pressed="true" data-i18n="lesson.exhale"></button>
+        </div>
+        <p id="lessonExplanation" class="lesson-explanation" aria-live="polite"></p>
+        <p id="lessonStatus" class="lesson-status" role="status"></p>
+        <p class="lesson-note" data-i18n="lesson.note"></p>
+        <a href="https://www.nhlbi.nih.gov/health/lungs/breathing-benefits" target="_blank" rel="noopener noreferrer" data-i18n="lesson.source"></a>
+    </dialog>
+
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     
     <!-- JavaScript Modules -->
-    <script src="js/locales.generated.js?v=06307f5096371e8f"></script>
+    <script src="js/locales.generated.js?v=b35c2af3ae5a9dc3"></script>
     <script src="js/i18n.js?v=cfa4e5cda5a13b57"></script>
     <script src="js/techniques.js?v=dea35a88a2b649b1"></script>
     <script src="js/audio.js?v=7af5c180ce480353"></script>
@@ -243,9 +266,10 @@
     <script src="js/backgrounds.js?v=f043fc3b6b28502c"></script>
     <script src="js/session.js?v=12825d78fe2793c7"></script>
     <script src="js/recommendations.js?v=78c1729da8907cd5"></script>
-    <script src="js/breath-guide.js?v=711b7775e18ed985"></script>
+    <script src="js/breath-guide.js?v=bf66c47fb1516ba0"></script>
     <script src="js/guide-patterns.js?v=8b20aa0cab092674"></script>
     <script src="js/guide2d.js?v=169003916d162f40"></script>
-    <script src="js/app.js?v=453417fd8bf7b5bf"></script>
+    <script src="js/movement-lesson.js?v=2bb96b479ed2e15d"></script>
+    <script src="js/app.js?v=583a352fb751c355"></script>
 </body>
 </html>

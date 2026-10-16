@@ -289,11 +289,7 @@ const BreatheLocales = {
       "comfort": "Comfort comes before the countdown."
     },
     "guide": {
-      "bloom": "3D breathing bloom",
-      "simple": "Simple circle",
-      "fallback": "The 2D guide is ready.",
       "reduced": "Reduced motion · follow the words",
-      "choose": "Visual guide",
       "next": "Next",
       "ready": "Get comfortable",
       "readyCue": "Sit comfortably. Let your breathing settle.",
@@ -318,10 +314,7 @@ const BreatheLocales = {
         "bellyOut": "Let your belly settle as the air leaves. No pushing."
       },
       "estimated": "Guided breathing time",
-      "preview": "The bloom opens as you inhale and closes as you exhale.",
       "pausedLabel": "Resume when ready",
-      "mode3d": "3D guide",
-      "mode2d": "2D guide",
       "breathCount": "Breath {{count}} / 30",
       "visuals": {
         "box": {
@@ -360,6 +353,51 @@ const BreatheLocales = {
           "name": "The humming bowl",
           "description": "The pearl opens for your inhale. Gentle vibration arcs appear only during the humming exhale; they show sound, not extra breaths."
         }
+      },
+      "visualCues": {
+        "box": {
+          "inhale": "The center opens. Follow the first side.",
+          "hold": "The center stays still. The marker counts the pause.",
+          "exhale": "The center settles. Follow the third side."
+        },
+        "fourSevenEight": {
+          "inhale": "Inhale through the short 4-second segment.",
+          "hold": "The center stays still for the optional pause.",
+          "exhale": "Release gently through the longer 8-second segment."
+        },
+        "diaphragmatic": {
+          "inhale": "Belly widens gently · diaphragm lowers",
+          "exhale": "Belly settles · diaphragm returns upward"
+        },
+        "resonance": {
+          "inhale": "Rise gently with the tide.",
+          "exhale": "Settle with the tide, then begin the next easy breath."
+        },
+        "wimHof": {
+          "power": "One bead for each guided breath.",
+          "retention": "The center rests. Breathe whenever you need.",
+          "hold": "The center stays still. End the hold whenever you need.",
+          "inhale": "Take one comfortable recovery breath."
+        },
+        "buteyko": {
+          "inhale": "A small movement for a gentle inhale.",
+          "exhale": "A small movement for an easy exhale.",
+          "hold": "The feather rests. Breathe whenever you need.",
+          "easy": "The feather rests. Follow your own natural rhythm."
+        },
+        "cyclicSighing": {
+          "inhale": "1 · One easy inhale opens the larger chamber.",
+          "topUp": "2 · One small top-up opens the smaller chamber.",
+          "exhale": "3 · Both chambers release in one slow exhale."
+        },
+        "extendedExhale": {
+          "inhale": "4 seconds in · upper bowl fills",
+          "exhale": "6 seconds out · upper bowl empties more slowly"
+        },
+        "humming": {
+          "inhale": "The pearl opens. Breathe in quietly.",
+          "hum": "The arcs show your soft “mmm” during this exhale."
+        }
       }
     },
     "audio": {
@@ -391,6 +429,29 @@ const BreatheLocales = {
         "muted": "All sounds are muted. Use the speaker button to unmute.",
         "unavailable": "This sound could not play. Try another sound or continue in silence."
       }
+    },
+    "lesson": {
+      "eyebrow": "LEARN THE MOVEMENT",
+      "invitation": "Explore how the diaphragm and belly move before you practice.",
+      "open": "Explore the movement in 3D",
+      "close": "Close lesson",
+      "title": "Where does the movement happen?",
+      "intro": "Compare the two positions, then turn to the side to see the depth of the diaphragm’s dome and the belly’s movement.",
+      "views": "Viewing angle",
+      "front": "Front view",
+      "side": "Side view",
+      "positions": "Compare positions",
+      "inhale": "Inhale position",
+      "exhale": "Exhale position",
+      "diaphragm": "Diaphragm",
+      "belly": "Abdomen",
+      "inhaleExplanation": "The diaphragm contracts, lowers and becomes flatter. Let the belly expand gently, with relaxed shoulders.",
+      "exhaleExplanation": "The diaphragm relaxes and returns upward. Let the belly settle without pushing the air out.",
+      "loading": "Loading the optional movement view. The 2D illustration is ready.",
+      "fallback": "The 3D view is unavailable. Compare the same positions in this 2D illustration.",
+      "reduced": "Reduced motion: compare still positions in 2D.",
+      "note": "A simplified illustration with exaggerated movement. Your lungs sit above the diaphragm; green shows abdominal movement, not air entering the belly. Breathe normally while exploring; these positions are not breathing targets.",
+      "source": "Breathing mechanics · NHLBI / NIH"
     }
   },
   "es": {
@@ -682,11 +743,7 @@ const BreatheLocales = {
       "comfort": "La comodidad importa más que el tiempo."
     },
     "guide": {
-      "bloom": "Flor respiratoria en 3D",
-      "simple": "Círculo sencillo",
-      "fallback": "La guía en 2D está lista.",
       "reduced": "Movimiento reducido · sigue las palabras",
-      "choose": "Guía visual",
       "next": "Después",
       "ready": "Ponte cómodo",
       "readyCue": "Siéntate con comodidad. Deja que se asiente tu respiración.",
@@ -711,10 +768,7 @@ const BreatheLocales = {
         "bellyOut": "Deja que el abdomen vuelva al soltar el aire, sin forzarlo."
       },
       "estimated": "Tiempo de respiración guiada",
-      "preview": "La flor se abre al inhalar y se cierra al exhalar.",
       "pausedLabel": "Continúa cuando estés preparado",
-      "mode3d": "Guía en 3D",
-      "mode2d": "Guía en 2D",
       "breathCount": "Respiración {{count}} / 30",
       "visuals": {
         "box": {
@@ -753,6 +807,51 @@ const BreatheLocales = {
           "name": "El cuenco del zumbido",
           "description": "La perla se abre al inhalar. Los arcos de vibración solo aparecen al exhalar con un zumbido; representan sonido, no respiraciones adicionales."
         }
+      },
+      "visualCues": {
+        "box": {
+          "inhale": "El centro se abre. Sigue el primer lado.",
+          "hold": "El centro queda quieto. El punto cuenta la pausa.",
+          "exhale": "El centro se relaja. Sigue el tercer lado."
+        },
+        "fourSevenEight": {
+          "inhale": "Inhala durante el segmento corto de 4 segundos.",
+          "hold": "El centro queda quieto durante la pausa opcional.",
+          "exhale": "Suelta el aire suavemente en el segmento de 8 segundos."
+        },
+        "diaphragmatic": {
+          "inhale": "El abdomen se expande suavemente · el diafragma baja",
+          "exhale": "El abdomen se relaja · el diafragma vuelve a subir"
+        },
+        "resonance": {
+          "inhale": "Sube suavemente con la marea.",
+          "exhale": "Baja con la marea y comienza la siguiente respiración cómoda."
+        },
+        "wimHof": {
+          "power": "Una cuenta por cada respiración guiada.",
+          "retention": "El centro descansa. Respira cuando lo necesites.",
+          "hold": "El centro queda quieto. Termina la pausa cuando lo necesites.",
+          "inhale": "Toma una respiración de recuperación cómoda."
+        },
+        "buteyko": {
+          "inhale": "Un pequeño movimiento para una inhalación suave.",
+          "exhale": "Un pequeño movimiento para una exhalación cómoda.",
+          "hold": "La pluma descansa. Respira cuando lo necesites.",
+          "easy": "La pluma descansa. Sigue tu propio ritmo natural."
+        },
+        "cyclicSighing": {
+          "inhale": "1 · Una inhalación cómoda abre la cámara grande.",
+          "topUp": "2 · Una pequeña segunda inhalación abre la cámara pequeña.",
+          "exhale": "3 · Ambas cámaras se vacían en una sola exhalación lenta."
+        },
+        "extendedExhale": {
+          "inhale": "4 segundos al inhalar · se llena la parte superior",
+          "exhale": "6 segundos al exhalar · se vacía más despacio"
+        },
+        "humming": {
+          "inhale": "La perla se abre. Inhala en silencio.",
+          "hum": "Los arcos representan tu “mmm” suave al exhalar."
+        }
       }
     },
     "audio": {
@@ -784,6 +883,29 @@ const BreatheLocales = {
         "muted": "Todos los sonidos están silenciados. Usa el botón del altavoz para activarlos.",
         "unavailable": "No se pudo reproducir este sonido. Prueba otro o continúa en silencio."
       }
+    },
+    "lesson": {
+      "eyebrow": "CONOCE EL MOVIMIENTO",
+      "invitation": "Explora cómo se mueven el diafragma y el abdomen antes de practicar.",
+      "open": "Explorar el movimiento en 3D",
+      "close": "Cerrar explicación",
+      "title": "¿Dónde ocurre el movimiento?",
+      "intro": "Compara las dos posiciones y cambia a la vista lateral para observar la profundidad del diafragma y el movimiento del abdomen.",
+      "views": "Ángulo de vista",
+      "front": "Vista frontal",
+      "side": "Vista lateral",
+      "positions": "Comparar posiciones",
+      "inhale": "Posición al inhalar",
+      "exhale": "Posición al exhalar",
+      "diaphragm": "Diafragma",
+      "belly": "Abdomen",
+      "inhaleExplanation": "El diafragma se contrae, baja y se aplana. Deja que el abdomen se expanda suavemente, con los hombros relajados.",
+      "exhaleExplanation": "El diafragma se relaja y vuelve a subir. Deja que el abdomen se relaje sin empujar el aire.",
+      "loading": "Cargando la vista opcional del movimiento. La ilustración en 2D está lista.",
+      "fallback": "La vista en 3D no está disponible. Compara las mismas posiciones en esta ilustración en 2D.",
+      "reduced": "Movimiento reducido: compara posiciones fijas en 2D.",
+      "note": "Ilustración simplificada con movimiento exagerado. Los pulmones están sobre el diafragma; el verde muestra el movimiento abdominal, no aire entrando al abdomen. Respira normalmente al explorar; estas posiciones no son objetivos respiratorios.",
+      "source": "Mecánica respiratoria · NHLBI / NIH"
     }
   }
 };

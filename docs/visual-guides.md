@@ -1,10 +1,10 @@
-# A guide for each breathing practice
+# Clear practice cues and an optional movement lesson
 
-Each practice has its own 2D SVG and original Blender 3D model. Both receive the same phase-derived pose, so changing visual modes preserves timing. Captions in English and Spanish explain how to read each guide. The forms are pacing metaphors or simplified movement cues, without physiological measurements or claims of additional health benefits.
+Every timed practice uses a technique-specific 2D SVG, with phase-specific captions, a countdown, and a small phase progress bar. There is no 3D preference or mode switch during practice, including for returning users with an older saved preference. The forms are pacing metaphors or simplified movement cues, without physiological measurements or claims of additional health benefits. Captions are available in English and Spanish.
 
-| Practice | Matched 2D / 3D design | How it explains the technique |
+| Practice | 2D guide | How it explains the technique |
 | --- | --- | --- |
-| Box | Four-sided path / beveled frame with pearl marker | One side per phase: inhale, pause, exhale, pause. The marker counts time during holds; it does not indicate another breath. |
+| Box | Four-sided path and marker | One side per phase: inhale, pause, exhale, pause. The marker counts time during holds; the center stays still. |
 | 4–7–8 | Segmented ring and central lantern | Segment lengths represent 4, 7, and 8 seconds. The center opens during inhale, remains still during the hold, and closes during exhale. |
 | Diaphragmatic | Torso, lower-belly shape, gold diaphragm curve | The belly widens as the diaphragm curve lowers and flattens during inhale; the movement reverses during exhale. This is schematic, not a complete anatomical model or a demand to take a larger breath. |
 | Slow / resonance | Rising and falling tide with a floating pearl | The tide rises on inhale and falls on exhale, continuously without holds. It represents the breathing pace, not a live HRV waveform. |
@@ -14,18 +14,23 @@ Each practice has its own 2D SVG and original Blender 3D model. Both receive the
 | Longer exhale | Hourglass with two colored bowls | The upper bowl fills over four seconds and releases over six. The lower bowl fills as the upper empties, making the longer exhale visible without adding a hold. |
 | Humming | Resonating bowl, breathing pearl, vibration arcs | The pearl opens on inhale and settles on exhale. Vibration arcs appear only during humming, and represent sound rather than extra breaths. |
 
-The diaphragm direction follows [NHLBI's description of breathing mechanics](https://www.nhlbi.nih.gov/health/lungs/breathing-benefits): contraction lowers the diaphragm on inhalation. The app retains its existing gentle pacing and comfort guidance; it does not copy a clinical training program or imply that this schematic is an anatomical measurement.
+## Where 3D has a purpose
+
+Only the diaphragmatic-breathing detail screen offers **Explore the movement in 3D**. It is a teaching comparison before practice, with front/side views and explicit inhale/exhale position buttons. The gold diaphragm is a domed surface; turning to the side shows its depth and flattening. A green abdominal shape shows gentle outward movement. Short transitions occur only after a position is selected; there is no autoplay, breathing timer, audio, or performance target.
+
+The diaphragm direction follows [NHLBI's description of breathing mechanics](https://www.nhlbi.nih.gov/health/lungs/breathing-benefits): contraction lowers the diaphragm on inhalation, and relaxation reverses the movement. The simplified model exaggerates motion and omits organs. Its note explains that the lungs are above the diaphragm and that the green shape does not represent air entering the belly. This is a design rationale for using depth, not evidence that a 3D lesson improves learning or health. That needs usability feedback. The app retains its gentle pacing and comfort guidance without copying a clinical training program.
 
 ## Source and playback
 
-- `scripts/create-technique-models.py` creates all nine models and preview animations in Blender 5.2.
-- `assets/models/techniques/technique-guides.blend` is the editable source; each corresponding `.glb` contains only that guide and its preview animation.
-- `js/guide-patterns.js` translates the session state into poses. `js/guide2d.js` and `js/guide-poses.mjs` implement the paired renderers.
-- The web renderer does not play Blender's preview clips autonomously. All visible changes derive from phase progress; pause freezes the pose.
-- Reduced motion uses a stable, technique-specific 2D illustration. A 3D failure keeps that same 2D illustration available, and another technique can try its own model.
-- Model changes invalidate pending loads, dispose GPU resources, and release the old WebGL context. Only the current practice's GLB loads in the app.
+- `js/guide-patterns.js` translates session state into poses for the nine SVGs in `js/guide2d.js`. Pause freezes practice poses and progress; phase captions clear while the pause instruction asks the user to breathe normally.
+- Reduced-motion practice uses a still illustration with the normal text/countdown and no changing progress bar.
+- `scripts/create-diaphragm-lesson.py` creates the active lesson model in Blender 5.2. Editable source: `assets/models/techniques/diaphragm-lesson.blend`; export: `diaphragmatic.glb`.
+- `js/movement-lesson.js` downloads the Three.js bundle and diaphragm GLB only when the lesson is opened. `js/guide3d.mjs` rejects other technique IDs. `js/guide-poses.mjs` poses its named parts; camera views are fixed and user-selected.
+- Reduced motion and WebGL/model failures retain a usable 2D position comparison; the camera controls are disabled. Changing to reduced motion releases the renderer immediately.
+- Closing the lesson invalidates pending loads, disposes GPU resources, and releases the WebGL context. Late model arrivals are destroyed. Reopening starts in the resting/front position.
+- The bloom and former nine-model gallery remain archived in the repository. `create-technique-models.py` and `technique-guides.blend` describe the older gallery. Regenerating it overwrites the diaphragm export, so run the active lesson generator afterward. Those decorative 3D models are not exposed or requested by the app.
 - `npm run build` generates model versions and content-hashed browser URLs. `npm run check` checks those versions and the translation bundle before running tests.
 
 ## Verification
 
-31 tests cover the existing app behavior plus all nine GLB models, required animated parts, geometry bounds, phase endpoints, finite transforms, static reduced-motion poses, continuous sighing stages, proportional 4–7–8 timing, square corners, humming-only ripples, unpaced feather rest, thirty-breath counting, and diaphragm direction. All nine SVG artworks also passed XML parsing. Browser review rendered all eighteen designs together, then checked technique and mode switching in the app, translated captions, and 320/390-pixel layouts. A phone-sized desktop browser does not replace real-device usability and battery checks.
+34 tests cover session timing, recommendations, audio lifecycle, complete translated phase cues, 2D practice despite old preferences, pause/reduced motion, lesson load failures and late arrivals, non-autoplay, renderer release, all nine archived/current GLBs, geometry bounds, phase endpoints, finite transforms, sighing continuity, proportional 4–7–8 timing, humming-only ripples, breath counts, and diaphragm direction. Phone-sized desktop checks do not replace real-device usability, accessibility, or battery testing.

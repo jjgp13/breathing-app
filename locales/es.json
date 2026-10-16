@@ -287,11 +287,7 @@
     "comfort": "La comodidad importa más que el tiempo."
   },
   "guide": {
-    "bloom": "Flor respiratoria en 3D",
-    "simple": "Círculo sencillo",
-    "fallback": "La guía en 2D está lista.",
     "reduced": "Movimiento reducido · sigue las palabras",
-    "choose": "Guía visual",
     "next": "Después",
     "ready": "Ponte cómodo",
     "readyCue": "Siéntate con comodidad. Deja que se asiente tu respiración.",
@@ -316,10 +312,7 @@
       "bellyOut": "Deja que el abdomen vuelva al soltar el aire, sin forzarlo."
     },
     "estimated": "Tiempo de respiración guiada",
-    "preview": "La flor se abre al inhalar y se cierra al exhalar.",
     "pausedLabel": "Continúa cuando estés preparado",
-    "mode3d": "Guía en 3D",
-    "mode2d": "Guía en 2D",
     "breathCount": "Respiración {{count}} / 30",
     "visuals": {
       "box": {
@@ -358,6 +351,51 @@
         "name": "El cuenco del zumbido",
         "description": "La perla se abre al inhalar. Los arcos de vibración solo aparecen al exhalar con un zumbido; representan sonido, no respiraciones adicionales."
       }
+    },
+    "visualCues": {
+      "box": {
+        "inhale": "El centro se abre. Sigue el primer lado.",
+        "hold": "El centro queda quieto. El punto cuenta la pausa.",
+        "exhale": "El centro se relaja. Sigue el tercer lado."
+      },
+      "fourSevenEight": {
+        "inhale": "Inhala durante el segmento corto de 4 segundos.",
+        "hold": "El centro queda quieto durante la pausa opcional.",
+        "exhale": "Suelta el aire suavemente en el segmento de 8 segundos."
+      },
+      "diaphragmatic": {
+        "inhale": "El abdomen se expande suavemente · el diafragma baja",
+        "exhale": "El abdomen se relaja · el diafragma vuelve a subir"
+      },
+      "resonance": {
+        "inhale": "Sube suavemente con la marea.",
+        "exhale": "Baja con la marea y comienza la siguiente respiración cómoda."
+      },
+      "wimHof": {
+        "power": "Una cuenta por cada respiración guiada.",
+        "retention": "El centro descansa. Respira cuando lo necesites.",
+        "hold": "El centro queda quieto. Termina la pausa cuando lo necesites.",
+        "inhale": "Toma una respiración de recuperación cómoda."
+      },
+      "buteyko": {
+        "inhale": "Un pequeño movimiento para una inhalación suave.",
+        "exhale": "Un pequeño movimiento para una exhalación cómoda.",
+        "hold": "La pluma descansa. Respira cuando lo necesites.",
+        "easy": "La pluma descansa. Sigue tu propio ritmo natural."
+      },
+      "cyclicSighing": {
+        "inhale": "1 · Una inhalación cómoda abre la cámara grande.",
+        "topUp": "2 · Una pequeña segunda inhalación abre la cámara pequeña.",
+        "exhale": "3 · Ambas cámaras se vacían en una sola exhalación lenta."
+      },
+      "extendedExhale": {
+        "inhale": "4 segundos al inhalar · se llena la parte superior",
+        "exhale": "6 segundos al exhalar · se vacía más despacio"
+      },
+      "humming": {
+        "inhale": "La perla se abre. Inhala en silencio.",
+        "hum": "Los arcos representan tu “mmm” suave al exhalar."
+      }
     }
   },
   "audio": {
@@ -389,5 +427,28 @@
       "muted": "Todos los sonidos están silenciados. Usa el botón del altavoz para activarlos.",
       "unavailable": "No se pudo reproducir este sonido. Prueba otro o continúa en silencio."
     }
+  },
+  "lesson": {
+    "eyebrow": "CONOCE EL MOVIMIENTO",
+    "invitation": "Explora cómo se mueven el diafragma y el abdomen antes de practicar.",
+    "open": "Explorar el movimiento en 3D",
+    "close": "Cerrar explicación",
+    "title": "¿Dónde ocurre el movimiento?",
+    "intro": "Compara las dos posiciones y cambia a la vista lateral para observar la profundidad del diafragma y el movimiento del abdomen.",
+    "views": "Ángulo de vista",
+    "front": "Vista frontal",
+    "side": "Vista lateral",
+    "positions": "Comparar posiciones",
+    "inhale": "Posición al inhalar",
+    "exhale": "Posición al exhalar",
+    "diaphragm": "Diafragma",
+    "belly": "Abdomen",
+    "inhaleExplanation": "El diafragma se contrae, baja y se aplana. Deja que el abdomen se expanda suavemente, con los hombros relajados.",
+    "exhaleExplanation": "El diafragma se relaja y vuelve a subir. Deja que el abdomen se relaje sin empujar el aire.",
+    "loading": "Cargando la vista opcional del movimiento. La ilustración en 2D está lista.",
+    "fallback": "La vista en 3D no está disponible. Compara las mismas posiciones en esta ilustración en 2D.",
+    "reduced": "Movimiento reducido: compara posiciones fijas en 2D.",
+    "note": "Ilustración simplificada con movimiento exagerado. Los pulmones están sobre el diafragma; el verde muestra el movimiento abdominal, no aire entrando al abdomen. Respira normalmente al explorar; estas posiciones no son objetivos respiratorios.",
+    "source": "Mecánica respiratoria · NHLBI / NIH"
   }
 }
