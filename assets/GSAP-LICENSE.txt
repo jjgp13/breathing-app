@@ -1,0 +1,6 @@
+GSAP 3.15.0
+Copyright 2026, GreenSock. All rights reserved.
+Standard 'no charge' license: https://gsap.com/standard-license.
+
+The original copyright and license banner is preserved in js/vendor/gsap.js.
+The applicable terms are published by the copyright holder at https://gsap.com/standard-license/.

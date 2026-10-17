@@ -1,12 +1,19 @@
 {
   "name": "breathe-practice",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
-    "build": "node scripts/sync-locales.cjs && node scripts/version-assets.cjs --models && esbuild js/guide3d.mjs --bundle --minify --format=iife --outfile=js/vendor/guide3d.bundle.js --legal-comments=eof && node scripts/version-assets.cjs",
+    "build": "node scripts/vendor-deps.cjs && node scripts/sync-locales.cjs && node scripts/version-assets.cjs --models && esbuild js/guide3d.mjs --bundle --minify --format=iife --outfile=js/vendor/guide3d.bundle.js --legal-comments=eof && node scripts/build-offline.cjs --assets && node scripts/version-assets.cjs && node scripts/build-offline.cjs",
     "test": "node --test tests/*.test.cjs",
-    "check": "node scripts/sync-locales.cjs --check && node scripts/version-assets.cjs --check && npm test"
+    "check": "node scripts/sync-locales.cjs --check && node scripts/version-assets.cjs --check && node scripts/build-offline.cjs --check && npm test",
+    "android:assets": "node scripts/package-android.cjs"
   },
-  "dependencies": { "three": "0.186.1" },
-  "devDependencies": { "esbuild": "0.28.2" }
+  "dependencies": {
+    "gsap": "3.15.0",
+    "swiper": "12.1.2",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
 }

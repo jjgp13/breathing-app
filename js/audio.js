@@ -1,6 +1,6 @@
 /** Optional local soundscapes and quiet cues; no audio starts on page load. */
 const AudioManager = {
-    context: null, enabled: true, role: 'idle', paused: false, generation: 0,
+    context: null, enabled: true, quiet:false, role: 'idle', paused: false, generation: 0,
     settings: { ambient: 'off', ambientVolume: 0.25, cueVolume: 0.35 },
     files: { rain: 'assets/audio/rain.ogg', stream: 'assets/audio/stream.ogg' },
     buffers: new Map(), cues: new Set(), voice: null, previewTimer: null, status: 'idle',
@@ -38,7 +38,7 @@ const AudioManager = {
             this.ambientGain.connect(this.master);
             this.cueGain.connect(this.master);
             this.master.connect(this.context.destination);
-            this.master.gain.value = this.enabled ? 1 : 0;
+            this.master.gain.value = this.enabled && !this.quiet ? 1 : 0;
             this.ambientGain.gain.value = this.settings.ambientVolume * 0.6;
             this.cueGain.gain.value = this.settings.cueVolume;
         }
@@ -69,7 +69,7 @@ const AudioManager = {
     toggle() {
         this.enabled = !this.enabled;
         this.save();
-        if (this.context) this.ramp(this.master.gain, this.enabled ? 1 : 0, 0.05);
+        if (this.context) this.ramp(this.master.gain, this.enabled && !this.quiet ? 1 : 0, 0.05);
         this.stopCues();
         if (this.enabled && this.role === 'session' && !this.paused) this.unlock();
         if (!this.enabled && this.role === 'preview') this.endPreview();
@@ -78,7 +78,8 @@ const AudioManager = {
         return this.enabled;
     },
 
-    audible() { return this.enabled && !this.paused && this.role !== 'idle'; },
+    setQuiet(quiet){this.quiet=!!quiet;this.stopCues();if(this.context)this.ramp(this.master.gain,this.enabled&&!this.quiet?1:0,.05);this.syncAmbient();this.notify();},
+    audible() { return this.enabled && !this.quiet && !this.paused && this.role !== 'idle'; },
 
     unlock() {
         this.init().catch(() => {
@@ -91,7 +92,7 @@ const AudioManager = {
         this.role = 'session';
         this.paused = false;
         // Called from Begin Practice to unlock audio on phones.
-        if (this.enabled) this.unlock();
+        if (this.enabled && !this.quiet) this.unlock();
         this.syncAmbient();
     },
 
@@ -99,7 +100,7 @@ const AudioManager = {
         if (this.role !== 'session' || this.paused === paused) return;
         this.paused = paused;
         if (paused) this.stopCues();
-        else if (this.enabled) this.unlock();
+        else if (this.enabled && !this.quiet) this.unlock();
         this.syncAmbient();
     },
 
@@ -218,7 +219,7 @@ const AudioManager = {
     },
 
     playTone(frequency, delay = 0, duration = 0.65) {
-        if (!this.enabled || this.paused || !this.context || this.context.state !== 'running' || this.settings.cueVolume === 0) return;
+        if (!this.enabled || this.quiet || this.paused || !this.context || this.context.state !== 'running' || this.settings.cueVolume === 0) return;
         const oscillator=this.context.createOscillator(), gain=this.context.createGain();
         oscillator.frequency.value=frequency;
         oscillator.connect(gain); gain.connect(this.cueGain);

@@ -9,6 +9,7 @@ const Guide2D = {
     artwork(id,prefix) {
         const circle=(part,cx,cy,r,extra='')=>`<circle data-part="${part}" cx="${cx}" cy="${cy}" r="${r}" ${extra}/>`;
         switch(id){
+            case 'natural':return circle('rest',160,130,80,'class="visual-faint"')+circle('center',160,130,44,'class="visual-fill"');
             case 'box':return `<rect class="visual-faint" x="70" y="35" width="180" height="180" rx="8"/>`+
                 ['M70 35H250','M250 35V215','M250 215H70','M70 215V35'].map((d,i)=>`<path data-part="rail${i}" class="visual-line tone${i}" d="${d}"/>`).join('')+
                 `<rect data-part="window" x="122" y="87" width="76" height="76" rx="15" class="visual-fill"/>`+circle('marker',70,35,8,'class="visual-pearl"')+
@@ -43,10 +44,14 @@ const Guide2D = {
         }
     },
 
-    create(host,id) {
+    create(host,id,technique=null) {
         const prefix='guide'+(++this.serial)+'-';
         host.innerHTML=`<svg class="technique-svg" data-guide-kind="${id}" viewBox="0 0 320 260" aria-hidden="true">${this.artwork(id,prefix)}</svg>`;
         const svg=host.querySelector('svg');
+        if(technique){
+            if(id==='fourSevenEight')Array.from(svg.querySelectorAll('text')).slice(0,3).forEach((el,i)=>{el.textContent=technique.phases[i].duration;});
+            if(id==='extendedExhale')Array.from(svg.querySelectorAll('text')).slice(0,2).forEach((el,i)=>{el.textContent=technique.phases[i].duration;});
+        }
         const parts=new Map(Array.from(svg.querySelectorAll('[data-part]')).map(el=>[el.dataset.part,el]));
         const attr=(name,key,value)=>parts.get(name).setAttribute(key,String(value));
         const opacity=(name,value)=>attr(name,'opacity',value);

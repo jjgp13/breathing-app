@@ -2,3 +2,5 @@
 js/vendor/* -whitespace linguist-generated=true
 *.blend binary
 *.glb binary
+android/gradlew text eol=lf
+android/gradlew.bat text eol=crlf

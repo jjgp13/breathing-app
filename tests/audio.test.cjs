@@ -30,6 +30,14 @@ test('page setup neither creates an audio context nor downloads recordings; pref
     assert.equal(h.manager.settings.cueVolume,0);assert.equal(h.manager.enabled,false);
 });
 
+test('quiet mode prevents downloads and cues, including when an existing audio context is running',async()=>{
+    const h=harness();h.manager.setQuiet(true);h.manager.configure({ambient:'rain'});h.manager.startSession();await h.flush();
+    assert.equal(h.contexts(),0);assert.equal(h.requests(),0);assert.equal(h.manager.cues.size,0);
+    h.manager.setQuiet(false);await h.flush();assert.equal(h.requests(),1);
+    h.manager.playPhaseSound('inhale');assert.ok(h.manager.cues.size>0);
+    h.manager.setQuiet(true);h.manager.playPhaseSound('exhale');h.manager.playComplete();assert.equal(h.manager.cues.size,0);assert.equal(h.manager.voice,null);
+});
+
 test('pause stops the ambient source and scheduled cues; resume and unmute create one new voice',async()=>{
     const h=harness();h.manager.configure({ambient:'tones'});h.manager.startSession();await h.flush();
     const first=h.manager.voice;assert.equal(first.nodes.length,3);

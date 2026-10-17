@@ -40,31 +40,35 @@ const BreathGuide = {
     },
 
     refresh(redraw=true) {
-        const description=this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.description`):'';
+        const technique=this.lastSnapshot?.[1];
+        const timings=technique?Object.fromEntries(technique.phases.map(p=>[p.type,p.duration])):{};
+        const description=technique?.unpaced?I18n.t('personal.naturalVisual'):this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.description`,timings):'';
         const note=this.reduced?I18n.t('guide.reduced'):'';
         this.status.textContent=[description,note].filter(Boolean).join(' ');
-        this.name.textContent=this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.name`):'';
+        this.name.textContent=technique?.unpaced?I18n.t('personal.unpaced'):this.techniqueId?I18n.t(`guide.visuals.${this.techniqueId}.name`):'';
         if (redraw && this.lastSnapshot) { this.last2DAt=-Infinity; this.update(...this.lastSnapshot); }
     },
 
     update(snapshot, technique) {
         this.lastSnapshot = [snapshot, technique];
-        if(this.techniqueId!==technique.id){
+        if(this.technique!==technique){
+            this.technique=technique;
             this.techniqueId=technique.id;
-            this.svgGuide?.destroy();this.svgGuide=Guide2D.create(this.simple,technique.id);
+            this.svgGuide?.destroy();this.svgGuide=Guide2D.create(this.simple,technique.unpaced?'natural':technique.id,technique);
             this.last2DAt=-Infinity;
             this.stage.dataset.technique=technique.id;
             this.refresh(false);
         }
-        const frame=GuidePatterns.sample(technique,snapshot,this.reduced);
-        this.timer.textContent = Math.ceil(snapshot.remaining);
+        const frame=GuidePatterns.sample(technique,snapshot,this.reduced||technique.unpaced);
+        const seconds=Math.ceil(snapshot.remaining);
+        this.timer.textContent = technique.unpaced&&!snapshot.preparing?Math.floor(seconds/60)+':'+String(seconds%60).padStart(2,'0'):seconds;
         const now=performance.now();
         const phaseKey=[snapshot.mode,snapshot.phaseIndex,snapshot.preparing].join(':');
         if(now-this.last2DAt>=32||phaseKey!==this.last2DPhase){
             this.svgGuide.update(frame);this.last2DAt=now;this.last2DPhase=phaseKey;
-            this.progress.style.transform=`scaleX(${this.reduced||snapshot.preparing?0:frame.progress})`;
+            this.progress.style.transform=`scaleX(${this.reduced||technique.unpaced||snapshot.preparing?0:frame.progress})`;
         }
-        const phaseCue=snapshot.preparing||snapshot.mode==='paused'?'':I18n.t(`guide.visualCues.${technique.id}.${frame.phase}`);
+        const phaseCue=snapshot.preparing||snapshot.mode==='paused'||technique.unpaced?'':I18n.t(`guide.visualCues.${technique.id}.${frame.phase}`,Object.fromEntries(technique.phases.map(p=>[p.type,p.duration])));
         this.detail.textContent=[frame.breath?I18n.t('guide.breathCount',{count:frame.breath}):'',phaseCue].filter(Boolean).join(' · ');
         this.stage.dataset.phase = snapshot.preparing ? 'preparing' : snapshot.phase.type;
         this.stage.classList.toggle('is-paused', snapshot.mode === 'paused');

@@ -1,0 +1,12 @@
+const fs=require('node:fs'),path=require('node:path');
+const out='android/app/src/main/assets/site';
+fs.mkdirSync(out,{recursive:true});
+for(const dir of ['js','css'])fs.cpSync(dir,path.join(out,dir),{recursive:true});
+for(const dir of ['audio','icons'])fs.cpSync(path.join('assets',dir),path.join(out,'assets',dir),{recursive:true});
+fs.mkdirSync(path.join(out,'assets/models/techniques'),{recursive:true});
+fs.copyFileSync('assets/models/techniques/diaphragmatic.glb',path.join(out,'assets/models/techniques/diaphragmatic.glb'));
+const csp=`<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'">`;
+fs.writeFileSync(path.join(out,'index.html'),fs.readFileSync('index.html','utf8').replace('<head>','<head>\n'+csp));
+fs.copyFileSync('manifest.webmanifest',path.join(out,'manifest.webmanifest'));
+for(const license of ['THREE','GSAP','SWIPER'])fs.copyFileSync(`assets/${license}-LICENSE.txt`,path.join(out,`assets/${license}-LICENSE.txt`));
+console.log('Packaged offline website for Android. No network dependency.');

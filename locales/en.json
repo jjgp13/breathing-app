@@ -61,8 +61,8 @@
     "easy": "Breathe naturally"
   },
   "congrats": {
-    "title": "Well Done!",
-    "message": "You've completed your breathing exercise.<br>Take a moment to notice how you feel.",
+    "title": "A moment for yourself",
+    "message": "Notice how you feel.<br>You can finish whenever you need.",
     "technique": "Technique",
     "completedCycles": "Cycles Completed",
     "totalTime": "Total Time",
@@ -271,7 +271,7 @@
     "suggestion": "A place to start",
     "alternative": "Another gentle option",
     "view": "View practice",
-    "privacy": "Your check-in stays in this tab. No account needed.",
+    "privacy": "Your check-in stays in this tab unless you choose to save a session reflection. No account needed.",
     "boundary": "Suggestions follow your preferences, not a medical assessment. Choose what feels comfortable.",
     "reasons": {
       "tense": "You feel tense. A gentle sighing pattern offers an exhale-focused pause; you can choose belly breathing instead.",
@@ -311,7 +311,7 @@
       "bellyIn": "Let your belly expand gently. Keep your shoulders relaxed.",
       "bellyOut": "Let your belly settle as the air leaves. No pushing."
     },
-    "estimated": "Guided breathing time",
+    "estimated": "Practice duration",
     "pausedLabel": "Resume when ready",
     "breathCount": "Breath {{count}} / 30",
     "visuals": {
@@ -321,7 +321,7 @@
       },
       "fourSevenEight": {
         "name": "The 4–7–8 timing ring",
-        "description": "The ring gives 4, 7, and 8 seconds their own space. The center opens on inhale, rests during the pause, and closes on exhale."
+        "description": "Each ring segment follows the phase duration shown below. The center opens on inhale, rests during the pause, and closes on exhale."
       },
       "diaphragmatic": {
         "name": "Belly & diaphragm schematic",
@@ -345,7 +345,7 @@
       },
       "extendedExhale": {
         "name": "The slow hourglass",
-        "description": "The upper bowl fills during the 4-second inhale and releases during the 6-second exhale. Follow a comfortable breath, without pushing."
+        "description": "The upper bowl fills during the {{inhale}}-second inhale and releases during the {{exhale}}-second exhale. Keep the breath comfortable."
       },
       "humming": {
         "name": "The humming bowl",
@@ -359,9 +359,9 @@
         "exhale": "The center settles. Follow the third side."
       },
       "fourSevenEight": {
-        "inhale": "Inhale through the short 4-second segment.",
+        "inhale": "Inhale through the {{inhale}}-second segment.",
         "hold": "The center stays still for the optional pause.",
-        "exhale": "Release gently through the longer 8-second segment."
+        "exhale": "Release gently through the {{exhale}}-second segment."
       },
       "diaphragmatic": {
         "inhale": "Belly widens gently · diaphragm lowers",
@@ -389,8 +389,8 @@
         "exhale": "3 · Both chambers release in one slow exhale."
       },
       "extendedExhale": {
-        "inhale": "4 seconds in · upper bowl fills",
-        "exhale": "6 seconds out · upper bowl empties more slowly"
+        "inhale": "{{inhale}} seconds in · upper bowl fills",
+        "exhale": "{{exhale}} seconds out · upper bowl empties more slowly"
       },
       "humming": {
         "inhale": "The pearl opens. Breathe in quietly.",
@@ -450,5 +450,160 @@
     "reduced": "Reduced motion: compare still positions in 2D.",
     "note": "A simplified illustration with exaggerated movement. Your lungs sit above the diaphragm; green shows abdominal movement, not air entering the belly. Breathe normally while exploring; these positions are not breathing targets.",
     "source": "Breathing mechanics · NHLBI / NIH"
+  },
+  "personal": {
+    "title": "My practice",
+    "comfort": "Comfort & access",
+    "access": "Guidance settings",
+    "close": "Close",
+    "yourPace": "Your comfortable pace",
+    "pace": "Phase duration",
+    "paces": {
+      "1": "Reference pace · 100%",
+      "0_6": "Shorter phases · 60%",
+      "0_8": "Shorter phases · 80%",
+      "1_2": "Longer phases · 120%",
+      "1_4": "Longer phases · 140%"
+    },
+    "unpaced": "Breathe at my own pace",
+    "naturalCue": "Let your breathing find its own comfortable rhythm. There is no inhale or exhale target.",
+    "naturalVisual": "The illustration stays still. The time shown is session time, not the length of a breath.",
+    "sessionTime": "Time remaining in your practice",
+    "paceDescription": "Your phase lengths: {{pattern}} seconds. Choose a pace that feels easy.",
+    "fixedAdvanced": "Advanced patterns keep their reference timing. You can end any hold immediately, or choose unpaced breathing.",
+    "adaptation": "This is a personal adaptation. Research on the reference technique does not validate this particular pace or unpaced session.",
+    "noHoldAlternative": "Choose a gentle practice without holds",
+    "favorite": "☆ Favorite",
+    "unfavorite": "★ Favorited",
+    "saveRoutine": "Save a routine",
+    "routineName": "Routine name",
+    "addReminder": "Add an optional reminder",
+    "reminderTime": "Time on this device",
+    "days": "Days",
+    "weekdays": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    },
+    "reminderNote": "On the website, download a calendar file after saving and import it into your calendar to receive reminders while the app is closed. The file includes your routine name and schedule. Android can schedule local notifications; delivery may be delayed by battery settings. Manage imported reminders in your calendar; removing a routine here does not remove its calendar event.",
+    "save": "Save",
+    "chooseDays": "Choose a valid time and at least one day.",
+    "routineLimit": "You can save up to 30 routines. Remove one to make room.",
+    "after": "How do you feel now?",
+    "afterIntro": "Optional. There is no right outcome, and stopping early is okay.",
+    "outcomes": {
+      "settled": "More settled",
+      "same": "About the same",
+      "uncomfortable": "Less comfortable"
+    },
+    "remember": "Save reflections on this device",
+    "feedbackPrivacy": "Saving is optional and off by default. Your choice and practice details stay in this browser or app. No account or upload. Leaving this unchecked skips saving this reflection.",
+    "feedbackSaved": "Saved on this device. Thank you for noticing how you feel.",
+    "feedbackThanks": "Thank you for checking in. This reflection was not saved.",
+    "skip": "Skip reflection",
+    "localIntro": "Your routines and optional reflections stay on this device. Browser data can be cleared by your device; export a copy if you want to keep one.",
+    "routines": "Saved routines & favorites",
+    "noRoutines": "Save a favorite or a routine from a practice’s settings.",
+    "reflections": "Your reflections",
+    "reflectionCount": "{{count}} saved reflections · showing up to 12 recent entries",
+    "observations": "These are personal observations, without a claim that a practice caused a health change. Switching off saved reflections here deletes them; routines remain.",
+    "export": "Export my local data",
+    "clear": "Delete saved reflections",
+    "confirmClear": "Delete these reflections now",
+    "exportError": "The export could not be saved. Try again.",
+    "openRoutine": "Open practice",
+    "editRoutine": "Edit routine / reminder",
+    "removeRoutine": "Remove",
+    "calendar": "Download calendar reminder",
+    "calendarTitle": "Breathe · a moment for yourself",
+    "reminderAt": "Reminder: {{time}}",
+    "due": "A moment for yourself: {{name}}. Open My practice when it suits you.",
+    "helpfulBefore": "You previously reported feeling more settled after {{name}}. It is offered first within these gentle choices.",
+    "accessIntro": "All settings are optional. Quiet mode turns off sound, spoken guidance, and vibration together.",
+    "avoidHolds": "Prefer suggestions without breath holds",
+    "voice": "Spoken phase instructions",
+    "haptics": "Gentle vibration cues",
+    "dim": "Dim practice display",
+    "largeText": "Larger text",
+    "contrast": "Higher contrast",
+    "quiet": "Quiet mode",
+    "sensoryNote": "Voice and vibration depend on the device. Spoken instructions do not work as screen-off guidance on the website. Pause, stop, or leave the app to end cues.",
+    "testVoice": "Try voice guidance",
+    "voiceSample": "Find a comfortable position. Let your breathing settle.",
+    "nativeSensory": "Android uses available on-device speech and vibration. These cues are optional.",
+    "webSensory": "Browser speech uses an available device voice; offline availability varies. Some browsers do not support vibration. The page stays usable without either.",
+    "memoryOnly": "Your browser cannot save changes right now. These tools work for this visit; export anything you want to keep.",
+    "notificationPermission": "Routine saved. Enable notification permission in Android to receive its reminder.",
+    "reminderScheduled": "Reminder settings saved on this device.",
+    "reminderError": "Routine saved, but Android could not schedule its reminder. You can edit it and try again.",
+    "duration": "Practice duration"
+  },
+  "offline": {
+    "title": "Install & offline",
+    "intro": "Core practices are saved for offline use after a successful online visit. Sound recordings are optional downloads.",
+    "install": "Install Breathe",
+    "update": "Update ready · reload",
+    "installHelp": "Use your browser’s Install app or Add to Home screen menu if no install button appears. An update waits until you choose it outside practice.",
+    "preparing": "Preparing the offline app. Keep this page open while the first download finishes, then reload once.",
+    "ready": "Core practices are ready offline on this device.",
+    "offline": "You are offline. Your saved practices and downloaded sounds are available.",
+    "unavailable": "Offline setup is unavailable here. You can still use the app while connected.",
+    "native": "The Android app includes the practices, lesson, and sounds for offline use.",
+    "sounds": "Optional offline sounds",
+    "soundNote": "Synthesized ambient tones need no download. Offline recordings use device storage and can be removed here. Voice availability depends on installed device voices.",
+    "saveSound": "Save sound offline",
+    "removeSound": "Remove offline sound",
+    "bundled": "Included in Android",
+    "downloadFailed": "The sound could not be saved. Check your connection and try again."
+  },
+  "context": {
+    "title": "Today’s context",
+    "intro": "Optional context for your own reflection. Your feelings and preferences still guide the practice suggestions.",
+    "sleep": "Latest sleep session",
+    "activity": "Activity today",
+    "hrv": "Latest HRV (RMSSD)",
+    "restingHeartRate": "Latest resting heart rate",
+    "nativeIntro": "Choose which records to share, then approve Android’s Health Connect permissions. Read-only, on demand, up to the last 7 days. No background access or upload; records stay in this screen’s memory.",
+    "webIntro": "Automatic Health Connect access needs the Android companion. This website cannot read your Fitbit records. You can add a little context manually below.",
+    "connect": "Choose Health Connect permissions",
+    "refresh": "Refresh shared records",
+    "disconnect": "Revoke access & clear this view",
+    "loading": "Reading available records…",
+    "chooseTypes": "Choose at least one record type.",
+    "error": "Could not read Health Connect. Check the provider, permissions, and data availability, then try again.",
+    "boundary": "Availability depends on what Fitbit or another source actually shares. Missing values are not zero. Timestamps and sources matter; these records do not identify a medical condition or establish which breathing technique will help. Sleep is the duration of the latest recorded session, not a sleep-quality score.",
+    "status": {
+      "ready": "Available shared records are shown below.",
+      "unavailable": "Health Connect is unavailable on this device.",
+      "updateRequired": "Install or update Health Connect before connecting.",
+      "denied": "No selected records were shared. You can use every breathing practice without connecting."
+    },
+    "metricStatus": {
+      "notShared": "Not shared",
+      "noData": "No record available in the read window",
+      "available": "Available"
+    },
+    "units": {
+      "sleep": "hours",
+      "activity": "minutes",
+      "hrv": "ms",
+      "restingHeartRate": "bpm"
+    },
+    "manualTitle": "Add context yourself",
+    "manualIntro": "Optional and kept only for this visit. These notes do not change technique matching.",
+    "sleepHours": "Hours slept last night",
+    "activityToday": "Activity today",
+    "notSet": "Not set",
+    "rest": "Rest / ordinary day",
+    "light": "Light activity",
+    "hard": "Hard training or a match",
+    "sleepSummary": "Sleep noted: {{hours}} hours",
+    "memory": "kept in this tab only",
+    "androidLink": "Android companion source, build and installation instructions",
+    "disconnected": "Access revoked and this view cleared."
   }
 }

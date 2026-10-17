@@ -6,10 +6,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1a1a2e">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/icons/breathe.svg" type="image/svg+xml">
     <title>Breathe - Breathing Techniques</title>
     
     <!-- External Libraries -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="css/vendor/swiper.css?v=96ec55ae706747dc"/>
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css?v=4374a3aed9baeb74">
@@ -17,6 +19,7 @@
     <link rel="stylesheet" href="css/components.css?v=74cde4f99d935d49">
     <link rel="stylesheet" href="css/guide.css?v=957ca6dbd8de4ded">
     <link rel="stylesheet" href="css/audio.css?v=0972cfc1a52f9f7c">
+    <link rel="stylesheet" href="css/everyday.css?v=abfc4d3a48913353">
 </head>
 <body>
     <!-- Global Controls -->
@@ -68,6 +71,14 @@
         <div id="menu-screen" class="screen active">
             <h1>🌬️ <span data-i18n="app.title">Breathe</span></h1>
             <p class="subtitle" data-i18n="app.subtitle">Swipe or use arrows to choose a technique</p>
+            <nav class="practice-tools" aria-label="Practice tools">
+                <button type="button" data-open-personal data-i18n="personal.title"></button>
+                <button type="button" data-open-access data-i18n="personal.comfort"></button>
+                <button type="button" data-open-offline data-i18n="offline.title"></button>
+                <button type="button" data-open-context data-i18n="context.title"></button>
+            </nav>
+            <p id="reminderBanner" class="local-notice" role="status" hidden></p>
+            <p id="storageNotice" class="local-notice" hidden data-i18n="personal.memoryOnly"></p>
             
             <form id="checkinForm" class="checkin-card">
                 <p class="eyebrow" data-i18n="checkin.eyebrow"></p>
@@ -164,6 +175,18 @@
                 </div>
 
                 <div class="settings">
+                    <div class="comfort-settings">
+                        <h3 data-i18n="personal.yourPace"></h3>
+                        <label for="practicePace" data-i18n="personal.pace"></label>
+                        <select id="practicePace">
+                            <option value="0.6">60%</option><option value="0.8">80%</option><option value="1" selected>100%</option><option value="1.2">120%</option><option value="1.4">140%</option>
+                        </select>
+                        <label class="option-check"><input type="checkbox" id="practiceUnpaced"><span data-i18n="personal.unpaced"></span></label>
+                        <div id="naturalDuration" hidden><label for="naturalMinutes" data-i18n="personal.duration"></label><select id="naturalMinutes"><option value="1">1 min</option><option value="3" selected>3 min</option><option value="5">5 min</option><option value="10">10 min</option></select></div>
+                        <p id="paceDescription" class="field-note"></p>
+                        <p id="adaptationNote" class="field-note" hidden data-i18n="personal.adaptation"></p>
+                        <button type="button" id="noHoldAlternative" hidden data-i18n="personal.noHoldAlternative"></button>
+                    </div>
                     <div class="audio-entry"><button type="button" data-open-audio aria-haspopup="dialog" data-i18n="audio.title"></button><span id="audioSummary"></span></div>
                     <p class="protocol-note" data-i18n="detail.protocolNote"></p>
                     <p class="session-estimate"><span data-i18n="guide.estimated"></span>: <strong id="sessionDuration"></strong></p>
@@ -175,6 +198,7 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
+                    <div class="routine-actions"><button type="button" id="favoritePractice" aria-pressed="false" data-i18n="personal.favorite"></button><button type="button" id="saveRoutine" data-i18n="personal.saveRoutine"></button><button type="button" data-open-access data-i18n="personal.comfort"></button></div>
                     <button class="btn btn-start" id="startPracticeBtn" data-i18n="app.beginPractice">Begin Practice</button>
                 </div>
             </div>
@@ -202,6 +226,7 @@
                     <button class="btn btn-pause" id="pauseBtn" data-i18n="breathing.pause"></button>
                     <button class="btn btn-stop" id="stopBtn" data-i18n="breathing.stop"></button>
                 </div>
+                <button type="button" data-open-access class="text-button" data-i18n="personal.access"></button>
                 <p id="guideModeStatus" class="guide-mode-status"></p>
                 <p class="comfort-note" data-i18n="checkin.comfort"></p>
             </div>
@@ -222,12 +247,90 @@
                     <div class="stat-item"><span data-i18n="congrats.completedCycles">Cycles Completed</span>: <span class="stat-value" id="statCycles">4</span></div>
                     <div class="stat-item"><span data-i18n="congrats.totalTime">Total Time</span>: <span class="stat-value" id="statTime">1:04</span></div>
                 </div>
+                <section id="feedbackCard" class="feedback-card" aria-labelledby="feedbackTitle">
+                    <h3 id="feedbackTitle" data-i18n="personal.after"></h3>
+                    <p data-i18n="personal.afterIntro"></p>
+                    <label class="option-check"><input type="checkbox" id="rememberFeedback"><span data-i18n="personal.remember"></span></label>
+                    <p class="field-note" data-i18n="personal.feedbackPrivacy"></p>
+                    <div class="feedback-choices"><button type="button" data-outcome="settled" data-i18n="personal.outcomes.settled"></button><button type="button" data-outcome="same" data-i18n="personal.outcomes.same"></button><button type="button" data-outcome="uncomfortable" data-i18n="personal.outcomes.uncomfortable"></button></div>
+                    <p id="feedbackStatus" role="status"></p>
+                    <button type="button" id="skipFeedback" class="text-button" data-i18n="personal.skip"></button>
+                </section>
                 
                 <button class="btn btn-start" id="practiceAgainBtn" data-i18n="congrats.practiceAgain">Practice Again</button>
                 <button class="btn btn-secondary" id="mainMenuBtn" data-i18n="congrats.mainMenu">Main Menu</button>
             </div>
         </div>
     </div>
+
+    <dialog id="personalDialog" class="tool-dialog" aria-labelledby="personalTitle">
+        <button type="button" data-close-dialog class="dialog-close" data-i18n="personal.close"></button>
+        <h2 id="personalTitle" data-i18n="personal.title"></h2>
+        <p data-i18n="personal.localIntro"></p>
+        <h3 data-i18n="personal.routines"></h3><div id="routineList" class="routine-list"></div>
+        <h3 data-i18n="personal.reflections"></h3>
+        <label class="option-check"><input type="checkbox" id="keepHistory"><span data-i18n="personal.remember"></span></label>
+        <p id="reflectionSummary"></p><div id="reflectionList" class="reflection-list"></div>
+        <p class="field-note" data-i18n="personal.observations"></p>
+        <div class="tool-actions"><button type="button" id="exportPersonal" data-i18n="personal.export"></button><button type="button" id="clearHistory" data-i18n="personal.clear"></button></div>
+        <p id="personalStatus" role="status"></p>
+    </dialog>
+
+    <dialog id="accessDialog" class="tool-dialog" aria-labelledby="accessTitle">
+        <button type="button" data-close-dialog class="dialog-close" data-i18n="personal.close"></button>
+        <h2 id="accessTitle" data-i18n="personal.comfort"></h2>
+        <p data-i18n="personal.accessIntro"></p>
+        <label class="option-check"><input type="checkbox" id="avoidHolds"><span data-i18n="personal.avoidHolds"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="voice"><span data-i18n="personal.voice"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="haptics"><span data-i18n="personal.haptics"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="dim"><span data-i18n="personal.dim"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="largeText"><span data-i18n="personal.largeText"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="contrast"><span data-i18n="personal.contrast"></span></label>
+        <label class="option-check"><input type="checkbox" data-access="quiet"><span data-i18n="personal.quiet"></span></label>
+        <p class="field-note" data-i18n="personal.sensoryNote"></p>
+        <button type="button" id="testVoice" data-i18n="personal.testVoice"></button>
+        <p id="sensoryStatus" class="field-note" role="status"></p>
+    </dialog>
+
+    <dialog id="routineDialog" class="tool-dialog" aria-labelledby="routineTitle">
+        <button type="button" data-close-dialog class="dialog-close" data-i18n="personal.close"></button>
+        <h2 id="routineTitle" data-i18n="personal.saveRoutine"></h2>
+        <form id="routineForm">
+            <label for="routineName" data-i18n="personal.routineName"></label><input type="text" id="routineName" maxlength="60" required autocomplete="off">
+            <label class="option-check"><input type="checkbox" id="routineReminder"><span data-i18n="personal.addReminder"></span></label>
+            <div id="reminderFields" hidden>
+                <label for="reminderTime" data-i18n="personal.reminderTime"></label><input type="time" id="reminderTime" value="20:00">
+                <fieldset class="reminder-days"><legend data-i18n="personal.days"></legend>
+                    <label><input type="checkbox" data-reminder-day="1" checked><span data-i18n="personal.weekdays.1"></span></label><label><input type="checkbox" data-reminder-day="2" checked><span data-i18n="personal.weekdays.2"></span></label><label><input type="checkbox" data-reminder-day="3" checked><span data-i18n="personal.weekdays.3"></span></label><label><input type="checkbox" data-reminder-day="4" checked><span data-i18n="personal.weekdays.4"></span></label><label><input type="checkbox" data-reminder-day="5" checked><span data-i18n="personal.weekdays.5"></span></label><label><input type="checkbox" data-reminder-day="6" checked><span data-i18n="personal.weekdays.6"></span></label><label><input type="checkbox" data-reminder-day="0" checked><span data-i18n="personal.weekdays.0"></span></label>
+                </fieldset>
+                <p class="field-note" data-i18n="personal.reminderNote"></p>
+            </div>
+            <p id="routineStatus" role="status"></p><button type="submit" class="btn btn-start" data-i18n="personal.save"></button>
+        </form>
+    </dialog>
+
+    <dialog id="offlineDialog" class="tool-dialog" aria-labelledby="offlineTitle">
+        <button type="button" data-close-dialog class="dialog-close" data-i18n="personal.close"></button>
+        <h2 id="offlineTitle" data-i18n="offline.title"></h2><p data-i18n="offline.intro"></p>
+        <p id="offlineStatus" role="status"></p><div class="tool-actions"><button type="button" id="installApp" hidden data-i18n="offline.install"></button><button type="button" id="updateApp" hidden data-i18n="offline.update"></button></div>
+        <p data-i18n="offline.installHelp"></p>
+        <h3 data-i18n="offline.sounds"></h3><div id="offlinePacks"></div><p class="field-note" data-i18n="offline.soundNote"></p>
+    </dialog>
+
+    <dialog id="contextDialog" class="tool-dialog" aria-labelledby="contextTitle">
+        <button type="button" data-close-dialog class="dialog-close" data-i18n="personal.close"></button>
+        <h2 id="contextTitle" data-i18n="context.title"></h2><p data-i18n="context.intro"></p>
+        <p id="nativeContextNote" class="field-note"></p>
+        <div id="healthReadChoices"><label class="option-check"><input type="checkbox" data-health-type="sleep" checked><span data-i18n="context.sleep"></span></label><label class="option-check"><input type="checkbox" data-health-type="activity" checked><span data-i18n="context.activity"></span></label><label class="option-check"><input type="checkbox" data-health-type="hrv"><span data-i18n="context.hrv"></span></label><label class="option-check"><input type="checkbox" data-health-type="restingHeartRate"><span data-i18n="context.restingHeartRate"></span></label></div>
+        <div class="tool-actions"><button type="button" id="connectHealth" data-i18n="context.connect"></button><button type="button" id="refreshHealth" hidden data-i18n="context.refresh"></button><button type="button" id="disconnectHealth" hidden data-i18n="context.disconnect"></button></div>
+        <p id="healthStatus" role="status"></p><dl id="healthMetrics" class="health-metrics"></dl>
+        <p class="field-note" data-i18n="context.boundary"></p>
+        <h3 data-i18n="context.manualTitle"></h3><p data-i18n="context.manualIntro"></p>
+        <label for="sleepContext" data-i18n="context.sleepHours"></label><input type="number" id="sleepContext" min="0" max="16" step="0.5" inputmode="decimal">
+        <label for="activityContext" data-i18n="context.activityToday"></label><select id="activityContext"><option value="" data-i18n="context.notSet"></option><option value="rest" data-i18n="context.rest"></option><option value="light" data-i18n="context.light"></option><option value="hard" data-i18n="context.hard"></option></select>
+        <p id="contextSummary" role="status"></p>
+        <a href="https://github.com/jjgp13/breathing-app#android-companion" target="_blank" rel="noopener noreferrer" data-i18n="context.androidLink"></a>
+    </dialog>
 
     <dialog id="movementLesson" class="movement-lesson" aria-labelledby="movementTitle" aria-describedby="movementIntro">
         <button type="button" id="closeMovementLesson" class="lesson-close" data-i18n="lesson.close"></button>
@@ -254,22 +357,29 @@
     </dialog>
 
     <!-- External Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="js/vendor/swiper.js?v=73203b5c5f70f45b"></script>
+    <script src="js/vendor/gsap.js?v=92bb9a96476f983d"></script>
     
     <!-- JavaScript Modules -->
-    <script src="js/locales.generated.js?v=b35c2af3ae5a9dc3"></script>
+    <script src="js/locales.generated.js?v=dd3ae2430e482f34"></script>
     <script src="js/i18n.js?v=cfa4e5cda5a13b57"></script>
     <script src="js/techniques.js?v=dea35a88a2b649b1"></script>
-    <script src="js/audio.js?v=7af5c180ce480353"></script>
-    <script src="js/audio-ui.js?v=1f35a67d3a11e0ec"></script>
+    <script src="js/audio.js?v=ac21df3085eff6c2"></script>
+    <script src="js/audio-ui.js?v=cc34a8c7fdeae94b"></script>
     <script src="js/backgrounds.js?v=f043fc3b6b28502c"></script>
     <script src="js/session.js?v=12825d78fe2793c7"></script>
     <script src="js/recommendations.js?v=78c1729da8907cd5"></script>
-    <script src="js/breath-guide.js?v=bf66c47fb1516ba0"></script>
+    <script src="js/breath-guide.js?v=a389911680a67018"></script>
     <script src="js/guide-patterns.js?v=8b20aa0cab092674"></script>
-    <script src="js/guide2d.js?v=169003916d162f40"></script>
+    <script src="js/guide2d.js?v=f3f0a6aebec0d20e"></script>
     <script src="js/movement-lesson.js?v=2bb96b479ed2e15d"></script>
-    <script src="js/app.js?v=583a352fb751c355"></script>
+    <script src="js/practice-store.js?v=0aeeaa56f8d8bae0"></script>
+    <script src="js/practice-profile.js?v=49b0637ba3aaaba0"></script>
+    <script src="js/native-client.js?v=b2656ff937a6ae69"></script>
+    <script src="js/guidance.js?v=e576a7178ac96620"></script>
+    <script src="js/offline-assets.generated.js?v=7e7b5ff72de1e100"></script>
+    <script src="js/offline.js?v=952bc7e5ddfbfde3"></script>
+    <script src="js/everyday.js?v=617879480227e01b"></script>
+    <script src="js/app.js?v=c704c3c9be1208f0"></script>
 </body>
 </html>

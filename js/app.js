@@ -33,6 +33,7 @@ const App = {
         this.bindEvents();
         BackgroundManager.setAnimation('none');
         this.initCheckin();
+        Everyday.init();
     },
 
     /**
@@ -344,6 +345,7 @@ const App = {
         this.elements.repetitionsSlider.max = tech.maxCycles;
         this.elements.repetitionsSlider.value = cycles ?? tech.defaultCycles;
         this.elements.repValue.textContent = this.elements.repetitionsSlider.value;
+        Everyday.renderDetail();
         this.updateDuration();
         this.showScreen('detail-screen');
     },
@@ -437,10 +439,11 @@ const App = {
     },
 
     renderRecommendation() {
-        const result = Recommendations.suggest(this.checkin);
+        const result = Everyday.store?Everyday.personalize(Recommendations.suggest({...this.checkin,holds:this.checkin.holds&&!Everyday.store.state.comfort.avoidHolds})):Recommendations.suggest(this.checkin);
         if (!result || !this.hasSuggestion) return;
         document.getElementById('recommendation').hidden = false;
         document.getElementById('recommendationReason').textContent = I18n.t('checkin.reasons.' + result.reason);
+        if(result.personal)document.getElementById('recommendationReason').textContent+=' '+I18n.t('personal.helpfulBefore',{name:I18n.getTechnique(result.personal,'name')});
         const list = document.getElementById('recommendationChoices');
         list.replaceChildren();
         result.choices.forEach((choice, index) => {
@@ -469,7 +472,8 @@ const App = {
     updateDuration() {
         const tech = this.state.selectedTechnique;
         if (!tech) return;
-        const seconds = tech.phases.reduce((sum, phase) => sum + phase.duration, 0) * Number(this.elements.repetitionsSlider.value);
+        const profile=Everyday.store?Everyday.profile():tech;
+        const seconds = profile.unpaced?profile.minutes*60:profile.phases.reduce((sum, phase) => sum + phase.duration, 0) * Number(this.elements.repetitionsSlider.value);
         this.elements.sessionDuration.textContent = this.formatDuration(seconds);
     },
 
@@ -478,6 +482,8 @@ const App = {
         BreathGuide.refresh();
         MovementLesson.refresh();
         AudioUI.refresh();
+        if(Everyday.store)Everyday.refresh();
+        Offline.refresh();
         if (this.state.isRunning && this.session) {
             this.renderPhaseTrack();
             this.lastPhaseKey = null;
@@ -504,8 +510,10 @@ const App = {
     },
 
     startExercise() {
-        const tech = this.state.selectedTechnique;
+        const tech = Everyday.profile();
         if (!tech) return;
+        this.state.activeTechnique=tech;
+        Guidance.reset();
         this.session?.stop(false);
         AudioManager.startSession();
         this.state.isRunning = true;
@@ -514,7 +522,8 @@ const App = {
         this.lastPhaseKey = null;
         this.renderPhaseTrack();
         this.showScreen('breathing-screen');
-        this.session = new BreathingSession(tech, this.state.totalCycles, {
+        const clockTechnique=tech.unpaced?{...tech,phases:[{type:'easy',duration:tech.minutes*60}]}:tech;
+        this.session = new BreathingSession(clockTechnique, tech.unpaced?1:this.state.totalCycles, {
             onUpdate: snapshot => this.renderSession(snapshot),
             onCue: snapshot => AudioManager.playPhaseSound(snapshot.phase.type),
             onComplete: snapshot => this.completeExercise(snapshot)
@@ -525,7 +534,10 @@ const App = {
 
     renderPhaseTrack() {
         this.elements.phaseTrack.replaceChildren();
-        this.state.selectedTechnique.phases.forEach((phase, index) => {
+        const technique=this.state.activeTechnique||this.state.selectedTechnique;
+        this.elements.phaseTrack.hidden=!!technique.unpaced;
+        document.querySelector('.progress-info').hidden=!!technique.unpaced;
+        technique.phases.forEach((phase, index) => {
             const item = document.createElement('li');
             item.dataset.index = index;
             const label = document.createElement('span');
@@ -542,11 +554,12 @@ const App = {
         if (!this.state.isRunning) return;
         this.state.isPaused = snapshot.mode === 'paused';
         AudioManager.setPaused(this.state.isPaused);
-        this.elements.breathingTitle.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
+        const technique=this.state.activeTechnique;
+        this.elements.breathingTitle.textContent = PracticeProfile.name(technique);
         this.elements.currentCycleEl.textContent = snapshot.cycle;
         this.elements.totalCyclesEl.textContent = snapshot.cycles;
         this.elements.pauseBtn.textContent = I18n.t(this.state.isPaused ? 'breathing.resume' : 'breathing.pause');
-        const hold = !snapshot.preparing && ['hold', 'retention', 'recovery'].includes(snapshot.phase.type);
+        const hold = !technique.unpaced && !snapshot.preparing && ['hold', 'retention', 'recovery'].includes(snapshot.phase.type);
         this.elements.endHoldBtn.hidden = !hold;
         this.elements.endHoldBtn.disabled = this.state.isPaused;
         this.elements.holdNote.hidden = !hold;
@@ -554,23 +567,24 @@ const App = {
         if (key !== this.lastPhaseKey) {
             this.lastPhaseKey = key;
             let cue = snapshot.phase.type;
-            if (cue === 'hold') cue = GuideMath.volume(this.state.selectedTechnique, snapshot.phaseIndex, 0) ? 'holdFull' : 'holdEmpty';
-            if (this.state.selectedTechnique.id === 'diaphragmatic' && ['inhale','exhale'].includes(cue)) cue = cue === 'inhale' ? 'bellyIn' : 'bellyOut';
+            if (cue === 'hold') cue = GuideMath.volume(technique, snapshot.phaseIndex, 0) ? 'holdFull' : 'holdEmpty';
+            if (technique.id === 'diaphragmatic' && ['inhale','exhale'].includes(cue)) cue = cue === 'inhale' ? 'bellyIn' : 'bellyOut';
             this.elements.instruction.textContent = snapshot.mode === 'paused' ? I18n.t('guide.paused')
-                : snapshot.preparing ? I18n.t('guide.ready') : I18n.getPhase(snapshot.phase.type);
+                : snapshot.preparing ? I18n.t('guide.ready') : technique.unpaced?I18n.t('personal.unpaced'):I18n.getPhase(snapshot.phase.type);
             this.elements.guideCue.textContent = snapshot.mode === 'paused'
                 ? I18n.t(snapshot.pauseReason === 'user' ? 'guide.pauseCue' : 'guide.hiddenPause')
-                : snapshot.preparing ? I18n.t('guide.readyCue') : I18n.t('guide.cue.' + cue);
-            const nextIndex = (snapshot.phaseIndex + 1) % this.state.selectedTechnique.phases.length;
+                : snapshot.preparing ? I18n.t('guide.readyCue') : technique.unpaced?I18n.t('personal.naturalCue'):I18n.t('guide.cue.' + cue);
+            const nextIndex = (snapshot.phaseIndex + 1) % technique.phases.length;
             this.elements.guideNext.textContent = snapshot.mode === 'paused' ? I18n.t('guide.pausedLabel')
-                : I18n.t('guide.next') + ': ' + I18n.getPhase(this.state.selectedTechnique.phases[snapshot.preparing ? 0 : nextIndex].type);
+                : technique.unpaced?I18n.t('personal.sessionTime'):I18n.t('guide.next') + ': ' + I18n.getPhase(technique.phases[snapshot.preparing ? 0 : nextIndex].type);
             Array.from(this.elements.phaseTrack.children).forEach((item, index) => {
                 item.classList.toggle('is-current', !snapshot.preparing && index === snapshot.phaseIndex);
                 if (!snapshot.preparing && index === snapshot.phaseIndex) item.setAttribute('aria-current','step');
                 else item.removeAttribute('aria-current');
             });
         }
-        BreathGuide.update(snapshot, this.state.selectedTechnique);
+        Guidance.phase(snapshot,technique);
+        BreathGuide.update(snapshot, technique);
     },
 
     togglePause() {
@@ -580,13 +594,15 @@ const App = {
     },
 
     stopExercise() {
+        const snapshot=this.session?.snapshot();
         this.session?.stop(false);
+        Guidance.reset();
         AudioManager.stop();
         this.state.isRunning = false;
         this.state.isPaused = false;
         this.releaseWakeLock();
         BreathGuide.clear();
-        this.showScreen('detail-screen');
+        if(snapshot?.practiceSeconds>0)this.showReflection(snapshot,false);else this.showScreen('detail-screen');
     },
 
     completeExercise(snapshot) {
@@ -594,11 +610,18 @@ const App = {
         this.state.isPaused = false;
         this.releaseWakeLock();
         AudioManager.stop();
+        Guidance.reset();
         AudioManager.playComplete();
-        this.elements.statTechnique.textContent = I18n.getTechnique(this.state.selectedTechnique.id, 'name');
-        this.elements.statCycles.textContent = snapshot.cycles;
+        this.showReflection(snapshot,true);
+    },
+
+    showReflection(snapshot,completed) {
+        this.elements.statTechnique.textContent = PracticeProfile.name(this.state.activeTechnique);
+        this.elements.statCycles.textContent = completed?snapshot.cycles:Math.max(0,snapshot.cycle-1);
+        this.elements.statCycles.closest('.stat-item').hidden=!!this.state.activeTechnique.unpaced;
         this.elements.statTime.textContent = this.formatDuration(snapshot.practiceSeconds);
         BreathGuide.clear();
+        Everyday.finish(snapshot,this.state.activeTechnique,completed);
         this.showScreen('congrats-screen');
     }
 };
@@ -607,3 +630,4 @@ document.addEventListener('DOMContentLoaded', () => App.init());
 document.addEventListener('visibilitychange', () => {
     if (document.hidden && App.state.isRunning) { App.session?.pause('hidden'); App.releaseWakeLock(); }
 });
+window.addEventListener('breathe-pause',()=>{if(App.state.isRunning){App.session?.pause('hidden');App.releaseWakeLock();}Guidance.stop();});

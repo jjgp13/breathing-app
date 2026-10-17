@@ -1,0 +1,15 @@
+{
+  "id":"./",
+  "name":"Breathe · Free breathing practice",
+  "short_name":"Breathe",
+  "description":"Gentle breathing practice, saved routines, and optional private reflections.",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#192b3d",
+  "theme_color":"#192b3d",
+  "icons":[
+    {"src":"assets/icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"assets/icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

@@ -1,5 +1,15 @@
 # Code review and validation
 
+## October 16: everyday tools and Android preview
+
+Added optional local reflections, favorites, named routines, weekday/time reminders, comfortable pacing, unpaced practice, sensory/accessibility controls, and installable offline delivery. Source protocols and their evidence limitations remain visible. New pace labels, SVG numbers and phase captions follow adapted timing. Advanced timings stay fixed; no-hold alternatives keep their own technique identity.
+
+The local store validates bounded schemas, keeps history off by default and never stores Health Connect records. Saved feedback can reorder only existing gentle candidates for the same feeling. Web reminders explicitly use calendar export for closed-app delivery. The Android preview uses local notifications and on-demand selected Health Connect reads without network/background/write permissions. Its app assets are isolated from external content; health replies are invalidated after a newer request, clear/revoke or navigation.
+
+Runtime libraries are pinned and local. Swiper was upgraded to 12.1.2 to remove its known prototype-pollution advisory; the dependency audit reports zero vulnerabilities. Versioned service-worker installation is atomic and respects app scope, while recorded sounds use separate optional caches. The app update waits for user activation outside practice. Native packaging includes all practice, audio and lesson assets and disables backup/device transfer.
+
+Verification: 48 JavaScript tests pass. Browser checks covered adapted 3.2/4.8-second labels, restoring saved routine settings, completion and optional local feedback, preserving prior history when skipping another reflection, quiet/large/contrast controls, unpaced session time with no phase targets, Spanish and 320/390-pixel layouts, optional sound caching, and reloading the app with the local server stopped. Synthetic QA history/routines were removed afterward. Native compilation, three interval-merge unit tests, and Android lint pass; lint has no errors. APK permissions were inspected to confirm no internet, health-write, history, background-health or location access. Physical Fitbit/Android permission, TTS/haptic, reminder delivery and battery testing remain necessary on the user's phone.
+
 ## October 16: purposeful guidance
 
 Timed practice now always uses the technique's 2D guide. Removed 3D mode selection and preference restoration from the session path, added phase-specific explanations and a phase progress bar, and retained still diagrams for reduced motion. Existing gentle pacing, audio, recommendations, and hold controls are preserved.
